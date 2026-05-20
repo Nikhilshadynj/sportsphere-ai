@@ -1,0 +1,96 @@
+services:
+
+  api-gateway:
+    build:
+      context: ./services/api-gateway
+    container_name: api-gateway
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./services/api-gateway:/app
+    working_dir: /app
+    command: sh -c "npm install && npm run dev"
+    env_file: ./services/api-gateway/.env
+    depends_on:
+      - auth-service
+      - mongodb
+      - redis
+      - rabbitmq
+
+  mongodb:
+    image: mongo:7
+    container_name: sportsphere-mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password  
+    volumes:
+      - ./services/auth-service/data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  redis:
+    image: redis:7
+    container_name: sportsphere-redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: sportsphere-rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  auth-service:
+    build:
+      context: ./services/auth-service
+    container_name: auth-service
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./services/auth-service:/app
+    working_dir: /app
+    command: sh -c "npm install && npm run dev"
+    env_file:
+      - ./services/auth-service/.env
+    depends_on:
+      - mongodb    
+
+  ai-service:
+    build:
+      context: ./services/ai-service
+    container_name: ai-service
+    ports:
+      - "5002:5002"
+    volumes:
+      - ./services/ai-service:/app
+      - /app/node_modules
+    working_dir: /app
+    command: sh -c "npm install && npm run dev"
+    env_file:
+      - ./services/ai-service/.env
+
+  match-service:
+    build:
+      context: ./services/match-service
+    container_name: match-service
+    ports:
+      - "5003:5003"
+    env_file:
+      - ./services/match-service/.env
+    volumes:
+      - ./services/match-service:/app
+      - /app/node_modules
+    working_dir: /app
+    command: sh -c "npm install && npm run dev"
+    depends_on:
+      - mongodb    
