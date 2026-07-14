@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Conversation from "../models/conversation.model";
 import Message from "../models/message.model";
+import cacheService from "../services/cache.service";
 
 export const createConversation = async (
   req: Request,
@@ -18,7 +19,7 @@ export const createConversation = async (
         userId,
         title,
       });
-
+    await cacheService.del(`conversations:${userId}`);
     res.status(201).json(conversation);
   } catch (error) {
     console.log(error);
@@ -80,6 +81,36 @@ export const getMessages = async (
     res.status(500).json({
       message:
         "Failed to fetch messages",
+    });
+  }
+};
+
+export const getAllConversations = async (req: Request, res: Response) => {
+  try {
+    const cacheKey = `conversations:nikhil123`;
+    const cached = await cacheService.get(cacheKey);
+
+if (cached) {
+  console.log("✅ Redis HIT");
+
+  return res.json({
+    success: true,
+    conversations: cached,
+  });
+}
+    const conversations = await Conversation.find()
+      .select("_id title updatedAt createdAt")
+      .sort({ updatedAt: -1 });
+    await cacheService.set(cacheKey, conversations);
+    return res.status(200).json({
+      success: true,
+      conversations,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch conversations",
+      error,
     });
   }
 };

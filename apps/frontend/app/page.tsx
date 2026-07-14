@@ -14,8 +14,15 @@ interface Message {
   content: string;
 }
 
+interface Conversation {
+  _id: string;
+  title: string;
+  updatedAt: string;
+}
+
 export default function Home() {
   const [activeTool, setActiveTool] = useState<Tool>("chat");
+  const [conversations, setConversations] = useState<Conversation[]>([]);
   const [conversationId, setConversationId] = useState("");
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
@@ -33,24 +40,46 @@ export default function Home() {
   const [matchLoading, setMatchLoading] = useState(false);
 
   useEffect(() => {
-    createConversation();
-  }, []);
+  initializeConversation();
+  loadConversations();
+}, []);
 
-  const createConversation = async () => {
-    const res = await fetch("http://localhost:4000/api/ai/conversation", {
+ const createConversation = async () => {
+  const res = await fetch(
+    "http://localhost:4000/api/ai/conversation",
+    {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         userId: "nikhil123",
-        title: "Frontend Chat",
+        title: "New Chat",
       }),
-    });
+    }
+  );
 
-    const data = await res.json();
-    setConversationId(data._id);
-  };
+  const data = await res.json();
+
+  localStorage.setItem("conversationId", data._id);
+
+  setConversationId(data._id);
+  setMessages([]);
+
+  await loadConversations();
+};
+
+const initializeConversation = async () => {
+  const existingConversationId = localStorage.getItem("conversationId");
+
+  if (existingConversationId) {
+    setConversationId(existingConversationId);
+    await loadMessages(existingConversationId);
+    return;
+  }
+
+  await createConversation();
+};
 
   const sendMessage = async () => {
     if (!input.trim() || !conversationId) return;
@@ -128,11 +157,62 @@ export default function Home() {
     { id: "codebase", label: "Codebase RAG" },
   ];
 
+  const loadMessages = async (id: string) => {
+  const res = await fetch(
+    `http://localhost:4000/api/ai/conversation/${id}/messages`
+  );
+
+  const data = await res.json();
+
+  setMessages(data);
+};
+
+const loadConversations = async () => {
+  const res = await fetch("http://localhost:4000/api/ai/list");
+
+  const data = await res.json();
+
+  setConversations(data.conversations);
+};
+
   return (
     <main className="min-h-screen bg-black text-white flex">
       <aside className="w-72 border-r border-zinc-800 p-5">
         <h1 className="text-2xl font-bold mb-8">Sportsphere AI</h1>
+<button onClick={createConversation}>
+  + New Chat
+</button>
 
+<h3 className="text-sm text-zinc-400 mb-2">
+  Conversations
+</h3>
+
+<div className="space-y-2 mb-6 max-h-72 overflow-y-auto">
+  {conversations.map((conversation) => (
+    <button
+      key={conversation._id}
+      onClick={() => {
+        localStorage.setItem(
+          "conversationId",
+          conversation._id
+        );
+
+        setConversationId(conversation._id);
+
+        loadMessages(conversation._id);
+
+        setActiveTool("chat");
+      }}
+      className={`w-full text-left rounded-xl px-3 py-2 text-sm truncate ${
+  conversationId === conversation._id
+    ? "bg-blue-600"
+    : "bg-zinc-900 hover:bg-zinc-800"
+}`}
+    >
+      {conversation.title}
+    </button>
+  ))}
+</div>
         <div className="space-y-2">
           {menuItems.map((item) => (
             <button

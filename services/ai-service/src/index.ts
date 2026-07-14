@@ -10,11 +10,13 @@ import documentRoutes from "./routes/document.routes";
 import documentRagRoutes from "./routes/document-rag.routes";
 import matchAnalysisRoutes from "./routes/match-analysis.routes";
 import commentaryRoutes from "./routes/commentary.routes";
+import { connectRedis } from "./config/redis";
 
 dotenv.config();
 
 const app = express();
 connectDB();
+connectRedis();
 
 app.use(cors());
 app.use(express.json());

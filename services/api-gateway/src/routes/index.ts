@@ -6,7 +6,7 @@ const router = Router();
 router.use(
   "/ai",
   createProxyMiddleware({
-    target: "http://ai-service:5002",
+    target: "http://localhost:5002",
     changeOrigin: true,
     pathRewrite: {
         "^/ai": "",
