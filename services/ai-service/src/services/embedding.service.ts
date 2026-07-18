@@ -1,27 +1,38 @@
-import { pipeline } from "@xenova/transformers";
+import {
+  EMBEDDING_DIMENSION,
+  QDRANT_COLLECTION,
+  qdrantClient,
+} from "../config/qdrant";
 
-let extractor: any;
+export async function initializeVectorStore(): Promise<void> {
+  const collections =
+    await qdrantClient.getCollections();
 
-async function getExtractor() {
-  if (!extractor) {
-    extractor = await pipeline(
-      "feature-extraction",
-      "Xenova/all-MiniLM-L6-v2"
+  const collectionExists =
+    collections.collections.some(
+      (collection) =>
+        collection.name === QDRANT_COLLECTION
     );
+
+  if (collectionExists) {
+    console.log(
+      `Qdrant collection already exists: ${QDRANT_COLLECTION}`
+    );
+
+    return;
   }
 
-  return extractor;
-}
+  await qdrantClient.createCollection(
+    QDRANT_COLLECTION,
+    {
+      vectors: {
+        size: EMBEDDING_DIMENSION,
+        distance: "Cosine",
+      },
+    }
+  );
 
-export async function generateEmbedding(
-  text: string
-): Promise<number[]> {
-  const model = await getExtractor();
-
-  const output = await model(text, {
-    pooling: "mean",
-    normalize: true,
-  });
-
-  return Array.from(output.data as ArrayLike<number>);
+  console.log(
+    `Qdrant collection created: ${QDRANT_COLLECTION}`
+  );
 }

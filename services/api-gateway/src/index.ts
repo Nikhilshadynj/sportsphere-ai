@@ -4,10 +4,17 @@ import dotenv from 'dotenv';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import routes from "./routes";
+import http from "http";
+import { initializeSocket } from "./config/socket";
+import { connectRabbit } from "./config/rabbit";
+import { startConversationConsumer } from "./consumers/conversation.consumer";
 
 dotenv.config();
 
 const app = express();
+const server = http.createServer(app);
+
+initializeSocket(server);
 
 app.use(cors());
 app.use(helmet());
@@ -28,6 +35,18 @@ app.get('/health', (_req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`API Gateway running on port ${PORT}`);
-});
+const bootstrap = async () => {
+
+  await connectRabbit();
+
+  await startConversationConsumer();
+
+  server.listen(PORT, () => {
+    console.log(
+      `API Gateway running on port ${PORT}`
+    );
+  });
+
+};
+
+bootstrap();

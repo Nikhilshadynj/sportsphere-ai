@@ -15,7 +15,6 @@ export const authenticate = (
 ) => {
   try {
     const authHeader = req.headers.authorization;
-
     if (!authHeader?.startsWith("Bearer ")) {
       return res.status(401).json({
         message: "Unauthorized",
@@ -33,7 +32,7 @@ export const authenticate = (
       id: decoded.id,
       email: decoded.email,
     };
-
+    req.headers["x-user-id"] = decoded.id;
     next();
   } catch {
     return res.status(401).json({

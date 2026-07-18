@@ -1,14 +1,22 @@
-import express from "express";
+import { Router } from "express";
 import {
   createMatch,
-  getMatchById,
   getMatches,
+  getMatchById,
+  getUpcomingMatches,
 } from "../controllers/match.controller";
 
-const router = express.Router();
+const router = Router();
 
 router.post("/", createMatch);
+
 router.get("/", getMatches);
+
+// IMPORTANT:
+// /upcoming ko /:id se pehle rakhna hai,
+// otherwise Express "upcoming" ko match ID maan lega.
+router.get("/upcoming", getUpcomingMatches);
+
 router.get("/:id", getMatchById);
 
 export default router;

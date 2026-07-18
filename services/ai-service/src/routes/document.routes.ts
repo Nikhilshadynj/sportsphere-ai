@@ -1,15 +1,23 @@
-import express from "express";
+import { Router } from "express";
 
-import upload from "../config/multer";
+import {
+  uploadDocumentController,
+} from "../controllers/document.controller";
 
-import { uploadDocument } from "../controllers/document.controller";
+import {
+  uploadDocument,
+} from "../middleware/document-upload.middleware";
 
-const router = express.Router();
+import {
+  authenticate,
+} from "../middleware/auth.middleware";
+
+const router = Router();
 
 router.post(
-  "/documents/upload",
-  upload.single("file"),
-  uploadDocument
+  "/upload",
+  uploadDocument,
+  uploadDocumentController
 );
 
 export default router;

@@ -8,11 +8,14 @@ export const createConversation = async (
   res: Response
 ) => {
   try {
-    const { userId, title } = req.body;
+    const userId = req.headers["x-user-id"] as string;
+    const { title } = req.body;
 
     if (!userId) {
-      return res.status(400).json({ message: "userId is required" });
-    }
+  return res.status(401).json({
+    message: "Unauthorized",
+  });
+}
 
     const conversation =
       await Conversation.create({
@@ -31,49 +34,28 @@ export const createConversation = async (
   }
 };
 
-export const getConversations = async (
-  req: Request,
-  res: Response
-) => {
-  try {
-    const userId = req.query.userId as string;
-
-    if (!userId) {
-      return res.status(400).json({
-        message: "userId is required",
-      });
-    }
-
-    const conversations =
-      await Conversation.find({
-        userId,
-      }).sort({
-        createdAt: -1,
-      });
-
-    res.json(conversations);
-  } catch (error) {
-    console.log(error);
-
-    res.status(500).json({
-      message: "Failed to fetch conversations",
-    });
-  }
-};
-
 export const getMessages = async (
   req: Request,
   res: Response
 ) => {
   try {
     const { id } = req.params;
+    const cacheKey = `messages:${id}`;
 
+    const cached = await cacheService.get(cacheKey);
+    if (cached) {
+      console.log("✅ Messages Redis HIT");
+
+      return res.json(cached);
+    }
     const messages = await Message.find({
       conversationId: id,
     }).sort({
       createdAt: 1,
     });
 
+    await cacheService.set(cacheKey, messages);
+    
     res.json(messages);
   } catch (error) {
     console.log(error);
@@ -87,7 +69,8 @@ export const getMessages = async (
 
 export const getAllConversations = async (req: Request, res: Response) => {
   try {
-    const cacheKey = `conversations:nikhil123`;
+    const userId = req.headers['x-user-id']!;
+    const cacheKey = `conversations:${userId}`;
     const cached = await cacheService.get(cacheKey);
 
 if (cached) {
@@ -98,9 +81,11 @@ if (cached) {
     conversations: cached,
   });
 }
-    const conversations = await Conversation.find()
-      .select("_id title updatedAt createdAt")
-      .sort({ updatedAt: -1 });
+    const conversations = await Conversation.find({
+  userId,
+})
+  .select("_id title updatedAt createdAt")
+  .sort({ updatedAt: -1 });
     await cacheService.set(cacheKey, conversations);
     return res.status(200).json({
       success: true,

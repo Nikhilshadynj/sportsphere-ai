@@ -1,124 +1,89 @@
-import { Request, Response } from "express";
+import {
+  NextFunction,
+  Request,
+  Response,
+} from "express";
+import fs from "fs/promises";
 
-import fs from "fs";
+import { DocumentModel } from "../models/document.model";
 
-import { PDFParse } from "pdf-parse";
-
-import Document from "../models/document.model";
-
-import DocumentChunk from "../models/documentChunk.model";
-
-import { generateEmbedding } from "../services/embedding.service";
-
-const CHUNK_SIZE = 1200;
-
-function chunkText(text: string) {
-  const chunks: string[] = [];
-
-  for (
-    let i = 0;
-    i < text.length;
-    i += CHUNK_SIZE
-  ) {
-    chunks.push(
-      text.slice(
-        i,
-        i + CHUNK_SIZE
-      )
-    );
-  }
-
-  return chunks;
+interface AuthenticatedRequest
+  extends Request {
+  user?: {
+    id?: string;
+    userId?: string;
+  };
 }
 
-export const uploadDocument =
-  async (
-    req: Request,
-    res: Response
-  ) => {
-    try {
-      if (!req.file) {
-        return res
-          .status(400)
-          .json({
-            message:
-              "No file uploaded",
-          });
-      }
-
-      // save document metadata
-      const document =
-        await Document.create({
-          originalName:
-            req.file.originalname,
-
-          fileName:
-            req.file.filename,
-
-          mimeType:
-            req.file.mimetype,
-
-          size: req.file.size,
-        });
-
-      // read PDF
-      const dataBuffer =
-        fs.readFileSync(
-          req.file.path
-        );
-
-      const parser = new PDFParse({ data: dataBuffer });
-      const pdfData = await parser.getText();
-      await parser.destroy();
-
-      const text = pdfData.text;
-
-      // chunking
-      const chunks =
-        chunkText(text);
-
-      // embeddings + save
-      for (
-        let i = 0;
-        i < chunks.length;
-        i++
-      ) {
-        const embedding =
-          await generateEmbedding(
-            chunks[i]
-          );
-
-        await DocumentChunk.create(
-          {
-            documentId:
-              document._id,
-
-            content:
-              chunks[i],
-
-            chunkIndex: i,
-
-            embedding,
-          }
-        );
-      }
-
-      res.json({
+export async function uploadDocumentController(
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    if (!req.file) {
+      res.status(400).json({
+        success: false,
         message:
-          "Document uploaded successfully",
-
-        documentId:
-          document._id,
-
-        chunks:
-          chunks.length,
+          "Please upload a PDF document",
       });
-    } catch (error) {
-      console.log(error);
 
-      res.status(500).json({
-        message:
-          "Document upload failed",
-      });
+      return;
     }
-  };
+
+    const userId = req.userId;
+
+    if (!userId) {
+      await fs.unlink(req.file.path)
+        .catch(() => undefined);
+
+      res.status(401).json({
+        success: false,
+        message: "Unauthorized",
+      });
+
+      return;
+    }
+
+    const document =
+      await DocumentModel.create({
+        userId,
+        originalName:
+          req.file.originalname,
+        storedName:
+          req.file.filename,
+        filePath:
+          req.file.path,
+        mimeType:
+          req.file.mimetype,
+        fileSize:
+          req.file.size,
+        status: "uploaded",
+        chunkCount: 0,
+      });
+
+    res.status(201).json({
+      success: true,
+      message:
+        "Document uploaded successfully",
+      document: {
+        id: document._id,
+        originalName:
+          document.originalName,
+        fileSize:
+          document.fileSize,
+        status:
+          document.status,
+        createdAt:
+          document.createdAt,
+      },
+    });
+  } catch (error) {
+    if (req.file?.path) {
+      await fs.unlink(req.file.path)
+        .catch(() => undefined);
+    }
+
+    next(error);
+  }
+}

@@ -1,7 +1,7 @@
 {
   "name": "sportsphere-ai",
   "private": true,
-  "packageManager": "npm@10.9.3",
+  "packageManager": "npm@11.16.0",
   "workspaces": [
     "apps/*",
     "services/*",

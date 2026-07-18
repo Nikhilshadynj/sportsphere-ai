@@ -1,30 +1,70 @@
-import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
+import "dotenv/config";
+import express, {
+  NextFunction,
+  Request,
+  Response,
+} from "express";
+
 import connectDB from "./config/db";
 import matchRoutes from "./routes/match.routes";
 import liveMatchRoutes from "./routes/live-match.routes";
 
-dotenv.config();
-
 const app = express();
 
-app.use(cors());
+const PORT = Number(process.env.PORT) || 5003;
+
 app.use(express.json());
 
-connectDB();
-
-app.get("/health", (_req, res) => {
-  res.json({
-    message: "Match Service running",
+app.get("/health", (_req: Request, res: Response) => {
+  res.status(200).json({
+    success: true,
+    service: "match-service",
+    status: "healthy",
   });
 });
 
 app.use("/matches", matchRoutes);
-app.use("/", liveMatchRoutes);
+app.use("/live-matches", liveMatchRoutes);
 
-const PORT = Number(process.env.PORT) || 5003;
+app.use(
+  (
+    _req: Request,
+    res: Response
+  ): void => {
+    res.status(404).json({
+      success: false,
+      message: "Route not found",
+    });
+  }
+);
 
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Match Service running on port ${PORT}`);
-});
+app.use(
+  (
+    error: unknown,
+    _req: Request,
+    res: Response,
+    _next: NextFunction
+  ): void => {
+    console.error("Unhandled match-service error:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+);
+
+const startServer = async (): Promise<void> => {
+  try {
+    await connectDB();
+
+    app.listen(PORT, () => {
+      console.log(`Match Service running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Match Service startup failed:", error);
+    process.exit(1);
+  }
+};
+
+void startServer();

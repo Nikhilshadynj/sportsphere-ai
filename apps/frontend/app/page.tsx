@@ -1,259 +1,211 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
-type Tool =
-  | "chat"
-  | "match"
-  | "commentary"
-  | "document"
-  | "codebase";
-
-interface Message {
-  role: "user" | "assistant";
-  content: string;
-}
-
-interface Conversation {
-  _id: string;
-  title: string;
-  updatedAt: string;
-}
+import { useEffect, useState, useRef } from "react";
+import { useRouter } from "next/navigation";
+import { socket } from "./lib/socket";
+import { useChat } from "@/context/chat-context";
 
 export default function Home() {
-  const [activeTool, setActiveTool] = useState<Tool>("chat");
-  const [conversations, setConversations] = useState<Conversation[]>([]);
-  const [conversationId, setConversationId] = useState("");
+  const router = useRouter();
+
   const [input, setInput] = useState("");
-  const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
-  const [matchForm, setMatchForm] = useState({
-    teamA: "",
-    teamB: "",
-    format: "T20",
-    venue: "",
-    pitch: "",
-    weather: "",
-    keyPlayers: "",
-  });
-  const [matchResponse, setMatchResponse] = useState("");
-  const [matchLoading, setMatchLoading] = useState(false);
+  const {
+    activeTool,
+
+    conversationId,
+    setConversationId,
+
+    messages,
+    setMessages,
+
+    setConversations,
+    messagesLoading,
+    loadConversations
+  } = useChat();
+
+  const initialized = useRef(false);
 
   useEffect(() => {
-  initializeConversation();
-  loadConversations();
-}, []);
+    if (initialized.current) return;
 
- const createConversation = async () => {
-  const res = await fetch(
-    "http://localhost:4000/api/ai/conversation",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userId: "nikhil123",
-        title: "New Chat",
-      }),
+    initialized.current = true;
+
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      router.push("/login");
+      return;
     }
-  );
 
-  const data = await res.json();
+    socket.auth = { token };
+    socket.connect();
 
-  localStorage.setItem("conversationId", data._id);
+    void loadConversations();
 
-  setConversationId(data._id);
-  setMessages([]);
+    return () => {
+      socket.disconnect();
+    };
+  }, [router, loadConversations]);
 
-  await loadConversations();
-};
+  useEffect(() => {
+    const handleConversationUpdated = async () => {
+      await loadConversations();
+    };
 
-const initializeConversation = async () => {
-  const existingConversationId = localStorage.getItem("conversationId");
+    socket.on(
+      "conversationUpdated",
+      handleConversationUpdated
+    );
 
-  if (existingConversationId) {
-    setConversationId(existingConversationId);
-    await loadMessages(existingConversationId);
-    return;
-  }
+    return () => {
+      socket.off(
+        "conversationUpdated",
+        handleConversationUpdated
+      );
+    };
+  }, [loadConversations]);
 
-  await createConversation();
-};
+  const createConversation = async () => {
 
-  const sendMessage = async () => {
-    if (!input.trim() || !conversationId) return;
-
-    const currentInput = input;
-
-    setMessages((prev) => [
-      ...prev,
+    const res = await fetch(
+      "http://localhost:4000/api/ai/conversation",
       {
-        role: "user",
-        content: currentInput,
-      },
-    ]);
-
-    setInput("");
-    setLoading(true);
-
-    const res = await fetch("http://localhost:4000/api/ai/chat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        conversationId,
-        message: currentInput,
-      }),
-    });
-
-    const data = await res.json();
-
-    setMessages((prev) => [
-      ...prev,
-      {
-        role: "assistant",
-        content: data.response,
-      },
-    ]);
-
-    setLoading(false);
-  };
-
-  const analyzeMatch = async () => {
-    setMatchLoading(true);
-    setMatchResponse("");
-  
-    try {
-      const res = await fetch("http://localhost:4000/api/ai/match/analyze", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify({
-          ...matchForm,
-          keyPlayers: matchForm.keyPlayers
-            .split(",")
-            .map((player) => player.trim())
-            .filter(Boolean),
+          title: "New Chat",
         }),
-      });
-  
+      }
+    );
+
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(
+        data.message ||
+        "Conversation creation failed"
+      );
+    }
+
+    setConversationId(data._id);
+    setMessages([]);
+
+    await loadConversations();
+
+    return data._id;
+  };
+
+  const sendMessage = async () => {
+    if (!input.trim() || loading) return;
+
+    try {
+      setLoading(true);
+
+      let id = conversationId;
+
+      if (!id) {
+        id = await createConversation();
+      }
+
+      const currentInput = input.trim();
+
+      setMessages((previousMessages) => [
+        ...previousMessages,
+        {
+          role: "user",
+          content: currentInput,
+        },
+      ]);
+
+      setInput("");
+
+      const res = await fetch(
+        "http://localhost:4000/api/ai/chat",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem(
+              "token"
+            )}`,
+          },
+          body: JSON.stringify({
+            conversationId: id,
+            message: currentInput,
+          }),
+        }
+      );
+
       const data = await res.json();
-      setMatchResponse(data.response || "No response");
+
+      if (!res.ok) {
+        throw new Error(
+          data.message || "Message failed"
+        );
+      }
+
+      setMessages((previousMessages) => [
+        ...previousMessages,
+        {
+          role: "assistant",
+          content: data.response,
+        },
+      ]);
     } catch (error) {
-      setMatchResponse("Something went wrong");
+      console.error("Send message error:", error);
     } finally {
-      setMatchLoading(false);
+      setLoading(false);
     }
   };
 
-  const menuItems: { id: Tool; label: string }[] = [
-    { id: "chat", label: "AI Chat" },
-    { id: "match", label: "Match Analysis" },
-    { id: "commentary", label: "Commentary Summarizer" },
-    { id: "document", label: "Document RAG" },
-    { id: "codebase", label: "Codebase RAG" },
-  ];
-
-  const loadMessages = async (id: string) => {
-  const res = await fetch(
-    `http://localhost:4000/api/ai/conversation/${id}/messages`
-  );
-
-  const data = await res.json();
-
-  setMessages(data);
-};
-
-const loadConversations = async () => {
-  const res = await fetch("http://localhost:4000/api/ai/list");
-
-  const data = await res.json();
-
-  setConversations(data.conversations);
-};
-
   return (
-    <main className="min-h-screen bg-black text-white flex">
-      <aside className="w-72 border-r border-zinc-800 p-5">
-        <h1 className="text-2xl font-bold mb-8">Sportsphere AI</h1>
-<button onClick={createConversation}>
-  + New Chat
-</button>
+    <main className="min-h-full bg-black text-white">
+      <section className="p-8">
+        {activeTool === "match" && (
+          <div className="mx-auto max-w-4xl">
+            <h2 className="mb-6 text-3xl font-bold">
+              Match Analysis
+            </h2>
 
-<h3 className="text-sm text-zinc-400 mb-2">
-  Conversations
-</h3>
+            <div className="mb-6 space-y-4">
+              {messagesLoading && (
+                <div className="text-zinc-400">
+                  Loading messages...
+                </div>
+              )}
 
-<div className="space-y-2 mb-6 max-h-72 overflow-y-auto">
-  {conversations.map((conversation) => (
-    <button
-      key={conversation._id}
-      onClick={() => {
-        localStorage.setItem(
-          "conversationId",
-          conversation._id
-        );
+              {!messagesLoading &&
+                messages.length === 0 && (
+                  <div className="py-20 text-center text-zinc-400">
+                    Start a new conversation or select
+                    one from the Sidebar.
+                  </div>
+                )}
 
-        setConversationId(conversation._id);
-
-        loadMessages(conversation._id);
-
-        setActiveTool("chat");
-      }}
-      className={`w-full text-left rounded-xl px-3 py-2 text-sm truncate ${
-  conversationId === conversation._id
-    ? "bg-blue-600"
-    : "bg-zinc-900 hover:bg-zinc-800"
-}`}
-    >
-      {conversation.title}
-    </button>
-  ))}
-</div>
-        <div className="space-y-2">
-          {menuItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => setActiveTool(item.id)}
-              className={`w-full text-left px-4 py-3 rounded-xl ${
-                activeTool === item.id
-                  ? "bg-blue-600"
-                  : "bg-zinc-900 hover:bg-zinc-800"
-              }`}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
-      </aside>
-
-      <section className="flex-1 p-8">
-        {activeTool === "chat" && (
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold mb-6">AI Chat</h2>
-
-            <div className="space-y-4 mb-6">
               {messages.map((message, index) => (
                 <div
-                  key={index}
-                  className={`p-4 rounded-2xl max-w-[80%] ${
+                  key={message._id || index}
+                  className={`max-w-[80%] rounded-2xl p-4 ${
                     message.role === "user"
-                      ? "bg-blue-600 ml-auto"
+                      ? "ml-auto bg-blue-600"
                       : "bg-zinc-800"
                   }`}
                 >
-                  <p className="text-xs text-zinc-300 mb-1">
+                  <p className="mb-1 text-xs text-zinc-300">
                     {message.role}
                   </p>
-                  <p className="whitespace-pre-wrap">{message.content}</p>
+
+                  <p className="whitespace-pre-wrap">
+                    {message.content}
+                  </p>
                 </div>
               ))}
 
               {loading && (
-                <div className="bg-zinc-800 p-4 rounded-2xl w-fit">
+                <div className="w-fit rounded-2xl bg-zinc-800 p-4">
                   Thinking...
                 </div>
               )}
@@ -262,15 +214,23 @@ const loadConversations = async () => {
             <div className="flex gap-3">
               <input
                 value={input}
-                onChange={(e) => setInput(e.target.value)}
+                onChange={(event) =>
+                  setInput(event.target.value)
+                }
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    void sendMessage();
+                  }
+                }}
                 placeholder="Ask something..."
-                className="flex-1 bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 outline-none"
+                className="flex-1 rounded-xl border border-zinc-700 bg-zinc-900 px-4 py-3 outline-none"
               />
 
               <button
-                onClick={sendMessage}
+                type="button"
+                onClick={() => void sendMessage()}
                 disabled={loading}
-                className="bg-blue-600 px-6 rounded-xl disabled:opacity-50"
+                className="rounded-xl bg-blue-600 px-6 disabled:opacity-50"
               >
                 Send
               </button>
@@ -278,65 +238,18 @@ const loadConversations = async () => {
           </div>
         )}
 
-{activeTool === "match" && (
-  <div className="max-w-4xl mx-auto">
-    <h2 className="text-3xl font-bold mb-6">Match Analysis</h2>
+        {activeTool !== "match" && (
+          <div className="mx-auto max-w-4xl">
+            <h2 className="text-3xl font-bold">
+              {activeTool}
+            </h2>
 
-    <div className="grid grid-cols-2 gap-4">
-      {["teamA", "teamB", "format", "venue", "pitch", "weather"].map((field) => (
-        <input
-          key={field}
-          value={matchForm[field as keyof typeof matchForm]}
-          onChange={(e) =>
-            setMatchForm((prev) => ({
-              ...prev,
-              [field]: e.target.value,
-            }))
-          }
-          placeholder={field}
-          className="bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 outline-none"
-        />
-      ))}
-    </div>
-
-    <textarea
-      value={matchForm.keyPlayers}
-      onChange={(e) =>
-        setMatchForm((prev) => ({
-          ...prev,
-          keyPlayers: e.target.value,
-        }))
-      }
-      placeholder="Key players comma separated: Virat Kohli, Bumrah, Maxwell"
-      className="w-full mt-4 bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 outline-none h-28"
-    />
-
-    <button
-      onClick={analyzeMatch}
-      disabled={matchLoading}
-      className="mt-4 bg-blue-600 px-6 py-3 rounded-xl disabled:opacity-50"
-    >
-      {matchLoading ? "Analyzing..." : "Analyze Match"}
-    </button>
-
-    {matchResponse && (
-      <div className="mt-6 bg-zinc-900 border border-zinc-700 rounded-xl p-5 whitespace-pre-wrap">
-        {matchResponse}
-      </div>
-    )}
-  </div>
-)}
-
-{activeTool !== "chat" && activeTool !== "match" && (
-  <div className="max-w-4xl mx-auto">
-    <h2 className="text-3xl font-bold mb-3">
-      {menuItems.find((item) => item.id === activeTool)?.label}
-    </h2>
-    <p className="text-zinc-400">
-      Is feature ka UI next step me connect karenge.
-    </p>
-  </div>
-)}
+            <p className="mt-3 text-zinc-400">
+              Is tool ka UI next step mein connect
+              karenge.
+            </p>
+          </div>
+        )}
       </section>
     </main>
   );

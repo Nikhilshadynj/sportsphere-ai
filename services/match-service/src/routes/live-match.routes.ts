@@ -1,15 +1,9 @@
-import express from "express";
+import { Router } from "express";
+import { fetchLiveMatches, syncLiveMatches } from "../controllers/live-match.controller";
 
-import {
-  fetchLiveMatches,
-} from "../controllers/live-match.controller";
+const router = Router();
 
-const router =
-  express.Router();
-
-router.get(
-  "/live",
-  fetchLiveMatches
-);
+router.get("/", fetchLiveMatches);
+router.post("/sync", syncLiveMatches);
 
 export default router;
