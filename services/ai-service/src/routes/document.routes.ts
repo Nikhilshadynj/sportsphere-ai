@@ -9,15 +9,19 @@ import {
 } from "../middleware/document-upload.middleware";
 
 import {
-  authenticate,
-} from "../middleware/auth.middleware";
-
+  queryDocuments,
+} from "../controllers/document-query.controller";
 const router = Router();
 
 router.post(
   "/upload",
   uploadDocument,
   uploadDocumentController
+);
+
+router.post(
+  "/query",
+  queryDocuments
 );
 
 export default router;

@@ -8,15 +8,17 @@ import conversationRoutes from "./routes/conversation.routes";
 import chatRoutes from "./routes/chat.routes";
 import ragRoutes from "./routes/rag.routes";
 import documentRoutes from "./routes/document.routes";
-import documentRagRoutes from "./routes/document-rag.routes";
 import matchAnalysisRoutes from "./routes/match-analysis.routes";
 import commentaryRoutes from "./routes/commentary.routes";
 import { connectRedis } from "./config/redis";
 import { authenticate } from "./middleware/auth.middleware";
 import { connectRabbit } from "./config/rabbit";
 import { startChatConsumer } from "./consumers/chat.consumer";
+import {
+  startDocumentConsumer,
+} from "./consumers/document.consumer";
 import { initializeSocket } from "./config/socket";
-import { initializeVectorStore } from "./services/embedding.service";
+import { initializeVectorStore } from "./services/rag/embedding.service";
 
 dotenv.config();
 
@@ -30,8 +32,7 @@ app.use("/", aiRoutes);
 app.use("/", conversationRoutes);
 app.use("/", chatRoutes);
 app.use("/", ragRoutes);
-app.use("/", documentRoutes);
-app.use("/", documentRagRoutes);
+app.use("/documents", documentRoutes);
 app.use("/", matchAnalysisRoutes);
 app.use("/", commentaryRoutes);
 
@@ -51,7 +52,7 @@ const bootstrap = async () => {
 
     await initializeVectorStore();
 
-
+    startDocumentConsumer();
     server.listen(PORT, () => {
       console.log(
         `AI Service running on ${PORT}`

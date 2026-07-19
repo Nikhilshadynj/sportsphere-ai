@@ -1,4 +1,4 @@
-import { generateEmbedding } from "../services/embedding.service";
+import { generateEmbedding } from "../services/rag/embedding.service";
 
 async function test() {
   const embedding =

@@ -3,7 +3,7 @@ import path from "path";
 import connectDB from "../config/db";
 import CodeChunk from "../models/codeChunk.model";
 import dotenv from "dotenv";
-import { generateEmbedding } from "../services/embedding.service";
+import { generateEmbedding } from "../services/rag/embedding.service";
 
 dotenv.config();
 

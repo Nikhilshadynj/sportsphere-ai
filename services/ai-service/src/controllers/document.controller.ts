@@ -6,6 +6,9 @@ import {
 import fs from "fs/promises";
 
 import { DocumentModel } from "../models/document.model";
+import {
+  publishDocumentProcessingEvent,
+} from "../producers/document.producer";
 
 interface AuthenticatedRequest
   extends Request {
@@ -61,6 +64,30 @@ export async function uploadDocumentController(
         status: "uploaded",
         chunkCount: 0,
       });
+
+    try {
+      await publishDocumentProcessingEvent({
+        documentId:
+          document._id.toString(),
+        userId:
+          document.userId,
+        filePath:
+          document.filePath,
+        originalName:
+          document.originalName,
+      });
+    } catch (rabbitError) {
+      await DocumentModel.findByIdAndUpdate(
+        document._id,
+        {
+          status: "failed",
+          errorMessage:
+            "Unable to queue document for processing",
+        }
+      );
+
+      throw rabbitError;
+    }
 
     res.status(201).json({
       success: true,

@@ -17,5 +17,5 @@ export const QDRANT_COLLECTION =
   "sportsphere_documents";
 
 export const EMBEDDING_DIMENSION = Number(
-  process.env.EMBEDDING_DIMENSION || 1536
+  process.env.EMBEDDING_DIMENSION || 768
 );

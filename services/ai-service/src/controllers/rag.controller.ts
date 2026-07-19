@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import CodeChunk from "../models/codeChunk.model";
 import client from "../services/openrouter.service";
-import { generateEmbedding } from "../services/embedding.service";
+import { generateEmbedding } from "../services/rag/embedding.service";
 import { cosineSimilarity } from "../utils/vector";
 
 export const askCodebase = async (

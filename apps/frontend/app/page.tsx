@@ -4,6 +4,8 @@ import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { socket } from "./lib/socket";
 import { useChat } from "@/context/chat-context";
+import DocumentUpload from "./components/Document-rag/UploadDocument";
+import DocumentChat from "./components/Document-rag/DocumentChat";
 
 export default function Home() {
   const router = useRouter();
@@ -188,11 +190,10 @@ export default function Home() {
               {messages.map((message, index) => (
                 <div
                   key={message._id || index}
-                  className={`max-w-[80%] rounded-2xl p-4 ${
-                    message.role === "user"
-                      ? "ml-auto bg-blue-600"
-                      : "bg-zinc-800"
-                  }`}
+                  className={`max-w-[80%] rounded-2xl p-4 ${message.role === "user"
+                    ? "ml-auto bg-blue-600"
+                    : "bg-zinc-800"
+                    }`}
                 >
                   <p className="mb-1 text-xs text-zinc-300">
                     {message.role}
@@ -238,16 +239,13 @@ export default function Home() {
           </div>
         )}
 
-        {activeTool !== "match" && (
-          <div className="mx-auto max-w-4xl">
-            <h2 className="text-3xl font-bold">
-              {activeTool}
-            </h2>
+        {activeTool === "document" && (
+          <div className="mx-auto w-full max-w-4xl space-y-10 p-6">
+            <DocumentUpload />
 
-            <p className="mt-3 text-zinc-400">
-              Is tool ka UI next step mein connect
-              karenge.
-            </p>
+            <hr className="border-gray-200" />
+
+            <DocumentChat />
           </div>
         )}
       </section>

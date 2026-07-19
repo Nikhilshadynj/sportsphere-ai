@@ -20,6 +20,8 @@ export interface IDocument extends Document {
   status: DocumentStatus;
   chunkCount: number;
   errorMessage?: string;
+  pageCount: number;
+  characterCount: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -78,6 +80,16 @@ const documentSchema = new Schema<IDocument>(
 
     errorMessage: {
       type: String,
+    },
+
+    pageCount: {
+      type: Number,
+      default: 0,
+    },
+
+    characterCount: {
+      type: Number,
+      default: 0,
     },
   },
   {
