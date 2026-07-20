@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+      - deployment/aws-ci-cd
+
+  push:
+    branches:
+      - main
+      - deployment/aws-ci-cd
+
+jobs:
+  build:
+    name: Build and verify
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install workspace dependencies
+        run: npm ci
+
+      - name: Build all workspaces
+        run: npm run build
+
+      - name: Build AI Service image
+        run: |
+          docker build \
+            -f services/ai-service/Dockerfile.prod \
+            -t sportsphere-ai-service:ci \
+            services/ai-service
+
+      - name: Build API Gateway image
+        run: |
+          docker build \
+            -f services/api-gateway/Dockerfile.prod \
+            -t sportsphere-api-gateway:ci \
+            services/api-gateway
+
+      - name: Build Auth Service image
+        run: |
+          docker build \
+            -f services/auth-service/Dockerfile.prod \
+            -t sportsphere-auth-service:ci \
+            services/auth-service
+
+      - name: Build Match Service image
+        run: |
+          docker build \
+            -f services/match-service/Dockerfile.prod \
+            -t sportsphere-match-service:ci \
+            services/match-service
+
+      - name: Build Frontend image
+        run: |
+          docker build \
+            -f apps/frontend/Dockerfile.prod \
+            --build-arg NEXT_PUBLIC_API_URL=http://localhost:4000/api \
+            -t sportsphere-frontend:ci \
+            .
