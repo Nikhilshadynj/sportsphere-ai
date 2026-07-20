@@ -28,10 +28,11 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 4000;
 
-app.get('/health', (_req, res) => {
-  return res.status(200).json({
-    success: true,
-    message: 'API Gateway is running'
+app.get("/health", (_req, res) => {
+  res.status(200).json({
+    service: "api-gateway",
+    status: "healthy",
+    timestamp: new Date().toISOString(),
   });
 });
 
