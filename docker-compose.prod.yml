@@ -1,0 +1,325 @@
+services:
+  # --------------------------------------------------
+  # Infrastructure
+  # --------------------------------------------------
+
+  mongodb:
+    image: mongo:7
+    container_name: sportsphere-prod-mongodb
+    restart: unless-stopped
+
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+
+    volumes:
+      - mongodb_prod_data:/data/db
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "mongosh --quiet --username $$MONGO_INITDB_ROOT_USERNAME --password $$MONGO_INITDB_ROOT_PASSWORD --authenticationDatabase admin --eval \"db.adminCommand('ping').ok\""
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+
+  redis:
+    image: redis:7
+    container_name: sportsphere-prod-redis
+    restart: unless-stopped
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: sportsphere-prod-rabbitmq
+    restart: unless-stopped
+
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+
+    ports:
+      - "15672:15672"
+
+    volumes:
+      - rabbitmq_prod_data:/var/lib/rabbitmq
+
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: sportsphere-prod-qdrant
+    restart: unless-stopped
+
+    volumes:
+      - qdrant_prod_data:/qdrant/storage
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "bash -c '</dev/tcp/127.0.0.1/6333'"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: sportsphere-prod-ollama
+    restart: unless-stopped
+
+    volumes:
+      - ollama_prod_data:/root/.ollama
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "ollama",
+          "list"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+
+
+  ollama-model:
+    image: ollama/ollama:latest
+    container_name: sportsphere-prod-ollama-model
+
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+
+    depends_on:
+      ollama:
+        condition: service_healthy
+
+    command:
+      - pull
+      - nomic-embed-text
+
+    restart: "no"
+
+
+  # --------------------------------------------------
+  # Backend application services
+  # --------------------------------------------------
+
+  auth-service:
+    image: sportsphere-auth-service:prod
+    container_name: sportsphere-prod-auth-service
+    restart: unless-stopped
+
+    env_file:
+      - services/auth-service/.env
+
+    environment:
+      PORT: 5001
+      MONGO_URI: mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongodb:27017/authdb?authSource=admin
+
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://localhost:5001/health').then(r => { if (!r.ok) process.exit(1) }).catch(() => process.exit(1))"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+
+
+  match-service:
+    image: sportsphere-match-service:prod
+    container_name: sportsphere-prod-match-service
+    restart: unless-stopped
+
+    env_file:
+      - services/match-service/.env
+
+    environment:
+      PORT: 5003
+      MONGO_URI: mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongodb:27017/match-service-db?authSource=admin
+
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://localhost:5003/health').then(r => { if (!r.ok) process.exit(1) }).catch(() => process.exit(1))"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+
+
+  ai-service:
+    image: sportsphere-ai-service:prod
+    container_name: sportsphere-prod-ai-service
+    restart: unless-stopped
+
+    env_file:
+      - services/ai-service/.env
+
+    environment:
+      PORT: 5002
+
+      MONGO_URI: mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongodb:27017/ai-service-db?authSource=admin
+
+      REDIS_URL: redis://redis:6379
+
+      RABBITMQ_URL: amqp://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@rabbitmq:5672
+
+      QDRANT_URL: http://qdrant:6333
+
+      OLLAMA_BASE_URL: http://ollama:11434
+      OLLAMA_EMBEDDING_MODEL: nomic-embed-text
+
+    volumes:
+      - ai_prod_uploads:/app/uploads
+
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
+      redis:
+        condition: service_healthy
+
+      rabbitmq:
+        condition: service_healthy
+
+      qdrant:
+        condition: service_healthy
+
+      ollama-model:
+        condition: service_completed_successfully
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://localhost:5002/health').then(r => { if (!r.ok) process.exit(1) }).catch(() => process.exit(1))"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+
+  api-gateway:
+    image: sportsphere-api-gateway:prod
+    container_name: sportsphere-prod-api-gateway
+    restart: unless-stopped
+
+    env_file:
+      - services/api-gateway/.env
+
+    environment:
+      PORT: 4000
+
+      AUTH_SERVICE_URL: http://auth-service:5001
+      AI_SERVICE_URL: http://ai-service:5002
+      MATCH_SERVICE_URL: http://match-service:5003
+
+      RABBITMQ_URL: amqp://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@rabbitmq:5672
+
+    ports:
+      - "4000:4000"
+
+    depends_on:
+      auth-service:
+        condition: service_healthy
+
+      match-service:
+        condition: service_healthy
+
+      ai-service:
+        condition: service_healthy
+
+      rabbitmq:
+        condition: service_healthy
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://localhost:4000/health').then(r => { if (!r.ok) process.exit(1) }).catch(() => process.exit(1))"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+
+
+  # --------------------------------------------------
+  # Frontend
+  # --------------------------------------------------
+
+  frontend:
+    image: sportsphere-frontend:prod
+    container_name: sportsphere-prod-frontend
+    restart: unless-stopped
+
+    ports:
+      - "3000:3000"
+
+    depends_on:
+      api-gateway:
+        condition: service_healthy
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://localhost:3000').then(r => { if (!r.ok && r.status !== 307) process.exit(1) }).catch(() => process.exit(1))"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+
+volumes:
+  mongodb_prod_data:
+  redis_prod_data:
+  rabbitmq_prod_data:
+  qdrant_prod_data:
+  ollama_prod_data:
+  ai_prod_uploads:

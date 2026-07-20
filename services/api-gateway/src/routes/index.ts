@@ -4,13 +4,24 @@ import { authenticate } from "../middlewares/auth.middleware";
 
 const router = Router();
 
+const AI_SERVICE_URL =
+  process.env.AI_SERVICE_URL ??
+  "http://localhost:5002";
+
+const AUTH_SERVICE_URL =
+  process.env.AUTH_SERVICE_URL ??
+  "http://localhost:5001";
+
+const MATCH_SERVICE_URL =
+  process.env.MATCH_SERVICE_URL ??
+  "http://localhost:5003";
 
 router.use("/ai", authenticate);
 
 router.use(
   "/ai",
   createProxyMiddleware({
-    target: "http://localhost:5002",
+    target: AI_SERVICE_URL,
     changeOrigin: true,
     pathRewrite: {
       "^/ai": "",
@@ -25,7 +36,7 @@ router.use(
 router.use(
   "/auth",
   createProxyMiddleware({
-    target: "http://localhost:5001",
+    target: AUTH_SERVICE_URL,
     changeOrigin: true,
   })
 );
@@ -33,7 +44,7 @@ router.use(
 router.use(
   "/matches",
   createProxyMiddleware({
-    target: "http://localhost:5003",
+    target: MATCH_SERVICE_URL,
     changeOrigin: true,
     pathRewrite: {
       "^/matches": "/matches",
