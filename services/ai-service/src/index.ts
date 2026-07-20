@@ -6,7 +6,6 @@ import aiRoutes from "./routes/ai.routes";
 import connectDB from "./config/db";
 import conversationRoutes from "./routes/conversation.routes";
 import chatRoutes from "./routes/chat.routes";
-import ragRoutes from "./routes/rag.routes";
 import documentRoutes from "./routes/document.routes";
 import matchAnalysisRoutes from "./routes/match-analysis.routes";
 import commentaryRoutes from "./routes/commentary.routes";
@@ -26,12 +25,20 @@ const app = express();
 const server = http.createServer(app);
 app.use(cors());
 app.use(express.json());
+
+app.get("/health", (_req, res) => {
+  res.status(200).json({
+    service: "ai-service",
+    status: "healthy",
+    timestamp: new Date().toISOString(),
+  });
+});
+
 app.use(authenticate);
 
 app.use("/", aiRoutes);
 app.use("/", conversationRoutes);
 app.use("/", chatRoutes);
-app.use("/", ragRoutes);
 app.use("/documents", documentRoutes);
 app.use("/", matchAnalysisRoutes);
 app.use("/", commentaryRoutes);
