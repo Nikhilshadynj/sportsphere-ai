@@ -21,8 +21,12 @@ app.use("/", authRoutes);
 app.use("/rbac", rbacRoutes);
 app.use("/admin", adminRoutes);
 app.use("/test", testRoutes);
-app.get("/health", (req, res) => {
-  res.json({ status: "auth-service running" });
+app.get("/health", (_req, res) => {
+  res.status(200).json({
+    service: "auth-service",
+    status: "healthy",
+    timestamp: new Date().toISOString(),
+  });
 });
 
 const start = async () => {
