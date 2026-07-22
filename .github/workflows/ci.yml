@@ -70,7 +70,7 @@ jobs:
             .
   build-and-push-images:
     name: Build and Push Images to ECR
-    needs: build-and-verify
+    needs: build
     runs-on: ubuntu-latest
 
     permissions:
