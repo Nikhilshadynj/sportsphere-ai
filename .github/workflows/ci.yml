@@ -68,3 +68,24 @@ jobs:
             --build-arg NEXT_PUBLIC_API_URL=http://localhost:4000/api \
             -t sportsphere-frontend:ci \
             .
+  aws-auth-test:
+    name: Test AWS OIDC Authentication
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials through OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+          role-session-name: sportsphere-github-actions
+
+      - name: Verify assumed AWS identity
+        run: aws sts get-caller-identity
