@@ -68,13 +68,45 @@ jobs:
             --build-arg NEXT_PUBLIC_API_URL=http://localhost:4000/api \
             -t sportsphere-frontend:ci \
             .
-  aws-auth-test:
-    name: Test AWS OIDC Authentication
+  build-and-push-images:
+    name: Build and Push Images to ECR
+    needs: build-and-verify
     runs-on: ubuntu-latest
 
     permissions:
       id-token: write
       contents: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - service: frontend
+            repository: sportsphere/frontend
+            dockerfile: apps/frontend/Dockerfile.prod
+            context: .
+            build_args: |
+              NEXT_PUBLIC_API_URL=/api
+
+          - service: api-gateway
+            repository: sportsphere/api-gateway
+            dockerfile: services/api-gateway/Dockerfile.prod
+            context: services/api-gateway
+
+          - service: auth-service
+            repository: sportsphere/auth-service
+            dockerfile: services/auth-service/Dockerfile.prod
+            context: services/auth-service
+
+          - service: ai-service
+            repository: sportsphere/ai-service
+            dockerfile: services/ai-service/Dockerfile.prod
+            context: services/ai-service
+
+          - service: match-service
+            repository: sportsphere/match-service
+            dockerfile: services/match-service/Dockerfile.prod
+            context: services/match-service
 
     steps:
       - name: Checkout repository
@@ -85,7 +117,34 @@ jobs:
         with:
           role-to-assume: ${{ vars.AWS_ROLE_ARN }}
           aws-region: ${{ vars.AWS_REGION }}
-          role-session-name: sportsphere-github-actions
+          role-session-name: sportsphere-${{ matrix.service }}
 
-      - name: Verify assumed AWS identity
-        run: aws sts get-caller-identity
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set image tags
+        id: image
+        shell: bash
+        run: |
+          REGISTRY="${{ steps.login-ecr.outputs.registry }}"
+          SHORT_SHA="${GITHUB_SHA::7}"
+
+          echo "latest=${REGISTRY}/${{ matrix.repository }}:latest" >> "$GITHUB_OUTPUT"
+          echo "sha=${REGISTRY}/${{ matrix.repository }}:sha-${SHORT_SHA}" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push ${{ matrix.service }}
+        uses: docker/build-push-action@v7
+        with:
+          context: ${{ matrix.context }}
+          file: ${{ matrix.dockerfile }}
+          push: true
+          build-args: ${{ matrix.build_args }}
+          tags: |
+            ${{ steps.image.outputs.latest }}
+            ${{ steps.image.outputs.sha }}
+          cache-from: type=gha,scope=${{ matrix.service }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.service }}
