@@ -234,7 +234,7 @@ export default function Home() {
                 disabled={loading}
                 className="rounded-xl bg-blue-600 px-6 disabled:opacity-50"
               >
-                Send
+                Send Message
               </button>
             </div>
           </div>
