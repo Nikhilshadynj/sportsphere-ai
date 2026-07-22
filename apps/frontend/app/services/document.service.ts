@@ -4,10 +4,7 @@ import {
   DocumentQueryResponse,
 } from "../types/document";
 
-
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL ||
-  "http://localhost:4000/api";
+import { API_BASE_URL } from "../lib/config";
 
 function getToken(): string | null {
   if (typeof window === "undefined") {

@@ -1,4 +1,5 @@
 "use client";
+import { API_BASE_URL } from "../app/lib/config";
 
 import {
   createContext,
@@ -52,10 +53,6 @@ interface ChatContextValue {
 
 const ChatContext =
   createContext<ChatContextValue | null>(null);
-
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_GATEWAY_URL ||
-  "http://localhost:4000/api";
 
 function getToken(): string | null {
   if (typeof window === "undefined") {

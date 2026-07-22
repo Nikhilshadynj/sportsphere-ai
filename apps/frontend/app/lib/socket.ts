@@ -1,5 +1,7 @@
 import { io } from "socket.io-client";
+import { SOCKET_URL } from "./config";
 
-export const socket = io("http://localhost:4000", {
+
+export const socket = io(SOCKET_URL, {
   autoConnect: false,
 });

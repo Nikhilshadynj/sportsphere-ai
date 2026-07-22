@@ -6,6 +6,7 @@ import { socket } from "./lib/socket";
 import { useChat } from "@/context/chat-context";
 import DocumentUpload from "./components/Document-rag/UploadDocument";
 import DocumentChat from "./components/Document-rag/DocumentChat";
+import { API_BASE_URL } from "./lib/config";
 
 export default function Home() {
   const router = useRouter();
@@ -71,7 +72,7 @@ export default function Home() {
   const createConversation = async () => {
 
     const res = await fetch(
-      "http://localhost:4000/api/ai/conversation",
+      `${API_BASE_URL}/ai/conversation`,
       {
         method: "POST",
         headers: {
@@ -125,7 +126,7 @@ export default function Home() {
       setInput("");
 
       const res = await fetch(
-        "http://localhost:4000/api/ai/chat",
+        `${API_BASE_URL}/ai/chat`,
         {
           method: "POST",
           headers: {
