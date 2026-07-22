@@ -148,3 +148,114 @@ jobs:
             ${{ steps.image.outputs.sha }}
           cache-from: type=gha,scope=${{ matrix.service }}
           cache-to: type=gha,mode=max,scope=${{ matrix.service }}
+  deploy-to-ec2:
+    name: Deploy to EC2
+    needs: build-and-push-images
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Configure AWS credentials through OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+          role-session-name: sportsphere-ec2-deployment
+          mask-aws-account-id: true
+
+      - name: Create SSM deployment parameters
+        shell: bash
+        run: |
+          cat > ssm-parameters.json <<'JSON'
+          {
+            "commands": [
+              "set -e",
+              "cd /home/ec2-user/sportsphere",
+              "AWS_REGION=ap-south-1",
+              "AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)",
+              "ECR_REGISTRY=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com",
+              "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY}",
+              "docker compose --env-file .env.docker -f docker-compose.prod.yml -f docker-compose.ec2.yml pull frontend api-gateway auth-service ai-service match-service",
+              "docker compose --env-file .env.docker -f docker-compose.prod.yml -f docker-compose.ec2.yml up -d --no-deps --force-recreate frontend api-gateway auth-service ai-service match-service",
+              "docker image prune -f",
+              "docker compose --env-file .env.docker -f docker-compose.prod.yml -f docker-compose.ec2.yml ps"
+            ]
+          }
+          JSON
+
+      - name: Send deployment command to EC2
+        id: deploy
+        shell: bash
+        run: |
+          COMMAND_ID=$(aws ssm send-command \
+            --instance-ids "${{ vars.EC2_INSTANCE_ID }}" \
+            --document-name "AWS-RunShellScript" \
+            --comment "Deploy Sportsphere commit ${GITHUB_SHA}" \
+            --parameters file://ssm-parameters.json \
+            --timeout-seconds 900 \
+            --query "Command.CommandId" \
+            --output text)
+
+          echo "command_id=${COMMAND_ID}" >> "$GITHUB_OUTPUT"
+          echo "SSM command submitted: ${COMMAND_ID}"
+
+      - name: Wait for EC2 deployment
+        shell: bash
+        run: |
+          COMMAND_ID="${{ steps.deploy.outputs.command_id }}"
+          INSTANCE_ID="${{ vars.EC2_INSTANCE_ID }}"
+
+          echo "Waiting for deployment command to finish..."
+
+          for attempt in {1..60}; do
+            STATUS=$(aws ssm get-command-invocation \
+              --command-id "$COMMAND_ID" \
+              --instance-id "$INSTANCE_ID" \
+              --query "Status" \
+              --output text 2>/dev/null || echo "Pending")
+
+            echo "Attempt ${attempt}: ${STATUS}"
+
+            case "$STATUS" in
+              Success)
+                echo "Deployment completed successfully."
+                break
+                ;;
+              Failed|Cancelled|TimedOut|Cancelling)
+                echo "Deployment failed with status: ${STATUS}"
+
+                aws ssm get-command-invocation \
+                  --command-id "$COMMAND_ID" \
+                  --instance-id "$INSTANCE_ID" \
+                  --query '{
+                    Status:Status,
+                    StandardOutput:StandardOutputContent,
+                    StandardError:StandardErrorContent
+                  }'
+
+                exit 1
+                ;;
+            esac
+
+            if [ "$attempt" -eq 60 ]; then
+              echo "Deployment did not complete within the expected time."
+              exit 1
+            fi
+
+            sleep 10
+          done
+
+      - name: Show deployment output
+        shell: bash
+        run: |
+          aws ssm get-command-invocation \
+            --command-id "${{ steps.deploy.outputs.command_id }}" \
+            --instance-id "${{ vars.EC2_INSTANCE_ID }}" \
+            --query '{
+              Status:Status,
+              StandardOutput:StandardOutputContent,
+              StandardError:StandardErrorContent
+            }'
