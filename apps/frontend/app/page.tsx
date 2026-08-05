@@ -7,6 +7,7 @@ import { useChat } from "@/context/chat-context";
 import DocumentUpload from "./components/Document-rag/UploadDocument";
 import DocumentChat from "./components/Document-rag/DocumentChat";
 import { API_BASE_URL } from "./lib/config";
+import AgentChat from "./components/agent/AgentChat";
 
 export default function Home() {
   const router = useRouter();
@@ -248,6 +249,10 @@ export default function Home() {
 
             <DocumentChat />
           </div>
+        )}
+
+        {activeTool === "agent" && (
+          <AgentChat />
         )}
       </section>
     </main>

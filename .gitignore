@@ -8,4 +8,4 @@ uploads/
 data
 **/data
 **/data/
-.env.docker
+.env.docker.turbo/

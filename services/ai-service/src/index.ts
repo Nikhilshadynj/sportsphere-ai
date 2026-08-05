@@ -9,6 +9,7 @@ import chatRoutes from "./routes/chat.routes";
 import documentRoutes from "./routes/document.routes";
 import matchAnalysisRoutes from "./routes/match-analysis.routes";
 import commentaryRoutes from "./routes/commentary.routes";
+import agentRoutes from "./routes/agent.routes";
 import { connectRedis } from "./config/redis";
 import { authenticate } from "./middleware/auth.middleware";
 import { connectRabbit } from "./config/rabbit";
@@ -42,6 +43,7 @@ app.use("/", chatRoutes);
 app.use("/documents", documentRoutes);
 app.use("/", matchAnalysisRoutes);
 app.use("/", commentaryRoutes);
+app.use("/", agentRoutes);
 
 initializeSocket(server);
 

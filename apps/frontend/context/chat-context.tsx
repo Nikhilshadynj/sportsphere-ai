@@ -15,14 +15,17 @@ import { useRouter } from "next/navigation";
 export interface Conversation {
   _id: string;
   title: string;
+  type?: "chat" | "agent";
   createdAt?: string;
   updatedAt?: string;
 }
 
 export interface ChatMessage {
   _id?: string;
+  clientId?: string;
   role: "user" | "assistant";
   content: string;
+  toolsUsed?: string[];
   createdAt?: string;
 }
 
@@ -255,6 +258,17 @@ export function ChatProvider({
       try {
         setMessagesLoading(true);
 
+        const selectedConversation =
+          conversations.find(
+            (conversation) =>
+              conversation._id === id
+          );
+        setActiveTool(
+          selectedConversation?.type ===
+            "agent"
+            ? "agent"
+            : "match"
+        );
         /*
          * Conversation click hote hi selected state
          * update kar do, taaki sidebar highlight ho.
@@ -304,7 +318,7 @@ export function ChatProvider({
         setMessagesLoading(false);
       }
     },
-    [router, setConversationId]
+    [router, setConversationId,conversations]
   );
 
   const createConversation =

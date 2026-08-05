@@ -11,6 +11,12 @@ const conversationSchema = new Schema(
       type: String,
       default: "New Chat",
     },
+    type: {
+      type: String,
+      enum: ["chat", "agent"],
+      default: "chat",
+      required: true,
+    },
   },
   {
     timestamps: true,

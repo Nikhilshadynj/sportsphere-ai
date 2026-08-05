@@ -12,7 +12,22 @@ export const chatWithAI = async (
   try {
     const { conversationId, message } = req.body;
     const userId = req.headers["x-user-id"] as string;
+    const conversation =
+      await Conversation.findOne({
+        _id: conversationId,
+        userId,
+        $or: [
+          { type: "chat" },
+          { type: { $exists: false } },
+        ],
+      });
 
+    if (!conversation) {
+      return res.status(404).json({
+        message:
+          "Chat conversation not found",
+      });
+    }
     // Save user message
     await Message.create({
       conversationId,
@@ -55,8 +70,6 @@ export const chatWithAI = async (
       role: "assistant",
       content: aiResponse,
     });
-
-    const conversation = await Conversation.findById(conversationId);
 
     if (conversation?.title === "New Chat") {
       channel.publish(

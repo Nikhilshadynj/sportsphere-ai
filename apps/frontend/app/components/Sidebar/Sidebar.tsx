@@ -13,6 +13,10 @@ const menuItems = [
     label: "Match Analysis",
   },
   {
+    id: "agent",
+    label: "AI Sports Agent",
+  },
+  {
     id: "commentary",
     label: "Commentary Summarizer",
   },
