@@ -9,3 +9,9 @@ data
 **/data
 **/data/
 .env.docker.turbo/
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
