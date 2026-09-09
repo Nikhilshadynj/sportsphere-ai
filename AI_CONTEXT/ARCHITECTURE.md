@@ -85,9 +85,15 @@ consumes it yet.
 - `ai-service-python` is **not** in `docker-compose.yml` and has no Dockerfile in the repo yet — it currently only runs standalone/locally.
 - `postgres` service is already added to `docker-compose.yml`.
 
-## [ASSUMPTION] Auth trust boundary
+## Auth trust boundary (confirmed)
 `ai-service-python`'s `/api/chat` endpoint trusts an `x-user-id` header
-directly with no JWT verification of its own. Assumed this is because
-api-gateway validates the JWT and forwards a trusted header — same pattern
-likely used by Node `ai-service`. Not explicitly confirmed by inspecting
-api-gateway's proxy/forwarding code in this snapshot.
+directly with no JWT verification of its own. **Confirmed** (previously an
+assumption): `api-gateway`'s `authenticate` middleware verifies the JWT and
+sets `req.headers["x-user-id"] = decoded.id` before proxying — this is the
+same pattern Node `ai-service` relies on. This trust is only valid when
+traffic actually comes through the gateway. **Gateway is not yet wired to
+the Python service** (its `/ai` proxy route still targets only Node's
+`localhost:5002`), so any local testing that hits `ai-service-python`
+directly on its own port bypasses this check entirely — fine for dev
+testing, but the gateway route needs to be added/switched before Python
+can safely serve real traffic.

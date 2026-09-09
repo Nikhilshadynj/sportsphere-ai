@@ -102,5 +102,7 @@ async def chat_with_ai(
         return {"response": ai_response}
 
     except Exception as e:
+        import traceback; traceback.print_exc()
+        traceback.print_exc()
         print(f"Error: {e}")
         raise HTTPException(status_code=500, detail="Chat failed")

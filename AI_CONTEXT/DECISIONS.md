@@ -16,9 +16,9 @@ Keeps the whole request path non-blocking, consistent with FastAPI's async
 model and with the existing Node service's non-blocking I/O style.
 
 **RabbitMQ direct exchange pattern retained (not switched to topic/fanout)**
-Python side reuses the same `chat` exchange / `chat.created` routing key
-convention as Node — keeps the two implementations comparable while
-learning, and avoids redesigning messaging topology mid-migration.
+Same exchange *type* (direct) and routing-key convention (`chat.created`)
+as Node, for comparability while learning — but see "Namespace isolation"
+below, this no longer means literally sharing Node's exchange/queue names.
 
 **Redis cache-aside with explicit invalidation (not write-through)**
 Existing pattern in Node service; Python side's `invalidate_cache` mirrors
@@ -41,15 +41,25 @@ never actually existed in the Node version despite README claiming it did.
 This is being treated as real learning scope (manual ack/nack, prefetch,
 TTL retry queue, `x-death` tracking, idempotency, DLQ), not an afterthought.
 
+**Namespace isolation: Python's RabbitMQ topology does not reuse Node's
+exchange/queue names.** Node's chat-title queue already existed (declared
+without DLX arguments) from earlier Node testing; redeclaring it with new
+arguments (for DLQ support) would throw a RabbitMQ `PRECONDITION_FAILED`
+error, and — more importantly — Nikhil wants Node kept fully intact and
+revivable since it's his primary stack, Python is the learning track.
+Decision: Python uses its own exchange (`chat-py`) and queues
+(`chat-title-py`, `chat-title-py-retry`, `chat-title-py-dlq`), completely
+isolated from Node's `chat`/`chat-title`. Node's topology is never touched,
+never deleted. "Cutover" to Python means routing traffic to Python's
+endpoint, not modifying or removing Node's infrastructure.
+
+**Connection strings are now env-driven** (`RABBIT_URL`, and `DATABASE_URL`
+to be moved to env in an upcoming step) — resolves the earlier
+hardcoded-connection-string flag.
+
 ## [ASSUMPTION] Decisions not yet explicitly confirmed
 
 **Scope: only ai-service migrates, auth/match stay on Node+Mongo**
 Inferred from the fact that only `ai-service-python` exists and
 docker-compose still runs Mongo for the other services. Not stated
 outright — confirm if this is intentional or just "not gotten to yet".
-
-**Hardcoded connection strings in `ai-service-python`**
-(`DATABASE_URL` in `database.py`, AMQP URL in `rabbit.py`) — likely just
-early-stage/not-cleaned-up-yet rather than a deliberate decision, since
-every other service in the repo uses `.env`. Flagging here so it doesn't
-get treated as an intentional pattern to copy.
