@@ -8,3 +8,16 @@ uploads/
 data
 **/data
 **/data/
+
+# Python
+services/ai-service-python/venv/
+services/ai-service-python/.venv/
+services/ai-service-python/__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+.env
+services/ai-service-python/*.egg-info/
+
+# Alembic (keep versions/, ignore local db if any)
+services/ai-service-python/*.db

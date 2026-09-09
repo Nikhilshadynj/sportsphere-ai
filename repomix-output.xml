@@ -1,0 +1,8717 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+apps/
+  frontend/
+    app/
+      components/
+        chat/
+          Chatwindow.tsx
+        Document-rag/
+          DocumentChat.tsx
+          UploadDocument.tsx
+        layout/
+          app-shell.tsx
+        matches/
+          match-card.tsx
+          match-status.tsx
+          matches-client.tsx
+        register/
+          page.tsx
+        Sidebar/
+          ConversationList.tsx
+          Sidebar.tsx
+          SidebarHeader.tsx
+          SidebarMenu.tsx
+      lib/
+        api.ts
+        socket.ts
+      login/
+        page.tsx
+      matches/
+        [id]/
+          page.tsx
+        page.tsx
+      services/
+        document.service.ts
+        match.service.ts
+      types/
+        document.ts
+        match.ts
+      favicon.ico
+      globals.css
+      layout.tsx
+      page.tsx
+    context/
+      chat-context.tsx
+    public/
+      file.svg
+      globe.svg
+      next.svg
+      vercel.svg
+      window.svg
+    .gitignore
+    AGENTS.md
+    CLAUDE.md
+    eslint.config.mjs
+    next.config.ts
+    package.json
+    postcss.config.mjs
+    README.md
+    tsconfig.json
+packages/
+  typescript-config/
+    base.json
+    package.json
+services/
+  ai-service/
+    src/
+      config/
+        db.ts
+        multer.ts
+        qdrant.ts
+        rabbit.ts
+        redis.ts
+        socket.ts
+      consumers/
+        chat.consumer.ts
+        document.consumer.ts
+      controllers/
+        chat.controller.ts
+        commentary.controller.ts
+        conversation.controller.ts
+        document-query.controller.ts
+        document.controller.ts
+        match-analysis.controller.ts
+        openai.controller.ts
+        rag.controller.ts
+      middleware/
+        auth.middleware.ts
+        document-upload.middleware.ts
+      models/
+        codeChunk.model.ts
+        conversation.model.ts
+        document.model.ts
+        documentChunk.model.ts
+        message.model.ts
+      producers/
+        document.producer.ts
+      routes/
+        ai.routes.ts
+        chat.routes.ts
+        commentary.routes.ts
+        conversation.routes.ts
+        document.routes.ts
+        match-analysis.routes.ts
+        rag.routes.ts
+      scripts/
+        ingest-codebase.ts
+        test-embedding.ts
+      services/
+        rag/
+          embedding.service.ts
+          pdf-extraction.service.ts
+          rag-answer.service.ts
+          rag.service.ts
+          retrieval.service.ts
+          text-chunking.service.ts
+          vector-store.service.ts
+        cache.service.ts
+        gemini.service.ts
+        openai.service.ts
+        openrouter.service.ts
+      types/
+        document-event.types.ts
+        express.d.ts
+        rag.types.ts
+      utils/
+        vector.ts
+      index.ts
+    .env
+    Dockerfile
+    package.json
+    tsconfig.json
+  ai-service-python/
+    alembic/
+      versions/
+        5c17c1e824d7_create_conversations_and_messages_tables.py
+      env.py
+      README
+      script.py.mako
+    app/
+      api/
+        __init__.py
+        chat.py
+      core/
+        __init__.py
+        database.py
+        rabbit.py
+        redis.py
+      models/
+        __init__.py
+        conversation.py
+        message.py
+      schemas/
+        __init__.py
+        chat.py
+      __init__.py
+      main.py
+    alembic.ini
+    requirements.txt
+  api-gateway/
+    src/
+      config/
+        rabbit.ts
+        socket.ts
+      consumers/
+        conversation.consumer.ts
+      middlewares/
+        auth.middleware.ts
+      routes/
+        index.ts
+      index.ts
+    .dockerignore
+    .env
+    Dockerfile
+    package.json
+    tsconfig.json
+  auth-service/
+    src/
+      config/
+        db.ts
+      controllers/
+        admin.controller.ts
+        auth.controller.ts
+        rbac.controller.ts
+      middlewares/
+        auth.middleware.ts
+        rbac.middleware.ts
+      models/
+        User.ts
+      routes/
+        admin.routes.ts
+        auth.routes.ts
+        rbac.routes.ts
+        test.routes.ts
+      types/
+        auth.ts
+        role.ts
+      utils/
+        generateToken.ts
+      index.ts
+    .dockerignore
+    .env
+    Dockerfile
+    package.json
+    tsconfig.json
+  match-service/
+    src/
+      config/
+        db.ts
+      controllers/
+        live-match.controller.ts
+        match.controller.ts
+      models/
+        match.model.ts
+      routes/
+        live-match.routes.ts
+        match.routes.ts
+      services/
+        cricapi.service.ts
+      index.ts
+    .env
+    Dockerfile
+    package.json
+    tsconfig.json
+  package.json
+.env.docker
+.gitignore
+context.md
+docker-compose.yml
+package.json
+turbo.json
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="services/ai-service-python/alembic/versions/5c17c1e824d7_create_conversations_and_messages_tables.py">
+"""Create conversations and messages tables
+
+Revision ID: 5c17c1e824d7
+Revises: 
+Create Date: 2026-08-24 19:30:15.482049
+
+"""
+from typing import Sequence, Union
+
+from alembic import op
+import sqlalchemy as sa
+
+
+# revision identifiers, used by Alembic.
+revision: str = '5c17c1e824d7'
+down_revision: Union[str, None] = None
+branch_labels: Union[str, Sequence[str], None] = None
+depends_on: Union[str, Sequence[str], None] = None
+
+
+def upgrade() -> None:
+    # ### commands auto generated by Alembic - please adjust! ###
+    op.create_table('conversations',
+    sa.Column('id', sa.UUID(), nullable=False),
+    sa.Column('user_id', sa.String(), nullable=False),
+    sa.Column('title', sa.String(), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), nullable=True),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=True),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_index(op.f('ix_conversations_id'), 'conversations', ['id'], unique=False)
+    op.create_index(op.f('ix_conversations_user_id'), 'conversations', ['user_id'], unique=False)
+    op.create_table('messages',
+    sa.Column('id', sa.UUID(), nullable=False),
+    sa.Column('conversation_id', sa.UUID(), nullable=False),
+    sa.Column('role', sa.String(), nullable=False),
+    sa.Column('content', sa.Text(), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), nullable=True),
+    sa.ForeignKeyConstraint(['conversation_id'], ['conversations.id'], ondelete='CASCADE'),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_index(op.f('ix_messages_conversation_id'), 'messages', ['conversation_id'], unique=False)
+    op.create_index(op.f('ix_messages_id'), 'messages', ['id'], unique=False)
+    # ### end Alembic commands ###
+
+
+def downgrade() -> None:
+    # ### commands auto generated by Alembic - please adjust! ###
+    op.drop_index(op.f('ix_messages_id'), table_name='messages')
+    op.drop_index(op.f('ix_messages_conversation_id'), table_name='messages')
+    op.drop_table('messages')
+    op.drop_index(op.f('ix_conversations_user_id'), table_name='conversations')
+    op.drop_index(op.f('ix_conversations_id'), table_name='conversations')
+    op.drop_table('conversations')
+    # ### end Alembic commands ###
+</file>
+
+<file path="services/ai-service-python/alembic/env.py">
+import asyncio
+from logging.config import fileConfig
+
+from sqlalchemy import pool
+from sqlalchemy.engine import Connection
+from sqlalchemy.ext.asyncio import async_engine_from_config
+
+from alembic import context
+import sys
+import os
+from logging.config import fileConfig
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
+from app.models import Base # Ye line hamare models ko layegi
+
+# this is the Alembic Config object, which provides
+# access to the values within the .ini file in use.
+config = context.config
+
+# Interpret the config file for Python logging.
+# This line sets up loggers basically.
+if config.config_file_name is not None:
+    fileConfig(config.config_file_name)
+
+# add your model's MetaData object here
+# for 'autogenerate' support
+# from myapp import mymodel
+# target_metadata = mymodel.Base.metadata
+target_metadata = Base.metadata
+
+# other values from the config, defined by the needs of env.py,
+# can be acquired:
+# my_important_option = config.get_main_option("my_important_option")
+# ... etc.
+
+
+def run_migrations_offline() -> None:
+    """Run migrations in 'offline' mode.
+
+    This configures the context with just a URL
+    and not an Engine, though an Engine is acceptable
+    here as well.  By skipping the Engine creation
+    we don't even need a DBAPI to be available.
+
+    Calls to context.execute() here emit the given string to the
+    script output.
+
+    """
+    url = config.get_main_option("sqlalchemy.url")
+    context.configure(
+        url=url,
+        target_metadata=target_metadata,
+        literal_binds=True,
+        dialect_opts={"paramstyle": "named"},
+    )
+
+    with context.begin_transaction():
+        context.run_migrations()
+
+
+def do_run_migrations(connection: Connection) -> None:
+    context.configure(connection=connection, target_metadata=target_metadata)
+
+    with context.begin_transaction():
+        context.run_migrations()
+
+
+async def run_async_migrations() -> None:
+    """In this scenario we need to create an Engine
+    and associate a connection with the context.
+
+    """
+
+    connectable = async_engine_from_config(
+        config.get_section(config.config_ini_section, {}),
+        prefix="sqlalchemy.",
+        poolclass=pool.NullPool,
+    )
+
+    async with connectable.connect() as connection:
+        await connection.run_sync(do_run_migrations)
+
+    await connectable.dispose()
+
+
+def run_migrations_online() -> None:
+    """Run migrations in 'online' mode."""
+
+    asyncio.run(run_async_migrations())
+
+
+if context.is_offline_mode():
+    run_migrations_offline()
+else:
+    run_migrations_online()
+</file>
+
+<file path="services/ai-service-python/alembic/README">
+Generic single-database configuration with an async dbapi.
+</file>
+
+<file path="services/ai-service-python/alembic/script.py.mako">
+"""${message}
+
+Revision ID: ${up_revision}
+Revises: ${down_revision | comma,n}
+Create Date: ${create_date}
+
+"""
+from typing import Sequence, Union
+
+from alembic import op
+import sqlalchemy as sa
+${imports if imports else ""}
+
+# revision identifiers, used by Alembic.
+revision: str = ${repr(up_revision)}
+down_revision: Union[str, None] = ${repr(down_revision)}
+branch_labels: Union[str, Sequence[str], None] = ${repr(branch_labels)}
+depends_on: Union[str, Sequence[str], None] = ${repr(depends_on)}
+
+
+def upgrade() -> None:
+    ${upgrades if upgrades else "pass"}
+
+
+def downgrade() -> None:
+    ${downgrades if downgrades else "pass"}
+</file>
+
+<file path="services/ai-service-python/app/api/__init__.py">
+
+</file>
+
+<file path="services/ai-service-python/app/api/chat.py">
+# app/api/chat.py
+import json
+import os
+from datetime import datetime, timezone
+from fastapi import APIRouter, Depends, Header, HTTPException
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
+from openai import AsyncOpenAI
+import aio_pika
+
+# Hamari banayi hui files import kar rahe hain
+from app.core.database import get_db
+from app.models.conversation import Conversation
+from app.models.message import Message
+from app.schemas.chat import ChatRequest, ChatResponse
+from app.core.redis import invalidate_cache
+from app.core.rabbit import get_rabbit_channel
+
+router = APIRouter()
+
+# OpenAI client for OpenRouter
+# (Bina API key ke test nahi hoga, baad me env se uthayenge, abhi ke liye aise hi likh de)
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "Teri_OpenRouter_Key_Yaha_Aayegi")
+ai_client = AsyncOpenAI(api_key=OPENROUTER_API_KEY, base_url="https://openrouter.ai/api/v1")
+
+@router.post("/chat", response_model=ChatResponse)
+async def chat_with_ai(
+    payload: ChatRequest, 
+    x_user_id: str = Header(...), # Express req.headers["x-user-id"]
+    db: AsyncSession = Depends(get_db)
+):
+    try:
+        # 1. Save user message
+        user_msg = Message(
+            conversation_id=payload.conversationId, 
+            role="user", 
+            content=payload.message
+        )
+        db.add(user_msg)
+        await db.commit()
+
+        # 2. Fetch conversation history (sort by createdAt ascending)
+        result = await db.execute(
+            select(Message)
+            .where(Message.conversation_id == payload.conversationId)
+            .order_by(Message.created_at.asc())
+        )
+        messages = result.scalars().all()
+
+        # 3. Convert messages for LLM
+        formatted_messages = [{"role": msg.role, "content": msg.content} for msg in messages]
+
+        # 4. AI Request
+        completion = await ai_client.chat.completions.create(
+            model="openrouter/free",
+            messages=formatted_messages
+        )
+        ai_response = completion.choices[0].message.content
+
+        if not ai_response:
+            raise HTTPException(status_code=500, detail="AI returned empty response")
+
+        # 5. Save AI response
+        assistant_msg = Message(
+            conversation_id=payload.conversationId, 
+            role="assistant", 
+            content=ai_response
+        )
+        db.add(assistant_msg)
+        await db.commit()
+
+        # 6. Check Conversation Title & Publish to RabbitMQ
+        conv_result = await db.execute(select(Conversation).where(Conversation.id == payload.conversationId))
+        conversation = conv_result.scalar_one_or_none()
+
+        if conversation and conversation.title == "New Chat":
+            _, channel, exchange = await get_rabbit_channel()
+            
+            # Message format for RabbitMQ
+            message_body = json.dumps({
+                "conversationId": str(payload.conversationId), 
+                "message": payload.message
+            }).encode()
+            
+            await exchange.publish(
+                aio_pika.Message(
+                    body=message_body, 
+                    delivery_mode=aio_pika.DeliveryMode.PERSISTENT
+                ),
+                routing_key="chat.created"
+            )
+            print("Published to RabbitMQ")
+
+        # 7. Update timestamp
+        if conversation:
+            conversation.updated_at = datetime.now(timezone.utc)
+            await db.commit()
+        
+        # 8. Invalidate Redis cache
+        await invalidate_cache(f"messages:{payload.conversationId}", f"conversations:{x_user_id}")
+
+        return {"response": ai_response}
+
+    except Exception as e:
+        print(f"Error: {e}")
+        raise HTTPException(status_code=500, detail="Chat failed")
+</file>
+
+<file path="services/ai-service-python/app/core/__init__.py">
+
+</file>
+
+<file path="services/ai-service-python/app/core/database.py">
+# app/core/database.py
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
+from sqlalchemy.orm import declarative_base
+
+# PostgreSQL connection URL
+DATABASE_URL = "postgresql+asyncpg://postgres:supersecretpassword@localhost:5432/sportsphere_ai"
+
+# Engine is the connection pool manager
+engine = create_async_engine(DATABASE_URL, echo=False)
+
+# Session factory for handling requests
+SessionLocal = async_sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)
+
+# Base class for models
+Base = declarative_base()
+
+async def get_db():
+    async with SessionLocal() as session:
+        yield session
+</file>
+
+<file path="services/ai-service-python/app/core/rabbit.py">
+# app/core/rabbit.py
+import aio_pika
+
+async def get_rabbit_channel():
+    # Connect to RabbitMQ (amqp://guest:guest@localhost:5672)
+    connection = await aio_pika.connect_robust("amqp://guest:guest@localhost:5672/")
+    channel = await connection.channel()
+    
+    # Assert Exchange (Node: channel.assertExchange)
+    exchange = await channel.declare_exchange("chat", aio_pika.ExchangeType.DIRECT, durable=True)
+    
+    return connection, channel, exchange
+</file>
+
+<file path="services/ai-service-python/app/core/redis.py">
+# app/core/redis.py
+import redis.asyncio as redis
+
+# Create an async redis client
+redis_client = redis.Redis(host='localhost', port=6379, decode_responses=True)
+
+async def invalidate_cache(*keys):
+    for key in keys:
+        await redis_client.delete(key)
+</file>
+
+<file path="services/ai-service-python/app/models/__init__.py">
+# app/models/__init__.py
+from app.core.database import Base
+from app.models.conversation import Conversation
+from app.models.message import Message
+</file>
+
+<file path="services/ai-service-python/app/models/conversation.py">
+import uuid
+from datetime import datetime, timezone
+from sqlalchemy import Column, String, DateTime
+from sqlalchemy.dialects.postgresql import UUID
+from app.core.database import Base
+
+class Conversation(Base):
+    __tablename__ = "conversations"
+
+    # UUID Node ke ObjectId ka kaam karega
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
+    user_id = Column(String, index=True, nullable=False)
+    title = Column(String, default="New Chat", nullable=False)
+    
+    # timezone=True zaroori hai taaki UTC time accurately save ho
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    updated_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
+</file>
+
+<file path="services/ai-service-python/app/models/message.py">
+import uuid
+from datetime import datetime, timezone
+from sqlalchemy import Column, String, DateTime, ForeignKey, Text
+from sqlalchemy.dialects.postgresql import UUID
+from app.core.database import Base
+
+class Message(Base):
+    __tablename__ = "messages"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
+    
+    # ondelete="CASCADE" ka matlab: Agar conversation delete hui, toh uske messages khud delete ho jayenge.
+    conversation_id = Column(UUID(as_uuid=True), ForeignKey("conversations.id", ondelete="CASCADE"), index=True, nullable=False)
+    
+    role = Column(String, nullable=False) # "user" or "assistant"
+    content = Column(Text, nullable=False)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+</file>
+
+<file path="services/ai-service-python/app/schemas/__init__.py">
+
+</file>
+
+<file path="services/ai-service-python/app/schemas/chat.py">
+# app/schemas/chat.py
+from pydantic import BaseModel
+from typing import Optional
+from uuid import UUID
+
+# Ye tera incoming JSON validate karega
+class ChatRequest(BaseModel):
+    conversationId: UUID
+    message: str
+
+# Ye tera outgoing response format hoga
+class ChatResponse(BaseModel):
+    response: str
+</file>
+
+<file path="services/ai-service-python/app/__init__.py">
+
+</file>
+
+<file path="services/ai-service-python/app/main.py">
+from fastapi import FastAPI
+from app.api.chat import router as chat_router
+
+# Initialize the FastAPI app (Equivalent to const app = express())
+app = FastAPI(
+    title="Sportsphere AI Service",
+    description="Python RAG and Analytics Service",
+    version="1.0.0"
+)
+
+# Route definition (Equivalent to app.get('/health', ...))
+@app.get("/health")
+async def health_check():
+    """
+    Health check endpoint to verify the service is running.
+    """
+    # FastAPI automatically serializes dictionaries to JSON (No need for res.json())
+    return {"success": True, "message": "Python AI Service is running!"}
+
+app.include_router(chat_router, prefix="/api")
+</file>
+
+<file path="services/ai-service-python/alembic.ini">
+# A generic, single database configuration.
+
+[alembic]
+# path to migration scripts
+script_location = alembic
+
+# template used to generate migration file names; The default value is %%(rev)s_%%(slug)s
+# Uncomment the line below if you want the files to be prepended with date and time
+# file_template = %%(year)d_%%(month).2d_%%(day).2d_%%(hour).2d%%(minute).2d-%%(rev)s_%%(slug)s
+
+# sys.path path, will be prepended to sys.path if present.
+# defaults to the current working directory.
+prepend_sys_path = .
+
+# timezone to use when rendering the date within the migration file
+# as well as the filename.
+# If specified, requires the python>=3.9 or backports.zoneinfo library.
+# Any required deps can installed by adding `alembic[tz]` to the pip requirements
+# string value is passed to ZoneInfo()
+# leave blank for localtime
+# timezone =
+
+# max length of characters to apply to the
+# "slug" field
+# truncate_slug_length = 40
+
+# set to 'true' to run the environment during
+# the 'revision' command, regardless of autogenerate
+# revision_environment = false
+
+# set to 'true' to allow .pyc and .pyo files without
+# a source .py file to be detected as revisions in the
+# versions/ directory
+# sourceless = false
+
+# version location specification; This defaults
+# to alembic/versions.  When using multiple version
+# directories, initial revisions must be specified with --version-path.
+# The path separator used here should be the separator specified by "version_path_separator" below.
+# version_locations = %(here)s/bar:%(here)s/bat:alembic/versions
+
+# version path separator; As mentioned above, this is the character used to split
+# version_locations. The default within new alembic.ini files is "os", which uses os.pathsep.
+# If this key is omitted entirely, it falls back to the legacy behavior of splitting on spaces and/or commas.
+# Valid values for version_path_separator are:
+#
+# version_path_separator = :
+# version_path_separator = ;
+# version_path_separator = space
+version_path_separator = os  # Use os.pathsep. Default configuration used for new projects.
+
+# set to 'true' to search source files recursively
+# in each "version_locations" directory
+# new in Alembic version 1.10
+# recursive_version_locations = false
+
+# the output encoding used when revision files
+# are written from script.py.mako
+# output_encoding = utf-8
+
+sqlalchemy.url = postgresql+asyncpg://postgres:supersecretpassword@localhost:5432/sportsphere_ai
+
+
+[post_write_hooks]
+# post_write_hooks defines scripts or Python functions that are run
+# on newly generated revision scripts.  See the documentation for further
+# detail and examples
+
+# format using "black" - use the console_scripts runner, against the "black" entrypoint
+# hooks = black
+# black.type = console_scripts
+# black.entrypoint = black
+# black.options = -l 79 REVISION_SCRIPT_FILENAME
+
+# lint with attempts to fix using "ruff" - use the exec runner, execute a binary
+# hooks = ruff
+# ruff.type = exec
+# ruff.executable = %(here)s/.venv/bin/ruff
+# ruff.options = --fix REVISION_SCRIPT_FILENAME
+
+# Logging configuration
+[loggers]
+keys = root,sqlalchemy,alembic
+
+[handlers]
+keys = console
+
+[formatters]
+keys = generic
+
+[logger_root]
+level = WARN
+handlers = console
+qualname =
+
+[logger_sqlalchemy]
+level = WARN
+handlers =
+qualname = sqlalchemy.engine
+
+[logger_alembic]
+level = INFO
+handlers =
+qualname = alembic
+
+[handler_console]
+class = StreamHandler
+args = (sys.stderr,)
+level = NOTSET
+formatter = generic
+
+[formatter_generic]
+format = %(levelname)-5.5s [%(name)s] %(message)s
+datefmt = %H:%M:%S
+</file>
+
+<file path="services/ai-service-python/requirements.txt">
+fastapi==0.111.0
+uvicorn[standard]==0.30.1
+pydantic==2.7.4
+pydantic-settings==2.3.4
+sqlalchemy==2.0.30
+asyncpg==0.29.0
+alembic==1.13.1
+openai==3.3.1
+aio-pika==10.0.1
+redis==8.1.0
+</file>
+
+<file path="services/api-gateway/.env">
+PORT=4000
+NODE_ENV=development
+JWT_SECRET=supersecretkey
+</file>
+
+<file path="services/auth-service/.env">
+PORT=5001
+MONGO_URI=mongodb://admin:password@localhost:27017/authdb?authSource=admin
+JWT_SECRET=supersecretkey
+</file>
+
+<file path="services/match-service/.env">
+PORT=5003
+MONGO_URI=mongodb://admin:password@localhost:27017/match-service-db?authSource=admin
+CRIC_API_KEY=f3c9ecb9-05ca-4a16-83b4-303ce3328cde
+</file>
+
+<file path=".env.docker">
+MONGO_ROOT_USERNAME=admin
+MONGO_ROOT_PASSWORD=password
+
+RABBITMQ_USER=sportsphere
+RABBITMQ_PASSWORD=sportsphere_password
+</file>
+
+<file path="apps/frontend/app/components/chat/Chatwindow.tsx">
+interface ChatWindowProps {
+  children?: React.ReactNode;
+}
+
+export default function ChatWindow({
+  children,
+}: ChatWindowProps) {
+  return (
+    <div className="flex-1 flex flex-col">
+      {children}
+    </div>
+  );
+}
+</file>
+
+<file path="apps/frontend/app/components/Document-rag/DocumentChat.tsx">
+"use client";
+
+import {
+  FormEvent,
+  useState,
+} from "react";
+
+import {
+  queryDocument,
+} from "../../services/document.service";
+
+import {
+  DocumentSource,
+} from "../../types/document";
+
+interface DocumentChatProps {
+  documentId?: string;
+}
+
+export default function DocumentChat({
+  documentId,
+}: DocumentChatProps) {
+  const [query, setQuery] =
+    useState("");
+
+  const [answer, setAnswer] =
+    useState("");
+
+  const [sources, setSources] =
+    useState<DocumentSource[]>([]);
+
+  const [isLoading, setIsLoading] =
+    useState(false);
+
+  const [error, setError] =
+    useState("");
+
+  async function handleSubmit(
+    event: FormEvent<HTMLFormElement>
+  ) {
+    event.preventDefault();
+
+    const normalizedQuery =
+      query.trim();
+
+    if (!normalizedQuery) {
+      setError(
+        "Please enter a question."
+      );
+
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      setError("");
+      setAnswer("");
+      setSources([]);
+
+      const response =
+        await queryDocument({
+          query: normalizedQuery,
+          documentId,
+          limit: 5,
+        });
+
+      setAnswer(response.answer);
+      setSources(response.sources);
+    } catch (requestError) {
+      setError(
+        requestError instanceof Error
+          ? requestError.message
+          : "Something went wrong"
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  return (
+    <section className="w-full max-w-3xl space-y-5">
+      <div>
+        <h2 className="text-xl font-semibold">
+          Ask your document
+        </h2>
+
+        <p className="mt-1 text-sm text-gray-500">
+          Ask questions based on your
+          uploaded PDF content.
+        </p>
+      </div>
+
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-3"
+      >
+        <textarea
+          value={query}
+          onChange={(event) =>
+            setQuery(
+              event.target.value
+            )
+          }
+          placeholder="Ask a question about your document..."
+          rows={4}
+          disabled={isLoading}
+          className="w-full resize-none rounded-lg border border-gray-300 p-3 outline-none focus:border-gray-500 disabled:cursor-not-allowed disabled:opacity-60"
+        />
+
+        <button
+          type="submit"
+          disabled={
+            isLoading ||
+            !query.trim()
+          }
+          className="rounded-lg bg-black px-5 py-2.5 text-white disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {isLoading
+            ? "Searching..."
+            : "Ask question"}
+        </button>
+      </form>
+
+      {error && (
+        <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+          {error}
+        </div>
+      )}
+
+      {answer && (
+        <div className="space-y-4">
+          <div className="rounded-lg border bg-white p-4">
+            <h3 className="mb-2 font-semibold">
+              Answer
+            </h3>
+
+            <p className="whitespace-pre-wrap text-sm leading-6 text-gray-700">
+              {answer}
+            </p>
+          </div>
+
+          {sources.length > 0 && (
+            <div className="space-y-3">
+              <h3 className="font-semibold">
+                Sources
+              </h3>
+
+              {sources.map(
+                (source, index) => (
+                  <article
+                    key={`${source.documentId}-${source.chunkIndex}-${index}`}
+                    className="rounded-lg border bg-gray-50 p-4"
+                  >
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <p className="text-sm font-medium">
+                        {
+                          source.originalName
+                        }
+                      </p>
+
+                      <span className="text-xs text-gray-500">
+                        Match:{" "}
+                        {(
+                          source.score *
+                          100
+                        ).toFixed(1)}
+                        %
+                      </span>
+                    </div>
+
+                    <p className="mt-1 text-xs text-gray-500">
+                      Chunk{" "}
+                      {
+                        source.chunkIndex
+                      }
+                    </p>
+
+                    <p className="mt-3 text-sm leading-6 text-gray-600">
+                      {
+                        source.textPreview
+                      }
+                      ...
+                    </p>
+                  </article>
+                )
+              )}
+            </div>
+          )}
+        </div>
+      )}
+    </section>
+  );
+}
+</file>
+
+<file path="apps/frontend/app/components/Document-rag/UploadDocument.tsx">
+"use client";
+
+import {
+  ChangeEvent,
+  FormEvent,
+  useState,
+} from "react";
+
+import {
+  uploadDocument,
+} from "../../services/document.service";
+
+import {
+  RagDocument,
+} from "../../types/document";
+
+const MAX_FILE_SIZE =
+  10 * 1024 * 1024;
+
+function formatFileSize(
+  bytes: number
+): string {
+  if (bytes < 1024) {
+    return `${bytes} B`;
+  }
+
+  if (bytes < 1024 * 1024) {
+    return `${(
+      bytes / 1024
+    ).toFixed(1)} KB`;
+  }
+
+  return `${(
+    bytes /
+    (1024 * 1024)
+  ).toFixed(1)} MB`;
+}
+
+export default function DocumentUpload() {
+  const [selectedFile, setSelectedFile] =
+    useState<File | null>(null);
+
+  const [uploadedDocument, setUploadedDocument] =
+    useState<RagDocument | null>(null);
+
+  const [loading, setLoading] =
+    useState(false);
+
+  const [error, setError] =
+    useState("");
+
+  const [successMessage, setSuccessMessage] =
+    useState("");
+
+  function handleFileChange(
+    event: ChangeEvent<HTMLInputElement>
+  ): void {
+    setError("");
+    setSuccessMessage("");
+    setUploadedDocument(null);
+
+    const file =
+      event.target.files?.[0];
+
+    if (!file) {
+      setSelectedFile(null);
+      return;
+    }
+
+    const isPdf =
+      file.type === "application/pdf" &&
+      file.name
+        .toLowerCase()
+        .endsWith(".pdf");
+
+    if (!isPdf) {
+      setSelectedFile(null);
+      setError(
+        "Please select a valid PDF file"
+      );
+
+      event.target.value = "";
+      return;
+    }
+
+    if (file.size > MAX_FILE_SIZE) {
+      setSelectedFile(null);
+      setError(
+        "PDF size cannot exceed 10 MB"
+      );
+
+      event.target.value = "";
+      return;
+    }
+
+    setSelectedFile(file);
+  }
+
+  async function handleUpload(
+    event: FormEvent<HTMLFormElement>
+  ): Promise<void> {
+    event.preventDefault();
+
+    if (!selectedFile) {
+      setError(
+        "Please select a PDF document"
+      );
+
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError("");
+      setSuccessMessage("");
+
+      const result =
+        await uploadDocument(
+          selectedFile
+        );
+
+      setUploadedDocument(
+        result.document
+      );
+
+      setSuccessMessage(
+        result.message
+      );
+
+      setSelectedFile(null);
+    } catch (uploadError) {
+      const message =
+        uploadError instanceof Error
+          ? uploadError.message
+          : "Document upload failed";
+
+      setError(message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div className="flex min-h-full justify-center p-6 md:p-10">
+      <div className="w-full max-w-3xl">
+        <div className="mb-8">
+          <h1 className="text-2xl font-semibold text-white">
+            Document RAG
+          </h1>
+
+          <p className="mt-2 text-sm text-zinc-400">
+            Upload sports reports, analysis
+            documents or tournament rules and
+            ask questions from their content.
+          </p>
+        </div>
+
+        <form
+          onSubmit={handleUpload}
+          className="rounded-xl border border-zinc-800 bg-zinc-900 p-6"
+        >
+          <label
+            htmlFor="document"
+            className="flex min-h-48 cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed border-zinc-700 bg-zinc-950 p-6 text-center hover:border-zinc-500"
+          >
+            <span className="text-base font-medium text-white">
+              Select a PDF document
+            </span>
+
+            <span className="mt-2 text-sm text-zinc-500">
+              Maximum file size: 10 MB
+            </span>
+
+            <input
+              id="document"
+              type="file"
+              accept="application/pdf,.pdf"
+              onChange={handleFileChange}
+              disabled={loading}
+              className="hidden"
+            />
+          </label>
+
+          {selectedFile && (
+            <div className="mt-4 rounded-lg border border-zinc-800 bg-zinc-950 p-4">
+              <p className="truncate text-sm font-medium text-white">
+                {selectedFile.name}
+              </p>
+
+              <p className="mt-1 text-xs text-zinc-500">
+                {formatFileSize(
+                  selectedFile.size
+                )}
+              </p>
+            </div>
+          )}
+
+          {error && (
+            <p className="mt-4 rounded-lg border border-red-900 bg-red-950/40 p-3 text-sm text-red-300">
+              {error}
+            </p>
+          )}
+
+          {successMessage && (
+            <p className="mt-4 rounded-lg border border-green-900 bg-green-950/40 p-3 text-sm text-green-300">
+              {successMessage}
+            </p>
+          )}
+
+          <button
+            type="submit"
+            disabled={
+              !selectedFile ||
+              loading
+            }
+            className="mt-5 w-full rounded-lg bg-white px-4 py-3 text-sm font-medium text-black disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {loading
+              ? "Uploading..."
+              : "Upload Document"}
+          </button>
+        </form>
+
+        {uploadedDocument && (
+          <div className="mt-6 rounded-xl border border-zinc-800 bg-zinc-900 p-5">
+            <h2 className="font-medium text-white">
+              Uploaded document
+            </h2>
+
+            <div className="mt-4 space-y-2 text-sm">
+              <p className="text-zinc-400">
+                Name:{" "}
+                <span className="text-white">
+                  {
+                    uploadedDocument.originalName
+                  }
+                </span>
+              </p>
+
+              <p className="text-zinc-400">
+                Size:{" "}
+                <span className="text-white">
+                  {formatFileSize(
+                    uploadedDocument.fileSize
+                  )}
+                </span>
+              </p>
+
+              <p className="text-zinc-400">
+                Status:{" "}
+                <span className="capitalize text-yellow-300">
+                  {
+                    uploadedDocument.status
+                  }
+                </span>
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path="apps/frontend/app/components/layout/app-shell.tsx">
+"use client";
+
+import { ReactNode } from "react";
+import { usePathname } from "next/navigation";
+
+import Sidebar from "../Sidebar/Sidebar";
+import { ChatProvider } from "@/context/chat-context";
+
+interface AppShellProps {
+  children: ReactNode;
+}
+
+export default function AppShell({
+  children,
+}: AppShellProps) {
+  const pathname = usePathname();
+
+  const isAuthPage =
+    pathname === "/login" ||
+    pathname === "/register";
+
+  // Login/Register par Sidebar aur ChatProvider nahi chahiye
+  if (isAuthPage) {
+    return <>{children}</>;
+  }
+  return (
+    <ChatProvider>
+      <div className="flex h-screen overflow-hidden bg-zinc-950 text-white">
+        <Sidebar />
+
+        <main className="min-w-0 flex-1 overflow-y-auto">
+          {children}
+        </main>
+      </div>
+    </ChatProvider>
+  );
+}
+</file>
+
+<file path="apps/frontend/app/components/matches/match-card.tsx">
+import Link from "next/link";
+
+import { MatchStatus } from "./match-status";
+
+import type { Match } from "../../types/match";
+
+interface MatchCardProps {
+  match: Match;
+}
+
+function formatMatchDate(date: string): string {
+  return new Intl.DateTimeFormat("en-IN", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(new Date(date));
+}
+
+function formatScore(
+  score:
+    | {
+        runs?: number;
+        wickets?: number;
+        overs?: number;
+      }
+    | undefined
+): string {
+  if (!score) {
+    return "Yet to bat";
+  }
+
+  const runs = score.runs ?? 0;
+  const wickets = score.wickets ?? 0;
+  const overs = score.overs ?? 0;
+
+  if (
+    runs === 0 &&
+    wickets === 0 &&
+    overs === 0
+  ) {
+    return "Yet to bat";
+  }
+
+  return `${runs}/${wickets} (${overs} ov)`;
+}
+
+export function MatchCard({
+  match,
+}: MatchCardProps) {
+  return (
+    <article className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+      <div className="mb-5 flex items-start justify-between gap-4">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+            {match.format}
+          </p>
+
+          <h2 className="mt-1 text-lg font-bold text-gray-900">
+            {match.name}
+          </h2>
+        </div>
+
+        <MatchStatus status={match.status} />
+      </div>
+
+      <div className="space-y-4">
+        <div className="flex items-center justify-between gap-4 rounded-xl bg-gray-50 p-4">
+          <div>
+            <p className="font-semibold text-gray-900">
+              {match.teamA}
+            </p>
+
+            <p className="mt-1 text-sm text-gray-500">
+              {formatScore(
+                match.score?.teamA
+              )}
+            </p>
+          </div>
+
+          <span className="text-xs font-semibold text-gray-400">
+            VS
+          </span>
+
+          <div className="text-right">
+            <p className="font-semibold text-gray-900">
+              {match.teamB}
+            </p>
+
+            <p className="mt-1 text-sm text-gray-500">
+              {formatScore(
+                match.score?.teamB
+              )}
+            </p>
+          </div>
+        </div>
+
+        <div className="space-y-1 text-sm text-gray-600">
+          <p>
+            <span className="font-medium text-gray-800">
+              Date:
+            </span>{" "}
+            {formatMatchDate(match.startTime)}
+          </p>
+
+          <p>
+            <span className="font-medium text-gray-800">
+              Venue:
+            </span>{" "}
+            {match.venue || "Venue not available"}
+          </p>
+
+          {match.providerStatus && (
+            <p>
+              <span className="font-medium text-gray-800">
+                Update:
+              </span>{" "}
+              {match.providerStatus}
+            </p>
+          )}
+        </div>
+
+        <Link
+          href={`/matches/${match._id}`}
+          className="inline-flex w-full items-center justify-center rounded-xl bg-gray-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-gray-700"
+        >
+          View match
+        </Link>
+      </div>
+    </article>
+  );
+}
+</file>
+
+<file path="apps/frontend/app/components/matches/match-status.tsx">
+import type { MatchStatus } from "../../types/match";
+
+interface MatchStatusProps {
+  status: MatchStatus;
+}
+
+const statusClasses: Record<
+  MatchStatus,
+  string
+> = {
+  upcoming:
+    "bg-blue-100 text-blue-700 border-blue-200",
+
+  live:
+    "bg-red-100 text-red-700 border-red-200",
+
+  completed:
+    "bg-green-100 text-green-700 border-green-200",
+
+  cancelled:
+    "bg-gray-100 text-gray-700 border-gray-200",
+};
+
+export function MatchStatus({
+  status,
+}: MatchStatusProps) {
+  return (
+    <span
+      className={`inline-flex rounded-full border px-3 py-1 text-xs font-semibold capitalize ${statusClasses[status]}`}
+    >
+      {status}
+    </span>
+  );
+}
+</file>
+
+<file path="apps/frontend/app/components/matches/matches-client.tsx">
+"use client";
+
+import {
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
+
+import { MatchCard } from "./match-card";
+
+import {
+  getMatches,
+  syncLiveMatches,
+} from "../../services/match.service";
+
+import type { Match } from "../../types/match";
+
+export function MatchesClient() {
+  const [matches, setMatches] = useState<
+    Match[]
+  >([]);
+
+  const [isLoading, setIsLoading] =
+    useState(true);
+
+  const [isSyncing, setIsSyncing] =
+    useState(false);
+
+  const [error, setError] = useState<
+    string | null
+  >(null);
+
+  const loadMatches =
+    useCallback(async (): Promise<void> => {
+      try {
+        setError(null);
+
+        const response =
+          await getMatches();
+
+        setMatches(response.data);
+      } catch (loadError) {
+        setError(
+          loadError instanceof Error
+            ? loadError.message
+            : "Failed to load matches"
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    }, []);
+
+  useEffect(() => {
+    void loadMatches();
+  }, [loadMatches]);
+
+  const handleSync =
+    async (): Promise<void> => {
+      try {
+        setIsSyncing(true);
+        setError(null);
+
+        await syncLiveMatches();
+        await loadMatches();
+      } catch (syncError) {
+        setError(
+          syncError instanceof Error
+            ? syncError.message
+            : "Failed to sync matches"
+        );
+      } finally {
+        setIsSyncing(false);
+      }
+    };
+
+  if (isLoading) {
+    return (
+      <div className="rounded-2xl border border-gray-200 bg-white p-8 text-center text-gray-600">
+        Loading matches...
+      </div>
+    );
+  }
+
+  return (
+    <section>
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">
+            Cricket Matches
+          </h1>
+
+          <p className="mt-1 text-gray-600">
+            Explore upcoming, live and completed
+            matches.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => {
+            void handleSync();
+          }}
+          disabled={isSyncing}
+          className="rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {isSyncing
+            ? "Syncing..."
+            : "Refresh matches"}
+        </button>
+      </div>
+
+      {error && (
+        <div className="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+          {error}
+        </div>
+      )}
+
+      {matches.length === 0 ? (
+        <div className="rounded-2xl border border-dashed border-gray-300 bg-white p-10 text-center">
+          <h2 className="font-semibold text-gray-900">
+            No matches available
+          </h2>
+
+          <p className="mt-2 text-sm text-gray-500">
+            Click “Refresh matches” to sync the
+            latest cricket data.
+          </p>
+        </div>
+      ) : (
+        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          {matches.map((match) => (
+            <MatchCard
+              key={match._id}
+              match={match}
+            />
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+</file>
+
+<file path="apps/frontend/app/components/register/page.tsx">
+
+</file>
+
+<file path="apps/frontend/app/components/Sidebar/ConversationList.tsx">
+
+</file>
+
+<file path="apps/frontend/app/components/Sidebar/SidebarHeader.tsx">
+
+</file>
+
+<file path="apps/frontend/app/components/Sidebar/SidebarMenu.tsx">
+
+</file>
+
+<file path="apps/frontend/app/lib/api.ts">
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_GATEWAY_URL ||
+  "http://localhost:4000/api";
+
+interface ApiRequestOptions extends RequestInit {
+  token?: string;
+}
+
+export async function apiRequest<T>(
+  endpoint: string,
+  options: ApiRequestOptions = {}
+): Promise<T> {
+  const {
+    token,
+    headers,
+    ...requestOptions
+  } = options;
+
+  const response = await fetch(
+    `${API_BASE_URL}${endpoint}`,
+    {
+      ...requestOptions,
+
+      headers: {
+        "Content-Type": "application/json",
+
+        ...(token
+          ? {
+              Authorization: `Bearer ${token}`,
+            }
+          : {}),
+
+        ...headers,
+      },
+
+      cache: "no-store",
+    }
+  );
+
+  const data = await response.json().catch(() => null);
+
+  if (!response.ok) {
+    const message =
+      data?.message ||
+      `Request failed with status ${response.status}`;
+
+    throw new Error(message);
+  }
+
+  return data as T;
+}
+</file>
+
+<file path="apps/frontend/app/lib/socket.ts">
+import { io } from "socket.io-client";
+
+export const socket = io("http://localhost:4000", {
+  autoConnect: false,
+});
+</file>
+
+<file path="apps/frontend/app/login/page.tsx">
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+
+export default function LoginPage() {
+  const router = useRouter();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    setError("");
+    setLoading(true);
+
+    try {
+      const response = await fetch(
+        `http://localhost:4000/api/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Login failed");
+      }
+
+      // token save
+      localStorage.setItem("token", data.token);
+
+      // redirect
+      router.push("/");
+
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+
+      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+
+        <h1 className="text-2xl font-bold mb-6 text-center">
+          Login
+        </h1>
+
+
+        <form onSubmit={handleLogin}>
+
+          <div className="mb-4">
+            <label className="block mb-2">
+              Email
+            </label>
+
+            <input
+              type="email"
+              value={email}
+              onChange={(e)=>setEmail(e.target.value)}
+              className="w-full border p-2 rounded"
+              placeholder="Enter email"
+              required
+            />
+          </div>
+
+
+
+          <div className="mb-4">
+
+            <label className="block mb-2">
+              Password
+            </label>
+
+            <input
+              type="password"
+              value={password}
+              onChange={(e)=>setPassword(e.target.value)}
+              className="w-full border p-2 rounded"
+              placeholder="Enter password"
+              required
+            />
+
+          </div>
+
+
+          {
+            error && (
+              <p className="text-red-500 mb-4">
+                {error}
+              </p>
+            )
+          }
+
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-black text-white p-2 rounded"
+          >
+            {
+              loading 
+              ? "Logging in..."
+              : "Login"
+            }
+          </button>
+
+
+        </form>
+
+      </div>
+
+    </div>
+  );
+}
+</file>
+
+<file path="apps/frontend/app/matches/[id]/page.tsx">
+import Link from "next/link";
+import { notFound } from "next/navigation";
+
+import { MatchStatus } from "../../components/matches/match-status";
+import { getMatchById } from "../../services/match.service";
+
+interface MatchDetailsPageProps {
+  params: Promise<{
+    id: string;
+  }>;
+}
+
+function formatDate(date: string): string {
+  return new Intl.DateTimeFormat("en-IN", {
+    dateStyle: "full",
+    timeStyle: "short",
+  }).format(new Date(date));
+}
+
+export default async function MatchDetailsPage({
+  params,
+}: MatchDetailsPageProps) {
+  const { id } = await params;
+
+  let response;
+
+  try {
+    response = await getMatchById(id);
+  } catch {
+    notFound();
+  }
+
+  const match = response.data;
+
+  return (
+    <main className="min-h-screen bg-gray-50">
+      <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
+        <Link
+          href="/matches"
+          className="mb-6 inline-flex text-sm font-semibold text-blue-600 hover:text-blue-700"
+        >
+          ← Back to matches
+        </Link>
+
+        <article className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-wide text-gray-500">
+                {match.format}
+              </p>
+
+              <h1 className="mt-2 text-3xl font-bold text-gray-900">
+                {match.name}
+              </h1>
+            </div>
+
+            <MatchStatus
+              status={match.status}
+            />
+          </div>
+
+          <div className="my-8 grid gap-4 sm:grid-cols-2">
+            <div className="rounded-2xl bg-gray-50 p-6">
+              <p className="text-sm text-gray-500">
+                Team A
+              </p>
+
+              <h2 className="mt-2 text-xl font-bold text-gray-900">
+                {match.teamA}
+              </h2>
+
+              <p className="mt-4 text-lg font-semibold text-gray-700">
+                {match.score?.teamA
+                  ? `${match.score.teamA.runs}/${match.score.teamA.wickets} (${match.score.teamA.overs} ov)`
+                  : "Yet to bat"}
+              </p>
+            </div>
+
+            <div className="rounded-2xl bg-gray-50 p-6">
+              <p className="text-sm text-gray-500">
+                Team B
+              </p>
+
+              <h2 className="mt-2 text-xl font-bold text-gray-900">
+                {match.teamB}
+              </h2>
+
+              <p className="mt-4 text-lg font-semibold text-gray-700">
+                {match.score?.teamB
+                  ? `${match.score.teamB.runs}/${match.score.teamB.wickets} (${match.score.teamB.overs} ov)`
+                  : "Yet to bat"}
+              </p>
+            </div>
+          </div>
+
+          <dl className="grid gap-5 border-t border-gray-200 pt-6 sm:grid-cols-2">
+            <div>
+              <dt className="text-sm font-medium text-gray-500">
+                Start time
+              </dt>
+
+              <dd className="mt-1 text-gray-900">
+                {formatDate(match.startTime)}
+              </dd>
+            </div>
+
+            <div>
+              <dt className="text-sm font-medium text-gray-500">
+                Venue
+              </dt>
+
+              <dd className="mt-1 text-gray-900">
+                {match.venue ||
+                  "Venue not available"}
+              </dd>
+            </div>
+
+            <div>
+              <dt className="text-sm font-medium text-gray-500">
+                Provider status
+              </dt>
+
+              <dd className="mt-1 text-gray-900">
+                {match.providerStatus ||
+                  match.status}
+              </dd>
+            </div>
+
+            <div>
+              <dt className="text-sm font-medium text-gray-500">
+                Last synced
+              </dt>
+
+              <dd className="mt-1 text-gray-900">
+                {match.lastSyncedAt
+                  ? formatDate(
+                      match.lastSyncedAt
+                    )
+                  : "Not available"}
+              </dd>
+            </div>
+          </dl>
+        </article>
+      </div>
+    </main>
+  );
+}
+</file>
+
+<file path="apps/frontend/app/matches/page.tsx">
+import { MatchesClient } from "../components/matches/matches-client";
+
+export default function MatchesPage() {
+  return (
+    <main className="min-h-screen bg-gray-50">
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+        <MatchesClient />
+      </div>
+    </main>
+  );
+}
+</file>
+
+<file path="apps/frontend/app/services/document.service.ts">
+import {
+  UploadDocumentResponse,
+  DocumentQueryRequest,
+  DocumentQueryResponse,
+} from "../types/document";
+
+
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "http://localhost:4000/api";
+
+function getToken(): string | null {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  return localStorage.getItem("token");
+}
+
+export async function uploadDocument(
+  file: File
+): Promise<UploadDocumentResponse> {
+  const token = getToken();
+
+  if (!token) {
+    throw new Error(
+      "Authentication token not found"
+    );
+  }
+
+  const formData = new FormData();
+
+  formData.append("document", file);
+
+  const response = await fetch(
+    `${API_BASE_URL}/ai/documents/upload`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    }
+  );
+
+  const result =
+    (await response.json()) as UploadDocumentResponse;
+
+  if (!response.ok) {
+    throw new Error(
+      result.message ||
+        "Failed to upload document"
+    );
+  }
+
+  return result;
+}
+
+export async function queryDocument(
+  payload: DocumentQueryRequest
+): Promise<DocumentQueryResponse> {
+  const token =
+    localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error(
+      "Authentication token not found"
+    );
+  }
+
+  const response = await fetch(
+    `${API_BASE_URL}/ai/documents/query`,
+    {
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+
+      body: JSON.stringify(payload),
+    }
+  );
+
+  const data =
+    (await response.json()) as
+      | DocumentQueryResponse
+      | {
+          message?: string;
+        };
+
+  if (!response.ok) {
+    throw new Error(
+      "message" in data &&
+        data.message
+        ? data.message
+        : "Unable to query document"
+    );
+  }
+
+  return data as DocumentQueryResponse;
+}
+</file>
+
+<file path="apps/frontend/app/services/match.service.ts">
+import { apiRequest } from "../lib/api";
+
+import type {
+  MatchResponse,
+  MatchesResponse,
+  SyncMatchesResponse,
+} from "../types/match";
+
+export const getMatches =
+  async (): Promise<MatchesResponse> => {
+    return apiRequest<MatchesResponse>("/matches/matches");
+  };
+
+export const getUpcomingMatches =
+  async (): Promise<MatchesResponse> => {
+    return apiRequest<MatchesResponse>(
+      "/matches/upcoming"
+    );
+  };
+
+export const getMatchById = async (
+  id: string
+): Promise<MatchResponse> => {
+  return apiRequest<MatchResponse>(
+    `/matches/matches/${encodeURIComponent(id)}`
+  );
+};
+
+export const syncLiveMatches =
+  async (): Promise<SyncMatchesResponse> => {
+    return apiRequest<SyncMatchesResponse>(
+      "/matches/live-matches/sync",
+      {
+        method: "POST",
+      }
+    );
+  };
+</file>
+
+<file path="apps/frontend/app/types/document.ts">
+export type DocumentStatus =
+  | "uploaded"
+  | "processing"
+  | "completed"
+  | "failed";
+
+export interface RagDocument {
+  id: string;
+  originalName: string;
+  fileSize: number;
+  status: DocumentStatus;
+  createdAt: string;
+}
+
+export interface UploadDocumentResponse {
+  success: boolean;
+  message: string;
+  document: RagDocument;
+}
+
+export interface DocumentSource {
+  documentId: string;
+  originalName: string;
+  chunkIndex: number;
+  score: number;
+  textPreview: string;
+}
+
+export interface DocumentQueryResponse {
+  success: boolean;
+  query: string;
+  answer: string;
+  sources: DocumentSource[];
+}
+
+export interface DocumentQueryRequest {
+  query: string;
+  documentId?: string;
+  limit?: number;
+}
+</file>
+
+<file path="apps/frontend/app/types/match.ts">
+export type MatchFormat =
+  | "T20"
+  | "ODI"
+  | "TEST"
+  | "OTHER";
+
+export type MatchStatus =
+  | "upcoming"
+  | "live"
+  | "completed"
+  | "cancelled";
+
+export interface TeamScore {
+  runs: number;
+  wickets: number;
+  overs: number;
+  inning?: string;
+}
+
+export interface Match {
+  _id: string;
+  externalId: string;
+  name: string;
+
+  teamA: string;
+  teamB: string;
+
+  format: MatchFormat;
+  venue: string;
+
+  startTime: string;
+  status: MatchStatus;
+  providerStatus?: string;
+
+  score?: {
+    teamA?: TeamScore;
+    teamB?: TeamScore;
+  };
+
+  lastSyncedAt?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface MatchesResponse {
+  success: boolean;
+  count: number;
+  data: Match[];
+}
+
+export interface MatchResponse {
+  success: boolean;
+  data: Match;
+}
+
+export interface SyncMatchesResponse {
+  success: boolean;
+  message: string;
+  count: number;
+  data: Match[];
+}
+</file>
+
+<file path="apps/frontend/app/globals.css">
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+</file>
+
+<file path="apps/frontend/context/chat-context.tsx">
+"use client";
+
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+
+import { useRouter } from "next/navigation";
+
+export interface Conversation {
+  _id: string;
+  title: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface ChatMessage {
+  _id?: string;
+  role: "user" | "assistant";
+  content: string;
+  createdAt?: string;
+}
+
+interface ChatContextValue {
+  activeTool: string;
+  setActiveTool: (tool: string) => void;
+
+  conversations: Conversation[];
+  setConversations: React.Dispatch<
+    React.SetStateAction<Conversation[]>
+  >;
+
+  conversationId: string;
+  setConversationId: (id: string) => void;
+
+  messages: ChatMessage[];
+  setMessages: React.Dispatch<
+    React.SetStateAction<ChatMessage[]>
+  >;
+
+  conversationsLoading: boolean;
+  messagesLoading: boolean;
+
+  loadConversations: () => Promise<void>;
+  loadMessages: (id: string) => Promise<void>;
+  createConversation: () => Promise<void>;
+}
+
+const ChatContext =
+  createContext<ChatContextValue | null>(null);
+
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_GATEWAY_URL ||
+  "http://localhost:4000/api";
+
+function getToken(): string | null {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  return localStorage.getItem("token");
+}
+
+function getAuthHeaders(): HeadersInit {
+  const token = getToken();
+
+  return token
+    ? {
+      Authorization: `Bearer ${token}`,
+    }
+    : {};
+}
+
+function extractConversations(
+  response: unknown
+): Conversation[] {
+  if (Array.isArray(response)) {
+    return response;
+  }
+
+  if (
+    typeof response === "object" &&
+    response !== null
+  ) {
+    const result = response as {
+      data?: unknown;
+      conversations?: unknown;
+    };
+
+    if (Array.isArray(result.data)) {
+      return result.data;
+    }
+
+    if (Array.isArray(result.conversations)) {
+      return result.conversations;
+    }
+
+    if (
+      typeof result.data === "object" &&
+      result.data !== null &&
+      "conversations" in result.data
+    ) {
+      const nestedData = result.data as {
+        conversations?: unknown;
+      };
+
+      if (
+        Array.isArray(
+          nestedData.conversations
+        )
+      ) {
+        return nestedData.conversations;
+      }
+    }
+  }
+
+  return [];
+}
+
+function extractMessages(
+  response: unknown
+): ChatMessage[] {
+  if (Array.isArray(response)) {
+    return response;
+  }
+
+  if (
+    typeof response === "object" &&
+    response !== null
+  ) {
+    const result = response as {
+      data?: unknown;
+      messages?: unknown;
+    };
+
+    if (Array.isArray(result.data)) {
+      return result.data;
+    }
+
+    if (Array.isArray(result.messages)) {
+      return result.messages;
+    }
+
+    if (
+      typeof result.data === "object" &&
+      result.data !== null &&
+      "messages" in result.data
+    ) {
+      const nestedData = result.data as {
+        messages?: unknown;
+      };
+
+      if (Array.isArray(nestedData.messages)) {
+        return nestedData.messages;
+      }
+    }
+  }
+
+  return [];
+}
+
+export function ChatProvider({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  const router = useRouter();
+
+  const [activeTool, setActiveTool] =
+    useState("match");
+
+  const [conversations, setConversations] =
+    useState<Conversation[]>([]);
+
+  const [
+    conversationId,
+    setConversationIdState,
+  ] = useState("");
+
+  const [messages, setMessages] = useState<
+    ChatMessage[]
+  >([]);
+
+  const [
+    conversationsLoading,
+    setConversationsLoading,
+  ] = useState(true);
+
+  const [
+    messagesLoading,
+    setMessagesLoading,
+  ] = useState(false);
+
+  const setConversationId = useCallback(
+    (id: string): void => {
+      setConversationIdState(id);
+    },
+    []
+  );
+
+  const loadConversations =
+    useCallback(async (): Promise<void> => {
+      const token = getToken();
+
+      if (!token) {
+        setConversations([]);
+        setConversationsLoading(false);
+        return;
+      }
+      try {
+        setConversationsLoading(true);
+
+        const response = await fetch(
+          `${API_BASE_URL}/ai/list`,
+          {
+            method: "GET",
+            headers: {
+              ...getAuthHeaders(),
+            },
+            cache: "no-store",
+          }
+        );
+
+        const result =
+          await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            result?.message ||
+            "Failed to load conversations"
+          );
+        }
+
+        const conversationList =
+          extractConversations(result);
+
+        setConversations(
+          conversationList
+        );
+      } catch (error) {
+        console.error(
+          "Load conversations failed:",
+          error
+        );
+
+        setConversations([]);
+      } finally {
+        setConversationsLoading(false);
+      }
+    }, []);
+
+  const loadMessages = useCallback(
+    async (id: string): Promise<void> => {
+      try {
+        setMessagesLoading(true);
+
+        /*
+         * Conversation click hote hi selected state
+         * update kar do, taaki sidebar highlight ho.
+         */
+        setConversationId(id);
+
+        const response = await fetch(
+          `${API_BASE_URL}/ai/conversation/${id}/messages`,
+          {
+            method: "GET",
+            headers: {
+              ...getAuthHeaders(),
+            },
+            cache: "no-store",
+          }
+        );
+
+        const result =
+          await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            result?.message ||
+            "Failed to load messages"
+          );
+        }
+
+        const messageList =
+          extractMessages(result);
+
+        setMessages(messageList);
+
+        /*
+         * Matches ya kisi aur page se conversation
+         * click ho to chat page open karo.
+         *
+         * Already "/" par ho to bhi state update ki
+         * wajah se chat page rerender hoga.
+         */
+        router.push("/");
+      } catch (error) {
+        console.error(
+          "Load messages failed:",
+          error
+        );
+      } finally {
+        setMessagesLoading(false);
+      }
+    },
+    [router, setConversationId]
+  );
+
+  const createConversation =
+    useCallback(async (): Promise<void> => {
+      setConversationId("");
+      setMessages([]);
+      setActiveTool("match");
+
+      router.push("/");
+    }, [router, setConversationId]);
+
+  useEffect(() => {
+    setConversationIdState("");
+    setMessages([]);
+
+    localStorage.removeItem("conversationId");
+
+    void loadConversations();
+  }, [loadConversations]);
+
+  return (
+    <ChatContext.Provider
+      value={{
+        activeTool,
+        setActiveTool,
+
+        conversations,
+        setConversations,
+
+        conversationId,
+        setConversationId,
+
+        messages,
+        setMessages,
+
+        conversationsLoading,
+        messagesLoading,
+
+        loadConversations,
+        loadMessages,
+        createConversation,
+      }}
+    >
+      {children}
+    </ChatContext.Provider>
+  );
+}
+
+export function useChat(): ChatContextValue {
+  const context = useContext(ChatContext);
+
+  if (!context) {
+    throw new Error(
+      "useChat must be used inside ChatProvider"
+    );
+  }
+
+  return context;
+}
+</file>
+
+<file path="apps/frontend/public/file.svg">
+<svg fill="none" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M14.5 13.5V5.41a1 1 0 0 0-.3-.7L9.8.29A1 1 0 0 0 9.08 0H1.5v13.5A2.5 2.5 0 0 0 4 16h8a2.5 2.5 0 0 0 2.5-2.5m-1.5 0v-7H8v-5H3v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1M9.5 5V2.12L12.38 5zM5.13 5h-.62v1.25h2.12V5zm-.62 3h7.12v1.25H4.5zm.62 3h-.62v1.25h7.12V11z" clip-rule="evenodd" fill="#666" fill-rule="evenodd"/></svg>
+</file>
+
+<file path="apps/frontend/public/globe.svg">
+<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g clip-path="url(#a)"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.27 14.1a6.5 6.5 0 0 0 3.67-3.45q-1.24.21-2.7.34-.31 1.83-.97 3.1M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.48-1.52a7 7 0 0 1-.96 0H7.5a4 4 0 0 1-.84-1.32q-.38-.89-.63-2.08a40 40 0 0 0 3.92 0q-.25 1.2-.63 2.08a4 4 0 0 1-.84 1.31zm2.94-4.76q1.66-.15 2.95-.43a7 7 0 0 0 0-2.58q-1.3-.27-2.95-.43a18 18 0 0 1 0 3.44m-1.27-3.54a17 17 0 0 1 0 3.64 39 39 0 0 1-4.3 0 17 17 0 0 1 0-3.64 39 39 0 0 1 4.3 0m1.1-1.17q1.45.13 2.69.34a6.5 6.5 0 0 0-3.67-3.44q.65 1.26.98 3.1M8.48 1.5l.01.02q.41.37.84 1.31.38.89.63 2.08a40 40 0 0 0-3.92 0q.25-1.2.63-2.08a4 4 0 0 1 .85-1.32 7 7 0 0 1 .96 0m-2.75.4a6.5 6.5 0 0 0-3.67 3.44 29 29 0 0 1 2.7-.34q.31-1.83.97-3.1M4.58 6.28q-1.66.16-2.95.43a7 7 0 0 0 0 2.58q1.3.27 2.95.43a18 18 0 0 1 0-3.44m.17 4.71q-1.45-.12-2.69-.34a6.5 6.5 0 0 0 3.67 3.44q-.65-1.27-.98-3.1" fill="#666"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h16v16H0z"/></clipPath></defs></svg>
+</file>
+
+<file path="apps/frontend/public/next.svg">
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 394 80"><path fill="#000" d="M262 0h68.5v12.7h-27.2v66.6h-13.6V12.7H262V0ZM149 0v12.7H94v20.4h44.3v12.6H94v21h55v12.6H80.5V0h68.7zm34.3 0h-17.8l63.8 79.4h17.9l-32-39.7 32-39.6h-17.9l-23 28.6-23-28.6zm18.3 56.7-9-11-27.1 33.7h17.8l18.3-22.7z"/><path fill="#000" d="M81 79.3 17 0H0v79.3h13.6V17l50.2 62.3H81Zm252.6-.4c-1 0-1.8-.4-2.5-1s-1.1-1.6-1.1-2.6.3-1.8 1-2.5 1.6-1 2.6-1 1.8.3 2.5 1a3.4 3.4 0 0 1 .6 4.3 3.7 3.7 0 0 1-3 1.8zm23.2-33.5h6v23.3c0 2.1-.4 4-1.3 5.5a9.1 9.1 0 0 1-3.8 3.5c-1.6.8-3.5 1.3-5.7 1.3-2 0-3.7-.4-5.3-1s-2.8-1.8-3.7-3.2c-.9-1.3-1.4-3-1.4-5h6c.1.8.3 1.6.7 2.2s1 1.2 1.6 1.5c.7.4 1.5.5 2.4.5 1 0 1.8-.2 2.4-.6a4 4 0 0 0 1.6-1.8c.3-.8.5-1.8.5-3V45.5zm30.9 9.1a4.4 4.4 0 0 0-2-3.3 7.5 7.5 0 0 0-4.3-1.1c-1.3 0-2.4.2-3.3.5-.9.4-1.6 1-2 1.6a3.5 3.5 0 0 0-.3 4c.3.5.7.9 1.3 1.2l1.8 1 2 .5 3.2.8c1.3.3 2.5.7 3.7 1.2a13 13 0 0 1 3.2 1.8 8.1 8.1 0 0 1 3 6.5c0 2-.5 3.7-1.5 5.1a10 10 0 0 1-4.4 3.5c-1.8.8-4.1 1.2-6.8 1.2-2.6 0-4.9-.4-6.8-1.2-2-.8-3.4-2-4.5-3.5a10 10 0 0 1-1.7-5.6h6a5 5 0 0 0 3.5 4.6c1 .4 2.2.6 3.4.6 1.3 0 2.5-.2 3.5-.6 1-.4 1.8-1 2.4-1.7a4 4 0 0 0 .8-2.4c0-.9-.2-1.6-.7-2.2a11 11 0 0 0-2.1-1.4l-3.2-1-3.8-1c-2.8-.7-5-1.7-6.6-3.2a7.2 7.2 0 0 1-2.4-5.7 8 8 0 0 1 1.7-5 10 10 0 0 1 4.3-3.5c2-.8 4-1.2 6.4-1.2 2.3 0 4.4.4 6.2 1.2 1.8.8 3.2 2 4.3 3.4 1 1.4 1.5 3 1.5 5h-5.8z"/></svg>
+</file>
+
+<file path="apps/frontend/public/vercel.svg">
+<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1155 1000"><path d="m577.3 0 577.4 1000H0z" fill="#fff"/></svg>
+</file>
+
+<file path="apps/frontend/public/window.svg">
+<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" clip-rule="evenodd" d="M1.5 2.5h13v10a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1zM0 1h16v11.5a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 0 12.5zm3.75 4.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5M7 4.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0m1.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5" fill="#666"/></svg>
+</file>
+
+<file path="apps/frontend/.gitignore">
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+</file>
+
+<file path="apps/frontend/AGENTS.md">
+<!-- BEGIN:nextjs-agent-rules -->
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
+<!-- END:nextjs-agent-rules -->
+</file>
+
+<file path="apps/frontend/CLAUDE.md">
+@AGENTS.md
+</file>
+
+<file path="apps/frontend/eslint.config.mjs">
+import { defineConfig, globalIgnores } from "eslint/config";
+import nextVitals from "eslint-config-next/core-web-vitals";
+import nextTs from "eslint-config-next/typescript";
+
+const eslintConfig = defineConfig([
+  ...nextVitals,
+  ...nextTs,
+  // Override default ignores of eslint-config-next.
+  globalIgnores([
+    // Default ignores of eslint-config-next:
+    ".next/**",
+    "out/**",
+    "build/**",
+    "next-env.d.ts",
+  ]),
+]);
+
+export default eslintConfig;
+</file>
+
+<file path="apps/frontend/next.config.ts">
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  /* config options here */
+};
+
+export default nextConfig;
+</file>
+
+<file path="apps/frontend/postcss.config.mjs">
+const config = {
+  plugins: {
+    "@tailwindcss/postcss": {},
+  },
+};
+
+export default config;
+</file>
+
+<file path="apps/frontend/README.md">
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+## Getting Started
+
+First, run the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+
+## Learn More
+
+To learn more about Next.js, take a look at the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+</file>
+
+<file path="apps/frontend/tsconfig.json">
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    "**/*.mts"
+  ],
+  "exclude": ["node_modules"]
+}
+</file>
+
+<file path="packages/typescript-config/base.json">
+{
+    "compilerOptions": {
+      "target": "ES2022",
+      "module": "CommonJS",
+      "moduleResolution": "Node",
+      "strict": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "resolveJsonModule": true,
+      "outDir": "dist"
+    }
+  }
+</file>
+
+<file path="packages/typescript-config/package.json">
+{
+    "name": "@sportsphere/typescript-config",
+    "version": "1.0.0",
+    "private": true
+  }
+</file>
+
+<file path="services/ai-service/src/config/db.ts">
+import mongoose from "mongoose";
+
+const connectDB = async () => {
+  try {
+    await mongoose.connect(
+      process.env.MONGO_URI as string
+    );
+
+    console.log("AI Service MongoDB Connected");
+  } catch (error) {
+    console.log(error);
+
+    process.exit(1);
+  }
+};
+
+export default connectDB;
+</file>
+
+<file path="services/ai-service/src/config/multer.ts">
+import multer from "multer";
+import path from "path";
+
+const storage = multer.diskStorage({
+  destination: (
+    req,
+    file,
+    cb
+  ) => {
+    cb(
+      null,
+      "uploads/documents"
+    );
+  },
+
+  filename: (
+    req,
+    file,
+    cb
+  ) => {
+    const uniqueName =
+      Date.now() +
+      path.extname(
+        file.originalname
+      );
+
+    cb(null, uniqueName);
+  },
+});
+
+const upload = multer({
+  storage,
+});
+
+export default upload;
+</file>
+
+<file path="services/ai-service/src/config/rabbit.ts">
+import amqp from "amqplib";
+
+let channel: amqp.Channel;
+
+export const connectRabbit = async () => {
+  const connection = await amqp.connect(
+    "amqp://guest:guest@localhost:5672"
+  );
+
+  channel = await connection.createChannel();
+  await channel.assertExchange(
+    "chat",
+    "direct",
+    {
+      durable: true,
+    }
+  );
+
+  await channel.assertQueue("chat-title", {
+    durable: true,
+  });
+
+  await channel.bindQueue(
+    "chat-title",
+    "chat",
+    "chat.created"
+  );
+
+  await channel.assertQueue(
+  "conversation.updated",
+  {
+    durable: true,
+  }
+);
+  
+  console.log("RabbitMQ Connected");
+    console.log("Exchange created");
+
+};
+
+export { channel };
+</file>
+
+<file path="services/ai-service/src/config/redis.ts">
+import { createClient } from "redis";
+
+export const redisClient = createClient({
+  url: "redis://localhost:6379",
+});
+
+redisClient.on("error", (err) => {
+  console.error("Redis Error:", err);
+});
+
+export const connectRedis = async () => {
+  await redisClient.connect();
+  console.log("✅ Redis Connected");
+};
+</file>
+
+<file path="services/ai-service/src/config/socket.ts">
+import { Server } from "socket.io";
+
+let io: Server;
+
+export const initializeSocket = (
+  server: any
+) => {
+  io = new Server(server, {
+    cors: {
+      origin: "*",
+    },
+  });
+
+  console.log("✅ Socket.IO Ready");
+};
+
+export const getIO = () => io;
+</file>
+
+<file path="services/ai-service/src/consumers/chat.consumer.ts">
+import { channel } from "../config/rabbit";
+import OpenAI from "openai";
+import Conversation from "../models/conversation.model";
+import cacheService from "../services/cache.service";
+import { getIO } from "../config/socket";
+
+const io = getIO();
+
+const client = new OpenAI({
+    apiKey: process.env.OPENROUTER_API_KEY,
+    baseURL: "https://openrouter.ai/api/v1",
+});
+
+export const startChatConsumer = async () => {
+    channel.consume("chat-title", async (msg) => {
+        if (!msg) return;
+
+        try {
+            const { conversationId, message } = JSON.parse(
+                msg.content.toString()
+            );
+
+            const completion =
+                await client.chat.completions.create({
+                    model: "openrouter/free",
+                    messages: [
+                        {
+                            role: "system",
+                            content:
+                                "Generate a very short chat title (max 5 words). Return only the title.",
+                        },
+                        {
+                            role: "user",
+                            content: message,
+                        },
+                    ],
+                });
+            const conversation =
+                await Conversation.findById(conversationId);
+            const title =
+                completion.choices[0]?.message?.content?.trim();
+
+            if (title) {
+                await Conversation.findByIdAndUpdate(
+                    conversationId,
+                    {
+                        title,
+                    }
+                );
+
+                await cacheService.del(
+                    `conversations:${conversation?.userId}`
+                );
+
+                channel.sendToQueue(
+                    "conversation.updated",
+                    Buffer.from(
+                        JSON.stringify({
+                            conversationId,
+                            title,
+                            userId : conversation?.userId
+                        })
+                    ),
+                    {
+                        persistent: true,
+                    }
+                );
+
+                console.log("📤 conversation.updated published");
+
+
+                console.log("Title Updated:", title);
+            }
+
+            channel.ack(msg);
+        } catch (error) {
+            console.log(error);
+
+            channel.nack(msg, false, false);
+        }
+    });
+};
+</file>
+
+<file path="services/ai-service/src/consumers/document.consumer.ts">
+import { ConsumeMessage } from "amqplib";
+import {
+  storeDocumentChunks,
+} from "../services/rag/vector-store.service";
+
+import {
+  channel,
+} from "../config/rabbit";
+
+import {
+  DocumentModel,
+} from "../models/document.model";
+
+import {
+  DocumentProcessingEvent,
+} from "../types/document-event.types";
+
+import {
+  extractTextFromPdf,
+} from "../services/rag/pdf-extraction.service";
+import {
+  chunkText,
+} from "../services/rag/text-chunking.service";
+
+import {
+  generateChunkEmbeddings,
+} from "../services/rag/embedding.service";
+
+const DOCUMENT_PROCESSING_QUEUE =
+  "document.processing";
+
+export async function startDocumentConsumer(): Promise<void> {
+
+  await channel.assertQueue(
+    DOCUMENT_PROCESSING_QUEUE,
+    {
+      durable: true,
+    }
+  );
+
+  channel.prefetch(1);
+
+  await channel.consume(
+    DOCUMENT_PROCESSING_QUEUE,
+    async (
+      message: ConsumeMessage | null
+    ) => {
+      if (!message) {
+        return;
+      }
+      let documentId: string | undefined;
+      try {
+        const event =
+          JSON.parse(
+            message.content.toString()
+          ) as DocumentProcessingEvent;
+
+        console.log(
+          "Document processing started:",
+          event.documentId
+        );
+
+        const document =
+          await DocumentModel.findById(
+            event.documentId
+          );
+
+        if (!document) {
+          console.error(
+            `Document not found: ${event.documentId}`
+          );
+
+          channel.ack(message);
+          return;
+        }
+
+        document.status =
+          "processing";
+
+        document.errorMessage =
+          undefined;
+
+        await document.save();
+
+        const extracted =
+          await extractTextFromPdf(
+            document.filePath
+          );
+
+        const chunks = chunkText(
+          extracted.text,
+          {
+            chunkSize: 1200,
+            chunkOverlap: 200,
+            minimumChunkSize: 100,
+          }
+        );
+
+        if (chunks.length === 0) {
+          throw new Error(
+            "No valid chunks could be created from the document"
+          );
+        }
+
+        const embeddedChunks =
+          await generateChunkEmbeddings(chunks);
+
+        if (
+          embeddedChunks.length !==
+          chunks.length
+        ) {
+          throw new Error(
+            "Not all chunks were embedded"
+          );
+        }
+
+        const storedChunkCount =
+          await storeDocumentChunks({
+            documentId:
+              document._id.toString(),
+
+            userId:
+              document.userId.toString(),
+
+            originalName:
+              document.originalName,
+
+            chunks:
+              embeddedChunks,
+          });
+
+        if (
+          storedChunkCount !==
+          embeddedChunks.length
+        ) {
+          throw new Error(
+            "Not all document chunks were stored in Qdrant"
+          );
+        }
+        document.pageCount =
+          extracted.pageCount;
+
+        document.characterCount =
+          extracted.characterCount;
+
+        document.chunkCount =
+          chunks.length;
+
+        document.status = "completed";
+        document.errorMessage = undefined;
+
+        await document.save();
+
+        console.log({
+          message:
+            "Document ingestion completed successfully",
+
+          documentId:
+            document._id.toString(),
+
+          pageCount:
+            extracted.pageCount,
+
+          chunkCount:
+            storedChunkCount,
+
+          embeddingDimension:
+            embeddedChunks[0]
+              .embedding.length,
+
+          status:
+            document.status,
+        });
+
+
+        channel.ack(message);
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : "Unknown document processing error";
+
+        console.error(
+          "Document extraction failed:",
+          error
+        );
+
+        if (documentId) {
+          await DocumentModel.findByIdAndUpdate(
+            documentId,
+            {
+              status: "failed",
+              errorMessage,
+            }
+          ).catch((databaseError) => {
+            console.error(
+              "Unable to update failed document status:",
+              databaseError
+            );
+          });
+        }
+
+        channel.nack(
+          message,
+          false,
+          false
+        );
+      }
+    }
+  );
+
+  console.log(
+    `Document consumer listening on ${DOCUMENT_PROCESSING_QUEUE}`
+  );
+}
+</file>
+
+<file path="services/ai-service/src/controllers/commentary.controller.ts">
+import { Request, Response } from "express";
+
+import client from "../services/openrouter.service";
+
+export const summarizeCommentary =
+  async (
+    req: Request,
+    res: Response
+  ) => {
+    try {
+      const { commentary } =
+        req.body;
+
+      if (
+        !commentary ||
+        !Array.isArray(
+          commentary
+        )
+      ) {
+        return res
+          .status(400)
+          .json({
+            message:
+              "Commentary array is required",
+          });
+      }
+
+      const commentaryText =
+        commentary.join("\n");
+
+      const prompt = `
+You are an expert cricket commentator and analyst.
+
+Analyze the following ball-by-ball commentary and generate:
+
+1. Match Summary
+2. Key Turning Points
+3. Momentum Analysis
+4. Best Performers
+5. Match Situation
+6. Important Moments
+
+COMMENTARY:
+${commentaryText}
+
+Important:
+- Keep it natural and professional.
+- Do not invent fake statistics.
+- Use only provided commentary.
+`;
+
+      const completion =
+        await client.chat.completions.create(
+          {
+            model:
+              "openrouter/free",
+
+            messages: [
+              {
+                role: "user",
+                content:
+                  prompt,
+              },
+            ],
+          }
+        );
+
+      const response =
+        completion.choices[0]
+          .message.content;
+
+      res.json({
+        response,
+      });
+    } catch (error) {
+      console.log(error);
+
+      res.status(500).json({
+        message:
+          "Commentary summarization failed",
+      });
+    }
+  };
+</file>
+
+<file path="services/ai-service/src/controllers/document-query.controller.ts">
+import {
+  Request,
+  Response,
+  NextFunction,
+} from "express";
+
+import {
+  retrieveContext,
+} from "../services/rag/retrieval.service";
+
+import {
+  askDocuments,
+} from "../services/rag/rag.service";
+
+interface QueryDocumentBody {
+  query?: string;
+  documentId?: string;
+  limit?: number;
+}
+
+export async function queryDocuments(
+  req: Request<
+    Record<string, never>,
+    unknown,
+    QueryDocumentBody
+  >,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const userId =
+      req.userId;
+
+    if (!userId) {
+      res.status(401).json({
+        success: false,
+        message: "Unauthorized",
+      });
+
+      return;
+    }
+
+    const query =
+      req.body.query?.trim();
+
+    if (!query) {
+      res.status(400).json({
+        success: false,
+        message:
+          "Query is required",
+      });
+
+      return;
+    }
+
+    const requestedLimit =
+      Number(req.body.limit ?? 5);
+
+    const limit = Math.min(
+      Math.max(
+        Number.isInteger(
+          requestedLimit
+        )
+          ? requestedLimit
+          : 5,
+        1
+      ),
+      10
+    );
+
+    const result =
+      await askDocuments({
+        query,
+        userId,
+
+        documentId:
+          req.body.documentId,
+
+        limit,
+      });
+
+    res.status(200).json({
+      success: true,
+      query,
+      answer:
+        result.answer,
+      sources:
+        result.sources,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+</file>
+
+<file path="services/ai-service/src/controllers/match-analysis.controller.ts">
+import { Request, Response } from "express";
+import client from "../services/openrouter.service";
+
+export const analyzeMatch = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const {
+      teamA,
+      teamB,
+      pitch,
+      weather,
+      format,
+      venue,
+      keyPlayers,
+    } = req.body;
+
+    if (!teamA || !teamB || !format) {
+      return res.status(400).json({
+        message: "teamA, teamB and format are required",
+      });
+    }
+
+    const prompt = `
+You are an expert cricket analyst.
+
+Analyze the following match details and give a practical, structured match preview.
+
+Match Details:
+- Team A: ${teamA}
+- Team B: ${teamB}
+- Format: ${format}
+- Venue: ${venue || "Not provided"}
+- Pitch: ${pitch || "Not provided"}
+- Weather: ${weather || "Not provided"}
+- Key Players: ${
+      Array.isArray(keyPlayers)
+        ? keyPlayers.join(", ")
+        : "Not provided"
+    }
+
+Return response in this structure:
+
+1. Match Overview
+2. Pitch & Weather Impact
+3. Team A Strengths
+4. Team B Strengths
+5. Key Players to Watch
+6. Possible Match Strategy
+7. Fantasy Picks
+8. Prediction with Confidence Level
+
+Important:
+- Do not hallucinate recent stats.
+- If data is not provided, clearly say it is based only on provided inputs.
+`;
+
+    const completion =
+      await client.chat.completions.create({
+        model: "openrouter/free",
+        messages: [
+          {
+            role: "user",
+            content: prompt,
+          },
+        ],
+      });
+
+    const response =
+      completion.choices[0].message.content;
+
+    if (!response) {
+      return res.status(500).json({
+        message: "AI returned empty response",
+      });
+    }
+
+    res.json({
+      response,
+    });
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      message: "Match analysis failed",
+    });
+  }
+};
+</file>
+
+<file path="services/ai-service/src/controllers/openai.controller.ts">
+import { Request, Response } from "express";
+import client from "../services/openrouter.service";
+
+export const askAI = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const { prompt } = req.body;
+
+    const completion =
+      await client.chat.completions.create({
+        model:
+          "openrouter/free",
+
+        messages: [
+          {
+            role: "user",
+            content: prompt,
+          },
+        ],
+      });
+
+    res.json({
+      response:
+        completion.choices[0].message.content,
+    });
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      message: "AI request failed",
+    });
+  }
+};
+</file>
+
+<file path="services/ai-service/src/middleware/auth.middleware.ts">
+import { Request, Response, NextFunction } from "express";
+
+declare module "express-serve-static-core" {
+  interface Request {
+    userId?: string;
+  }
+}
+
+export const authenticate = (
+  req: Request,
+  _res: Response,
+  next: NextFunction
+) => {
+  req.userId = req.headers["x-user-id"] as string;
+
+  next();
+};
+</file>
+
+<file path="services/ai-service/src/middleware/document-upload.middleware.ts">
+import fs from "fs";
+import path from "path";
+import crypto from "crypto";
+import multer, {
+  FileFilterCallback,
+} from "multer";
+import { Request } from "express";
+
+const uploadDirectory = path.resolve(
+  process.cwd(),
+  "uploads",
+  "documents"
+);
+
+fs.mkdirSync(uploadDirectory, {
+  recursive: true,
+});
+
+const storage = multer.diskStorage({
+  destination: (
+    _req,
+    _file,
+    callback
+  ) => {
+    callback(null, uploadDirectory);
+  },
+
+  filename: (
+    _req,
+    file,
+    callback
+  ) => {
+    const extension =
+      path.extname(file.originalname)
+        .toLowerCase();
+
+    const uniqueName =
+      `${Date.now()}-${crypto.randomUUID()}${extension}`;
+
+    callback(null, uniqueName);
+  },
+});
+
+const fileFilter = (
+  _req: Request,
+  file: Express.Multer.File,
+  callback: FileFilterCallback
+): void => {
+  const isPdfMimeType =
+    file.mimetype === "application/pdf";
+
+  const isPdfExtension =
+    path.extname(file.originalname)
+      .toLowerCase() === ".pdf";
+
+  if (!isPdfMimeType || !isPdfExtension) {
+    callback(
+      new Error(
+        "Only PDF documents are allowed"
+      )
+    );
+
+    return;
+  }
+
+  callback(null, true);
+};
+
+export const uploadDocument =
+  multer({
+    storage,
+    fileFilter,
+    limits: {
+      fileSize: 10 * 1024 * 1024,
+      files: 1,
+    },
+  }).single("document");
+</file>
+
+<file path="services/ai-service/src/models/codeChunk.model.ts">
+import mongoose, { Schema } from "mongoose";
+
+const codeChunkSchema = new Schema(
+  {
+    filePath: {
+      type: String,
+      required: true,
+    },
+
+    content: {
+      type: String,
+      required: true,
+    },
+
+    chunkIndex: {
+      type: Number,
+      required: true,
+    },
+
+    embedding: {
+      type: [Number],
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+export default mongoose.model(
+  "CodeChunk",
+  codeChunkSchema
+);
+</file>
+
+<file path="services/ai-service/src/models/conversation.model.ts">
+import mongoose, { Schema } from "mongoose";
+
+const conversationSchema = new Schema(
+  {
+    userId: {
+      type: String,
+      required: true,
+    },
+
+    title: {
+      type: String,
+      default: "New Chat",
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+export default mongoose.model(
+  "Conversation",
+  conversationSchema
+);
+</file>
+
+<file path="services/ai-service/src/models/documentChunk.model.ts">
+import mongoose, { Schema } from "mongoose";
+
+const documentChunkSchema = new Schema(
+  {
+    documentId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Document",
+      required: true,
+    },
+    content: {
+      type: String,
+      required: true,
+    },
+    chunkIndex: {
+      type: Number,
+      required: true,
+    },
+    embedding: {
+      type: [Number],
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+export default mongoose.model("DocumentChunk", documentChunkSchema);
+</file>
+
+<file path="services/ai-service/src/models/message.model.ts">
+import mongoose, { Schema } from "mongoose";
+
+const messageSchema = new Schema(
+  {
+    conversationId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Conversation",
+      required: true,
+    },
+
+    role: {
+      type: String,
+      enum: ["user", "assistant"],
+      required: true,
+    },
+
+    content: {
+      type: String,
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+export default mongoose.model(
+  "Message",
+  messageSchema
+);
+</file>
+
+<file path="services/ai-service/src/producers/document.producer.ts">
+import { channel } from "../config/rabbit";
+import { DocumentProcessingEvent } from "../types/document-event.types";
+
+const DOCUMENT_PROCESSING_QUEUE =
+  "document.processing";
+
+export async function publishDocumentProcessingEvent(
+  event: DocumentProcessingEvent
+): Promise<void> {
+
+  await channel.assertQueue(
+    DOCUMENT_PROCESSING_QUEUE,
+    {
+      durable: true,
+    }
+  );
+
+  const published =
+    channel.sendToQueue(
+      DOCUMENT_PROCESSING_QUEUE,
+      Buffer.from(
+        JSON.stringify(event)
+      ),
+      {
+        persistent: true,
+        contentType:
+          "application/json",
+      }
+    );
+
+  if (!published) {
+    console.warn(
+      "Document event buffered by RabbitMQ"
+    );
+  }
+
+  console.log(
+    `Document processing event published: ${event.documentId}`
+  );
+}
+</file>
+
+<file path="services/ai-service/src/routes/ai.routes.ts">
+import express from "express";
+import { askAI } from "../controllers/openai.controller";
+
+const router = express.Router();
+
+router.post("/ask", askAI);
+
+export default router;
+</file>
+
+<file path="services/ai-service/src/routes/chat.routes.ts">
+import express from "express";
+
+import { chatWithAI } from "../controllers/chat.controller";
+
+const router = express.Router();
+
+router.post("/chat", chatWithAI);
+
+export default router;
+</file>
+
+<file path="services/ai-service/src/routes/commentary.routes.ts">
+import express from "express";
+
+import { summarizeCommentary } from "../controllers/commentary.controller";
+
+const router = express.Router();
+
+router.post(
+  "/commentary/summarize",
+  summarizeCommentary
+);
+
+export default router;
+</file>
+
+<file path="services/ai-service/src/routes/match-analysis.routes.ts">
+import express from "express";
+import { analyzeMatch } from "../controllers/match-analysis.controller";
+
+const router = express.Router();
+
+router.post("/match/analyze", analyzeMatch);
+
+export default router;
+</file>
+
+<file path="services/ai-service/src/routes/rag.routes.ts">
+import express from "express";
+
+import { askCodebase } from "../controllers/rag.controller";
+
+const router = express.Router();
+
+router.post("/rag/ask", askCodebase);
+
+export default router;
+</file>
+
+<file path="services/ai-service/src/services/rag/embedding.service.ts">
+import {
+  EMBEDDING_DIMENSION,
+  QDRANT_COLLECTION,
+  qdrantClient,
+} from "../../config/qdrant";
+import {
+  EmbeddedChunk,
+  TextChunk,
+} from "../../types/rag.types";
+
+interface OllamaEmbeddingResponse {
+  model: string;
+  embeddings: number[][];
+  total_duration?: number;
+  load_duration?: number;
+  prompt_eval_count?: number;
+}
+
+const OLLAMA_BASE_URL =
+  process.env.OLLAMA_BASE_URL ??
+  "http://localhost:11434";
+
+const OLLAMA_EMBEDDING_MODEL =
+  process.env.OLLAMA_EMBEDDING_MODEL ??
+  "nomic-embed-text";
+
+const EMBEDDING_BATCH_SIZE = Number(
+  process.env.EMBEDDING_BATCH_SIZE ?? 10
+);
+
+function createBatches<T>(
+  items: T[],
+  batchSize: number
+): T[][] {
+  const batches: T[][] = [];
+
+  for (
+    let index = 0;
+    index < items.length;
+    index += batchSize
+  ) {
+    batches.push(
+      items.slice(index, index + batchSize)
+    );
+  }
+
+  return batches;
+}
+
+async function generateEmbeddingBatch(
+  texts: string[]
+): Promise<number[][]> {
+  const response = await fetch(
+    `${OLLAMA_BASE_URL}/api/embed`,
+    {
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        model: OLLAMA_EMBEDDING_MODEL,
+        input: texts,
+        truncate: true,
+      }),
+    }
+  );
+
+  if (!response.ok) {
+    const errorBody =
+      await response.text();
+
+    throw new Error(
+      `Ollama embedding request failed with status ${response.status}: ${errorBody}`
+    );
+  }
+
+  const result =
+    (await response.json()) as OllamaEmbeddingResponse;
+
+  if (!Array.isArray(result.embeddings)) {
+    throw new Error(
+      "Ollama response does not contain embeddings"
+    );
+  }
+
+  return result.embeddings;
+}
+
+export async function generateChunkEmbeddings(
+  chunks: TextChunk[]
+): Promise<EmbeddedChunk[]> {
+  if (chunks.length === 0) {
+    return [];
+  }
+
+  if (
+    !Number.isInteger(EMBEDDING_BATCH_SIZE) ||
+    EMBEDDING_BATCH_SIZE <= 0
+  ) {
+    throw new Error(
+      "EMBEDDING_BATCH_SIZE must be a positive integer"
+    );
+  }
+
+  const batches = createBatches(
+    chunks,
+    EMBEDDING_BATCH_SIZE
+  );
+
+  const embeddedChunks: EmbeddedChunk[] = [];
+
+  let expectedDimension: number | undefined;
+
+  for (
+    let batchIndex = 0;
+    batchIndex < batches.length;
+    batchIndex += 1
+  ) {
+    const batch = batches[batchIndex];
+
+    console.log(
+      `Generating Ollama embedding batch ${
+        batchIndex + 1
+      }/${batches.length}`
+    );
+
+    const embeddings =
+      await generateEmbeddingBatch(
+        batch.map((chunk) => chunk.text)
+      );
+
+    if (embeddings.length !== batch.length) {
+      throw new Error(
+        `Embedding count mismatch. Expected ${batch.length}, received ${embeddings.length}`
+      );
+    }
+
+    embeddings.forEach(
+      (embedding, index) => {
+        const chunk = batch[index];
+
+        if (
+          !Array.isArray(embedding) ||
+          embedding.length === 0
+        ) {
+          throw new Error(
+            `Invalid embedding for chunk ${chunk.chunkIndex}`
+          );
+        }
+
+        if (!expectedDimension) {
+          expectedDimension =
+            embedding.length;
+        }
+
+        if (
+          embedding.length !==
+          expectedDimension
+        ) {
+          throw new Error(
+            `Embedding dimension mismatch for chunk ${chunk.chunkIndex}`
+          );
+        }
+
+        embeddedChunks.push({
+          ...chunk,
+          embedding,
+        });
+      }
+    );
+  }
+
+  return embeddedChunks;
+}
+
+export async function initializeVectorStore(): Promise<void> {
+  const collections =
+    await qdrantClient.getCollections();
+
+  const collectionExists =
+    collections.collections.some(
+      (collection) =>
+        collection.name === QDRANT_COLLECTION
+    );
+
+  if (collectionExists) {
+    console.log(
+      `Qdrant collection already exists: ${QDRANT_COLLECTION}`
+    );
+
+    return;
+  }
+
+  await qdrantClient.createCollection(
+    QDRANT_COLLECTION,
+    {
+      vectors: {
+        size: EMBEDDING_DIMENSION,
+        distance: "Cosine",
+      },
+    }
+  );
+
+  console.log(
+    `Qdrant collection created: ${QDRANT_COLLECTION}`
+  );
+}
+
+export async function generateQueryEmbedding(
+  query: string
+): Promise<number[]> {
+  const normalizedQuery = query.trim();
+
+  if (!normalizedQuery) {
+    throw new Error(
+      "Query cannot be empty"
+    );
+  }
+
+  const embeddings =
+    await generateEmbeddingBatch([
+      normalizedQuery,
+    ]);
+
+  const embedding = embeddings[0];
+
+  if (
+    !embedding ||
+    embedding.length === 0
+  ) {
+    throw new Error(
+      "Query embedding could not be generated"
+    );
+  }
+
+  return embedding;
+}
+</file>
+
+<file path="services/ai-service/src/services/rag/pdf-extraction.service.ts">
+import fs from "node:fs/promises";
+import { PDFParse } from "pdf-parse";
+
+export interface ExtractedPdf {
+  text: string;
+  pageCount: number;
+  characterCount: number;
+}
+
+function cleanExtractedText(text: string): string {
+  return text
+    // Windows line endings normalize
+    .replace(/\r\n/g, "\n")
+
+    // Spaces and tabs normalize
+    .replace(/[ \t]+/g, " ")
+
+    // Line ke start/end ke extra spaces remove
+    .replace(/^[ \t]+|[ \t]+$/gm, "")
+
+    // 3+ blank lines ko maximum 2 banao
+    .replace(/\n{3,}/g, "\n\n")
+
+    .trim();
+}
+
+export async function extractTextFromPdf(
+  filePath: string
+): Promise<ExtractedPdf> {
+  const fileBuffer = await fs.readFile(filePath);
+
+  const parser = new PDFParse({
+    data: fileBuffer,
+  });
+
+  try {
+    const result = await parser.getText();
+
+    const cleanedText =
+      cleanExtractedText(result.text);
+
+    if (!cleanedText) {
+      throw new Error(
+        "No readable text found in the PDF"
+      );
+    }
+
+    return {
+      text: cleanedText,
+      pageCount: result.total,
+      characterCount:
+        cleanedText.length,
+    };
+  } finally {
+    await parser.destroy();
+  }
+}
+</file>
+
+<file path="services/ai-service/src/services/rag/rag-answer.service.ts">
+import client from "../../services/openrouter.service";
+
+import {
+  RagAnswerResult,
+  RetrievedChunk,
+} from "../../types/rag.types";
+
+interface GenerateRagAnswerInput {
+  query: string;
+  chunks: RetrievedChunk[];
+}
+
+const OPENROUTER_MODEL =
+  process.env.OPENROUTER_MODEL || "openrouter/free";
+
+function buildContext(
+  chunks: RetrievedChunk[]
+): string {
+  return chunks
+    .map((chunk, index) => {
+      return [
+        `[Source ${index + 1}]`,
+        `Document: ${chunk.originalName}`,
+        `Chunk: ${chunk.chunkIndex}`,
+        `Similarity score: ${chunk.score.toFixed(4)}`,
+        "",
+        chunk.text,
+      ].join("\n");
+    })
+    .join("\n\n---\n\n");
+}
+
+export async function generateRagAnswer(
+  input: GenerateRagAnswerInput
+): Promise<RagAnswerResult> {
+  const query = input.query.trim();
+
+  if (!query) {
+    throw new Error("Query is required");
+  }
+
+  if (!OPENROUTER_MODEL) {
+    throw new Error(
+      "OPENROUTER_MODEL is not configured"
+    );
+  }
+
+  if (input.chunks.length === 0) {
+    return {
+      answer:
+        "I could not find this information in the uploaded documents.",
+      sources: [],
+    };
+  }
+
+  const context = buildContext(
+    input.chunks
+  );
+
+  const completion =
+    await client.chat.completions.create({
+      model: OPENROUTER_MODEL,
+
+      temperature: 0.1,
+
+      messages: [
+        {
+          role: "system",
+          content: [
+            "You are a document question-answering assistant.",
+            "Answer only from the provided document context.",
+            "Do not use outside knowledge.",
+            "Do not invent or assume missing facts.",
+            "If the answer is not clearly available in the context, say:",
+            '"I could not find this information in the uploaded documents."',
+            "Keep the answer direct and concise.",
+            "When useful, mention the source number in square brackets, such as [Source 1].",
+          ].join("\n"),
+        },
+        {
+          role: "user",
+          content: [
+            "DOCUMENT CONTEXT:",
+            context,
+            "",
+            "USER QUESTION:",
+            query,
+          ].join("\n"),
+        },
+      ],
+    });
+
+  const answer =
+    completion.choices[0]?.message
+      ?.content?.trim();
+
+  if (!answer) {
+    throw new Error(
+      "OpenRouter returned an empty RAG answer"
+    );
+  }
+
+  return {
+    answer,
+
+    sources: input.chunks.map(
+      (chunk) => ({
+        documentId:
+          chunk.documentId,
+
+        originalName:
+          chunk.originalName,
+
+        chunkIndex:
+          chunk.chunkIndex,
+
+        score:
+          chunk.score,
+
+        textPreview:
+          chunk.text.slice(0, 200),
+      })
+    ),
+  };
+}
+</file>
+
+<file path="services/ai-service/src/services/rag/rag.service.ts">
+import {
+  retrieveContext,
+} from "./retrieval.service";
+
+import {
+  generateRagAnswer,
+} from "./rag-answer.service";
+
+import {
+  RagAnswerResult,
+} from "../../types/rag.types";
+
+interface AskDocumentsInput {
+  query: string;
+  userId: string;
+  documentId?: string;
+  limit?: number;
+}
+
+export async function askDocuments(
+  input: AskDocumentsInput
+): Promise<RagAnswerResult> {
+  const chunks =
+    await retrieveContext({
+      query: input.query,
+      userId: input.userId,
+      documentId:
+        input.documentId,
+      limit: input.limit ?? 5,
+    });
+
+  console.log({
+    message:
+      "Relevant document context retrieved",
+    query:
+      input.query,
+    chunkCount:
+      chunks.length,
+    scores:
+      chunks.map((chunk) =>
+        Number(chunk.score.toFixed(4))
+      ),
+  });
+
+  return generateRagAnswer({
+    query: input.query,
+    chunks,
+  });
+}
+</file>
+
+<file path="services/ai-service/src/services/rag/retrieval.service.ts">
+import {
+  generateQueryEmbedding,
+} from "./embedding.service";
+
+import {
+  searchDocumentChunks,
+} from "./vector-store.service";
+
+import {
+  RetrievedChunk,
+} from "../../types/rag.types";
+
+interface RetrieveContextInput {
+  query: string;
+  userId: string;
+  documentId?: string;
+  limit?: number;
+}
+
+export async function retrieveContext(
+  input: RetrieveContextInput
+): Promise<RetrievedChunk[]> {
+  const {
+    query,
+    userId,
+    documentId,
+    limit = 5,
+  } = input;
+
+  const normalizedQuery =
+    query.trim();
+
+  if (!normalizedQuery) {
+    throw new Error(
+      "Query is required"
+    );
+  }
+
+  const queryVector =
+    await generateQueryEmbedding(
+      normalizedQuery
+    );
+
+  const chunks =
+    await searchDocumentChunks({
+      queryVector,
+      userId,
+      documentId,
+      limit,
+      scoreThreshold: 0.3,
+    });
+
+  return chunks;
+}
+</file>
+
+<file path="services/ai-service/src/services/rag/text-chunking.service.ts">
+import { TextChunk } from "../../types/rag.types";
+
+export interface ChunkTextOptions {
+  chunkSize?: number;
+  chunkOverlap?: number;
+  minimumChunkSize?: number;
+}
+
+const DEFAULT_CHUNK_SIZE = 1200;
+const DEFAULT_CHUNK_OVERLAP = 200;
+const DEFAULT_MINIMUM_CHUNK_SIZE = 100;
+
+function findBestSplitPosition(
+  text: string,
+  start: number,
+  idealEnd: number
+): number {
+  if (idealEnd >= text.length) {
+    return text.length;
+  }
+
+  const searchStart = Math.max(
+    start,
+    idealEnd - 300
+  );
+
+  const candidateText = text.slice(
+    searchStart,
+    idealEnd
+  );
+
+  const paragraphBreak =
+    candidateText.lastIndexOf("\n\n");
+
+  if (paragraphBreak !== -1) {
+    return searchStart + paragraphBreak + 2;
+  }
+
+  const sentenceEnd = Math.max(
+    candidateText.lastIndexOf(". "),
+    candidateText.lastIndexOf("? "),
+    candidateText.lastIndexOf("! ")
+  );
+
+  if (sentenceEnd !== -1) {
+    return searchStart + sentenceEnd + 2;
+  }
+
+  const lineBreak =
+    candidateText.lastIndexOf("\n");
+
+  if (lineBreak !== -1) {
+    return searchStart + lineBreak + 1;
+  }
+
+  const whitespace =
+    candidateText.lastIndexOf(" ");
+
+  if (whitespace !== -1) {
+    return searchStart + whitespace + 1;
+  }
+
+  return idealEnd;
+}
+
+export function chunkText(
+  text: string,
+  options: ChunkTextOptions = {}
+): TextChunk[] {
+  const chunkSize =
+    options.chunkSize ??
+    DEFAULT_CHUNK_SIZE;
+
+  const chunkOverlap =
+    options.chunkOverlap ??
+    DEFAULT_CHUNK_OVERLAP;
+
+  const minimumChunkSize =
+    options.minimumChunkSize ??
+    DEFAULT_MINIMUM_CHUNK_SIZE;
+
+  if (!text.trim()) {
+    return [];
+  }
+
+  if (chunkSize <= 0) {
+    throw new Error(
+      "Chunk size must be greater than zero"
+    );
+  }
+
+  if (
+    chunkOverlap < 0 ||
+    chunkOverlap >= chunkSize
+  ) {
+    throw new Error(
+      "Chunk overlap must be greater than or equal to zero and smaller than chunk size"
+    );
+  }
+
+  const chunks: TextChunk[] = [];
+
+  let start = 0;
+  let chunkIndex = 0;
+
+  while (start < text.length) {
+    const idealEnd = Math.min(
+      start + chunkSize,
+      text.length
+    );
+
+    const end = findBestSplitPosition(
+      text,
+      start,
+      idealEnd
+    );
+
+    const chunkContent = text
+      .slice(start, end)
+      .trim();
+
+    if (
+      chunkContent.length >= minimumChunkSize
+    ) {
+      chunks.push({
+        chunkIndex,
+        text: chunkContent,
+        characterCount:
+          chunkContent.length,
+        startCharacter: start,
+        endCharacter: end,
+      });
+
+      chunkIndex += 1;
+    }
+
+    if (end >= text.length) {
+      break;
+    }
+
+    const overlappingStart =
+      end - chunkOverlap;
+
+    const adjustedStart =
+      adjustStartToWordBoundary(
+        text,
+        overlappingStart
+      );
+
+    start =
+      adjustedStart > start
+        ? adjustedStart
+        : end;
+  }
+
+  return chunks;
+}
+
+function adjustStartToWordBoundary(
+  text: string,
+  start: number
+): number {
+  if (start <= 0) {
+    return 0;
+  }
+
+  if (/\s/.test(text[start - 1] ?? "")) {
+    return start;
+  }
+
+  const nextWhitespace =
+    text.slice(start).search(/\s/);
+
+  if (nextWhitespace === -1) {
+    return start;
+  }
+
+  return start + nextWhitespace + 1;
+}
+</file>
+
+<file path="services/ai-service/src/services/rag/vector-store.service.ts">
+import crypto from "node:crypto";
+
+import {
+    EmbeddedChunk,
+} from "../../types/rag.types";
+
+import {
+    qdrantClient,
+} from "../../config/qdrant";
+
+import {
+  RetrievedChunk,
+} from "../../types/rag.types";
+
+
+interface StoreDocumentChunksInput {
+    documentId: string;
+    userId: string;
+    originalName: string;
+    chunks: EmbeddedChunk[];
+}
+
+interface SearchDocumentChunksInput {
+  queryVector: number[];
+  userId: string;
+  documentId?: string;
+  limit?: number;
+  scoreThreshold?: number;
+}
+
+const QDRANT_COLLECTION =
+    process.env.QDRANT_COLLECTION ??
+    "sportsphere_documents";
+
+const QDRANT_BATCH_SIZE = Number(
+    process.env.QDRANT_BATCH_SIZE ?? 50
+);
+
+const EMBEDDING_MODEL =
+    process.env.OLLAMA_EMBEDDING_MODEL ??
+    "nomic-embed-text";
+
+function createPointId(
+    documentId: string,
+    chunkIndex: number
+): string {
+    const hash = crypto
+        .createHash("sha256")
+        .update(`${documentId}:${chunkIndex}`)
+        .digest("hex");
+
+    return [
+        hash.slice(0, 8),
+        hash.slice(8, 12),
+        `5${hash.slice(13, 16)}`,
+        `8${hash.slice(17, 20)}`,
+        hash.slice(20, 32),
+    ].join("-");
+}
+
+function createBatches<T>(
+  items: T[],
+  batchSize: number
+): T[][] {
+  const batches: T[][] = [];
+
+  for (
+    let index = 0;
+    index < items.length;
+    index += batchSize
+  ) {
+    batches.push(
+      items.slice(
+        index,
+        index + batchSize
+      )
+    );
+  }
+
+  return batches;
+}
+
+export async function storeDocumentChunks(
+  input: StoreDocumentChunksInput
+): Promise<number> {
+  const {
+    documentId,
+    userId,
+    originalName,
+    chunks,
+  } = input;
+
+  if (chunks.length === 0) {
+    throw new Error(
+      "Cannot store an empty chunk list"
+    );
+  }
+
+  if (
+    !Number.isInteger(QDRANT_BATCH_SIZE) ||
+    QDRANT_BATCH_SIZE <= 0
+  ) {
+    throw new Error(
+      "QDRANT_BATCH_SIZE must be a positive integer"
+    );
+  }
+
+  const points = chunks.map((chunk) => ({
+    id: createPointId(
+      documentId,
+      chunk.chunkIndex
+    ),
+
+    vector: chunk.embedding,
+
+    payload: {
+      documentId,
+      userId,
+      originalName,
+
+      chunkIndex:
+        chunk.chunkIndex,
+
+      text:
+        chunk.text,
+
+      characterCount:
+        chunk.characterCount,
+
+      startCharacter:
+        chunk.startCharacter,
+
+      endCharacter:
+        chunk.endCharacter,
+
+      embeddingModel:
+        EMBEDDING_MODEL,
+    },
+  }));
+
+  const batches = createBatches(
+    points,
+    QDRANT_BATCH_SIZE
+  );
+
+  for (
+    let batchIndex = 0;
+    batchIndex < batches.length;
+    batchIndex += 1
+  ) {
+    const batch = batches[batchIndex];
+
+    console.log(
+      `Storing Qdrant batch ${
+        batchIndex + 1
+      }/${batches.length}`
+    );
+
+    await qdrantClient.upsert(
+      QDRANT_COLLECTION,
+      {
+        wait: true,
+        points: batch,
+      }
+    );
+  }
+
+  return points.length;
+}
+
+export async function searchDocumentChunks(
+  input: SearchDocumentChunksInput
+): Promise<RetrievedChunk[]> {
+  const {
+    queryVector,
+    userId,
+    documentId,
+    limit = 5,
+    scoreThreshold = 0.3,
+  } = input;
+
+  if (queryVector.length === 0) {
+    throw new Error(
+      "Query vector cannot be empty"
+    );
+  }
+
+  const mustFilters: Array<{
+    key: string;
+    match: {
+      value: string;
+    };
+  }> = [
+    {
+      key: "userId",
+      match: {
+        value: userId,
+      },
+    },
+  ];
+
+  if (documentId) {
+    mustFilters.push({
+      key: "documentId",
+      match: {
+        value: documentId,
+      },
+    });
+  }
+
+  const results =
+    await qdrantClient.search(
+      QDRANT_COLLECTION,
+      {
+        vector: queryVector,
+        limit,
+        score_threshold:
+          scoreThreshold,
+
+        filter: {
+          must: mustFilters,
+        },
+
+        with_payload: true,
+        with_vector: false,
+      }
+    );
+
+  return results.map((result) => {
+    const payload =
+      result.payload ?? {};
+
+    return {
+      id: result.id,
+      score: result.score,
+
+      documentId: String(
+        payload.documentId ?? ""
+      ),
+
+      originalName: String(
+        payload.originalName ?? ""
+      ),
+
+      chunkIndex: Number(
+        payload.chunkIndex ?? 0
+      ),
+
+      text: String(
+        payload.text ?? ""
+      ),
+
+      startCharacter: Number(
+        payload.startCharacter ?? 0
+      ),
+
+      endCharacter: Number(
+        payload.endCharacter ?? 0
+      ),
+    };
+  });
+}
+</file>
+
+<file path="services/ai-service/src/services/cache.service.ts">
+import { redisClient } from "../config/redis";
+
+class CacheService {
+  async get<T>(key: string): Promise<T | null> {
+    const data = await redisClient.get(key);
+
+    if (!data) return null;
+
+    return JSON.parse(data);
+  }
+
+  async set(key: string, value: unknown, ttl = 300) {
+    await redisClient.set(
+      key,
+      JSON.stringify(value),
+      {
+        EX: ttl,
+      }
+    );
+  }
+
+  async del(key: string) {
+    await redisClient.del(key);
+  }
+}
+
+export default new CacheService();
+</file>
+
+<file path="services/ai-service/src/services/gemini.service.ts">
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+const genAI = new GoogleGenerativeAI(
+  process.env.GEMINI_API_KEY as string
+);
+
+export default genAI;
+</file>
+
+<file path="services/ai-service/src/services/openai.service.ts">
+import OpenAI from "openai";
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
+export default openai;
+</file>
+
+<file path="services/ai-service/src/types/document-event.types.ts">
+export interface DocumentProcessingEvent {
+  documentId: string;
+  userId: string;
+  filePath: string;
+  originalName: string;
+}
+</file>
+
+<file path="services/ai-service/src/types/express.d.ts">
+declare namespace Express {
+  export interface Request {
+    userId?: string;
+  }
+}
+</file>
+
+<file path="services/ai-service/src/types/rag.types.ts">
+export interface TextChunk {
+  chunkIndex: number;
+  text: string;
+  characterCount: number;
+  startCharacter: number;
+  endCharacter: number;
+}
+
+export interface EmbeddedChunk extends TextChunk {
+  embedding: number[];
+}
+
+export interface DocumentChunkPayload {
+  documentId: string;
+  userId: string;
+  originalName: string;
+
+  chunkIndex: number;
+  text: string;
+  characterCount: number;
+  startCharacter: number;
+  endCharacter: number;
+
+  embeddingModel: string;
+}
+
+export interface RetrievedChunk {
+  id: string | number;
+  score: number;
+
+  documentId: string;
+  originalName: string;
+
+  chunkIndex: number;
+  text: string;
+
+  startCharacter: number;
+  endCharacter: number;
+}
+
+export interface RagSource {
+  documentId: string;
+  originalName: string;
+  chunkIndex: number;
+  score: number;
+  textPreview: string;
+}
+
+export interface RagAnswerResult {
+  answer: string;
+  sources: RagSource[];
+}
+</file>
+
+<file path="services/ai-service/src/utils/vector.ts">
+export function cosineSimilarity(
+    vectorA: number[],
+    vectorB: number[]
+  ) {
+    let dotProduct = 0;
+    let magnitudeA = 0;
+    let magnitudeB = 0;
+  
+    for (let i = 0; i < vectorA.length; i++) {
+      dotProduct += vectorA[i] * vectorB[i];
+      magnitudeA += vectorA[i] * vectorA[i];
+      magnitudeB += vectorB[i] * vectorB[i];
+    }
+  
+    magnitudeA = Math.sqrt(magnitudeA);
+    magnitudeB = Math.sqrt(magnitudeB);
+  
+    if (magnitudeA === 0 || magnitudeB === 0) {
+      return 0;
+    }
+  
+    return dotProduct / (magnitudeA * magnitudeB);
+  }
+</file>
+
+<file path="services/ai-service/Dockerfile">
+FROM node:22-bookworm-slim
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 5002
+
+CMD ["npm", "run", "dev"]
+</file>
+
+<file path="services/ai-service/tsconfig.json">
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "strict": true,
+    "esModuleInterop": true
+  }
+}
+</file>
+
+<file path="services/api-gateway/src/config/rabbit.ts">
+import amqp from "amqplib";
+
+let channel: amqp.Channel;
+
+export const connectRabbit = async () => {
+  const connection = await amqp.connect(
+    "amqp://guest:guest@localhost:5672"
+  );
+
+  channel = await connection.createChannel();
+
+  await channel.assertQueue(
+    "conversation.updated",
+    {
+      durable: true,
+    }
+  );
+
+  console.log("✅ RabbitMQ Connected");
+  console.log("✅ conversation.updated queue ready");
+};
+
+export { channel };
+</file>
+
+<file path="services/api-gateway/src/config/socket.ts">
+import { Server } from "socket.io";
+import jwt from "jsonwebtoken";
+
+let io: Server;
+
+export const initializeSocket = (server: any) => {
+	io = new Server(server, {
+		cors: {
+			origin: "http://localhost:3000",
+		},
+	});
+
+	io.on("connection", (socket) => {
+		console.log("✅ Client Connected", socket.id);
+
+		const token = socket.handshake.auth.token;
+		const decoded = jwt.verify(
+			token,
+			process.env.JWT_SECRET!
+		) as any;
+
+		console.log(
+			`${decoded.id} joined room`
+		);
+
+		socket.join(decoded.id);
+
+		socket.on("disconnect", () => {
+			console.log("❌ Client Disconnected", socket.id);
+		});
+	});
+};
+
+export const getIO = () => io;
+</file>
+
+<file path="services/api-gateway/src/consumers/conversation.consumer.ts">
+import { channel } from "../config/rabbit";
+import { getIO } from "../config/socket";
+
+export const startConversationConsumer =
+  async () => {
+
+    channel.consume(
+      "conversation.updated",
+
+      (message) => {
+
+        if (!message) return;
+
+        const data = JSON.parse(
+          message.content.toString()
+        );
+
+        console.log(
+          "Conversation Updated",
+          data
+        );
+
+        getIO()
+          .to(data.userId)
+          .emit(
+            "conversationUpdated",
+            data
+          );
+
+        channel.ack(message);
+      }
+    );
+
+    console.log(
+      "✅ Conversation Consumer Started"
+    );
+  };
+</file>
+
+<file path="services/api-gateway/.dockerignore">
+node_modules
+dist
+npm-debug.log
+</file>
+
+<file path="services/api-gateway/Dockerfile">
+FROM node:22-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+EXPOSE 4000
+
+CMD ["sh", "-c", "npm install && npm run dev"]
+</file>
+
+<file path="services/api-gateway/tsconfig.json">
+{
+    "compilerOptions": {
+      "target": "ES2022",
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "rootDir": "./src",
+      "outDir": "./dist",
+      "strict": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "resolveJsonModule": true
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "dist"]
+  }
+</file>
+
+<file path="services/auth-service/src/config/db.ts">
+import mongoose from "mongoose";
+
+export const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI as string);
+    console.log("MongoDB connected");
+  } catch (error) {
+    console.error("Mongo connection failed", error);
+    process.exit(1);
+  }
+};
+</file>
+
+<file path="services/auth-service/src/controllers/admin.controller.ts">
+import { Response } from "express";
+import { AuthRequest } from "../types/auth";
+import { isRole, Role } from "../types/role";
+import User from "../models/User";
+
+export const listUsers = async (_req: AuthRequest, res: Response) => {
+  try {
+    const users = await User.find().select("-password");
+    res.status(200).json({ users });
+  } catch {
+    res.status(500).json({ message: "Failed to fetch users" });
+  }
+};
+
+export const updateUserRole = async (req: AuthRequest, res: Response) => {
+  try {
+    const { role } = req.body as { role?: Role };
+
+    if (!role || !isRole(role)) {
+      return res.status(400).json({
+        message: "Valid role is required",
+        allowedRoles: ["user", "admin", "ai-agent"],
+      });
+    }
+
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { role },
+      { new: true, runValidators: true }
+    ).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      message: "Role updated successfully",
+      user,
+    });
+  } catch {
+    res.status(500).json({ message: "Failed to update role" });
+  }
+};
+</file>
+
+<file path="services/auth-service/src/controllers/auth.controller.ts">
+import { Request, Response } from "express";
+import bcrypt from "bcryptjs";
+import User from "../models/User";
+import generateToken from "../utils/generateToken";
+import { isRole } from "../types/role";
+
+const sanitizeUser = (user: InstanceType<typeof User>) => {
+  const { password: _password, ...safeUser } = user.toObject();
+  return safeUser;
+};
+
+export const register = async (req: Request, res: Response) => {
+  try {
+    const { name, email, password, role: requestedRole } = req.body;
+
+    if (requestedRole && requestedRole !== "user") {
+      return res.status(403).json({
+        message: "Cannot self-assign elevated roles. Default role is user.",
+      });
+    }
+
+    if (requestedRole && !isRole(requestedRole)) {
+      return res.status(400).json({ message: "Invalid role" });
+    }
+
+    const existingUser = await User.findOne({ email });
+
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      role: "user",
+    });
+
+    res.status(201).json({
+      message: "User registered successfully",
+      token: generateToken(user._id.toString(), user.role),
+      user: sanitizeUser(user),
+    });
+  } catch {
+    res.status(500).json({ message: "Registration failed" });
+  }
+};
+
+export const login = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    res.status(200).json({
+      message: "Login successful",
+      token: generateToken(user._id.toString(), user.role),
+      user: sanitizeUser(user),
+    });
+  } catch {
+    res.status(500).json({ message: "Login failed" });
+  }
+};
+</file>
+
+<file path="services/auth-service/src/controllers/rbac.controller.ts">
+import { Response } from "express";
+import { AuthRequest } from "../types/auth";
+import User from "../models/User";
+
+export const getProfile = async (req: AuthRequest, res: Response) => {
+  try {
+    const user = await User.findById(req.user?.id).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ user });
+  } catch {
+    res.status(500).json({ message: "Failed to fetch profile" });
+  }
+};
+
+export const userArea = (_req: AuthRequest, res: Response) => {
+  res.json({
+    message: "User area — accessible by user, admin, and ai-agent",
+    role: _req.user?.role,
+  });
+};
+
+export const adminArea = (_req: AuthRequest, res: Response) => {
+  res.json({
+    message: "Admin area — admin only",
+    role: _req.user?.role,
+  });
+};
+
+export const aiAgentArea = (_req: AuthRequest, res: Response) => {
+  res.json({
+    message: "AI agent area — ai-agent only",
+    role: _req.user?.role,
+  });
+};
+</file>
+
+<file path="services/auth-service/src/middlewares/auth.middleware.ts">
+import { Response, NextFunction } from "express";
+import jwt from "jsonwebtoken";
+import { AuthRequest, JwtPayload } from "../types/auth";
+import { isRole } from "../types/role";
+
+const authMiddleware = (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ message: "No token provided" });
+    }
+
+    const token = authHeader.split(" ")[1];
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET as string
+    ) as JwtPayload;
+
+    if (!decoded.id || !decoded.role || !isRole(decoded.role)) {
+      return res.status(401).json({ message: "Invalid token payload" });
+    }
+
+    req.user = { id: decoded.id, role: decoded.role };
+    next();
+  } catch {
+    return res.status(401).json({ message: "Invalid or expired token" });
+  }
+};
+
+export default authMiddleware;
+</file>
+
+<file path="services/auth-service/src/middlewares/rbac.middleware.ts">
+import { Response, NextFunction } from "express";
+import { AuthRequest } from "../types/auth";
+import { Role } from "../types/role";
+
+export const authorize =
+  (...allowedRoles: Role[]) =>
+  (req: AuthRequest, res: Response, next: NextFunction) => {
+    if (!req.user) {
+      return res.status(401).json({ message: "Authentication required" });
+    }
+
+    if (!allowedRoles.includes(req.user.role)) {
+      return res.status(403).json({
+        message: "You do not have permission to access this resource",
+        requiredRoles: allowedRoles,
+        yourRole: req.user.role,
+      });
+    }
+
+    next();
+  };
+</file>
+
+<file path="services/auth-service/src/models/User.ts">
+import mongoose from "mongoose";
+
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+
+    password: {
+      type: String,
+      required: true,
+    },
+
+    role: {
+      type: String,
+      enum: ["user", "admin", "ai-agent"],
+      default: "user",
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+export default mongoose.model("User", userSchema);
+</file>
+
+<file path="services/auth-service/src/routes/admin.routes.ts">
+import { Router } from "express";
+import authMiddleware from "../middlewares/auth.middleware";
+import { authorize } from "../middlewares/rbac.middleware";
+import { listUsers, updateUserRole } from "../controllers/admin.controller";
+
+const router = Router();
+
+router.use(authMiddleware, authorize("admin"));
+
+router.get("/users", listUsers);
+router.patch("/users/:id/role", updateUserRole);
+
+export default router;
+</file>
+
+<file path="services/auth-service/src/routes/auth.routes.ts">
+import { Router } from "express";
+import { register, login } from "../controllers/auth.controller";
+
+const router = Router();
+
+router.post("/register", register);
+router.post("/login", login);
+
+export default router;
+</file>
+
+<file path="services/auth-service/src/routes/rbac.routes.ts">
+import { Router } from "express";
+import authMiddleware from "../middlewares/auth.middleware";
+import { authorize } from "../middlewares/rbac.middleware";
+import {
+  getProfile,
+  userArea,
+  adminArea,
+  aiAgentArea,
+} from "../controllers/rbac.controller";
+
+const router = Router();
+
+router.get("/me", authMiddleware, getProfile);
+
+router.get(
+  "/user",
+  authMiddleware,
+  authorize("user", "admin", "ai-agent"),
+  userArea
+);
+
+router.get("/admin", authMiddleware, authorize("admin"), adminArea);
+
+router.get("/ai-agent", authMiddleware, authorize("ai-agent"), aiAgentArea);
+
+export default router;
+</file>
+
+<file path="services/auth-service/src/routes/test.routes.ts">
+import { Router, Response } from "express";
+import authMiddleware from "../middlewares/auth.middleware";
+import { authorize } from "../middlewares/rbac.middleware";
+import { AuthRequest } from "../types/auth";
+
+const router = Router();
+
+router.get("/protected", authMiddleware, (req: AuthRequest, res: Response) => {
+  res.json({
+    message: "Protected route working",
+    role: req.user?.role,
+  });
+});
+
+router.get(
+  "/admin-only",
+  authMiddleware,
+  authorize("admin"),
+  (req: AuthRequest, res: Response) => {
+    res.json({
+      message: "Admin-only test route",
+      role: req.user?.role,
+    });
+  }
+);
+
+export default router;
+</file>
+
+<file path="services/auth-service/src/types/auth.ts">
+import { Request } from "express";
+import { Role } from "./role";
+
+export interface JwtPayload {
+  id: string;
+  role: Role;
+}
+
+export interface AuthRequest extends Request {
+  user?: JwtPayload;
+}
+</file>
+
+<file path="services/auth-service/src/types/role.ts">
+export const ROLES = ["user", "admin", "ai-agent"] as const;
+
+export type Role = (typeof ROLES)[number];
+
+export const isRole = (value: string): value is Role =>
+  ROLES.includes(value as Role);
+</file>
+
+<file path="services/auth-service/src/utils/generateToken.ts">
+import jwt from "jsonwebtoken";
+import { Role } from "../types/role";
+
+const generateToken = (id: string, role: Role) => {
+  return jwt.sign({ id, role }, process.env.JWT_SECRET as string, {
+    expiresIn: "7d",
+  });
+};
+
+export default generateToken;
+</file>
+
+<file path="services/auth-service/src/index.ts">
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import helmet from "helmet";
+import morgan from "morgan";
+import { connectDB } from "./config/db";
+import authRoutes from "./routes/auth.routes";
+import rbacRoutes from "./routes/rbac.routes";
+import adminRoutes from "./routes/admin.routes";
+import testRoutes from "./routes/test.routes";
+
+dotenv.config();
+
+const app = express();
+
+app.use(cors());
+app.use(helmet());
+app.use(express.json());
+app.use(morgan("dev"));
+app.use("/", authRoutes);
+app.use("/rbac", rbacRoutes);
+app.use("/admin", adminRoutes);
+app.use("/test", testRoutes);
+app.get("/health", (req, res) => {
+  res.json({ status: "auth-service running" });
+});
+
+const start = async () => {
+  await connectDB();
+
+  const PORT = process.env.PORT || 5001;
+
+  app.listen(PORT, () => {
+    console.log(`Auth Service running on port ${PORT}`);
+  });
+};
+
+start();
+</file>
+
+<file path="services/auth-service/.dockerignore">
+node_modules
+dist
+data
+*.log
+.git
+</file>
+
+<file path="services/auth-service/Dockerfile">
+FROM node:22-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+EXPOSE 5001
+
+CMD ["npm", "run", "dev"]
+</file>
+
+<file path="services/auth-service/package.json">
+{
+  "name": "auth-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/mongoose": "^5.11.96",
+    "@types/morgan": "^1.9.10",
+    "@types/node": "^25.8.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^6.0.3"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.6.2",
+    "morgan": "^1.10.0"
+  }
+}
+</file>
+
+<file path="services/auth-service/tsconfig.json">
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}
+</file>
+
+<file path="services/match-service/src/config/db.ts">
+import mongoose from "mongoose";
+
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI as string);
+    console.log("Match Service MongoDB Connected");
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+};
+
+export default connectDB;
+</file>
+
+<file path="services/match-service/Dockerfile">
+FROM node:22-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 5003
+
+CMD ["npm", "run", "dev"]
+</file>
+
+<file path="services/match-service/package.json">
+{
+  "name": "match-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.9.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^6.0.3"
+  },
+  "dependencies": {
+    "axios": "^1.13.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "mongoose": "^9.6.2"
+  }
+}
+</file>
+
+<file path="services/match-service/tsconfig.json">
+{
+    "compilerOptions": {
+      "target": "ES2022",
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "rootDir": "./src",
+      "outDir": "./dist",
+      "strict": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true
+    },
+    "include": ["src"],
+    "exclude": ["node_modules", "dist"]
+  }
+</file>
+
+<file path="services/package.json">
+{
+  "name": "services",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mongoose": "^9.6.2"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.9.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^6.0.3"
+  }
+}
+</file>
+
+<file path="context.md">
+SPORTSPHERE-AI PROJECT CONTEXT
+1. Project Overview
+
+Sportsphere-AI is an AI-powered sports assistant application.
+
+Current development focus:
+
+AI chat system
+Conversation management
+Realtime updates
+Event-driven backend architecture
+
+Current phase:
+Phase 1: AI Chat Platform
+
+Chat system is almost complete.
+
+2. Tech Stack
+Frontend
+Next.js (App Router)
+TypeScript
+Socket.io Client
+Backend
+Node.js
+Express.js
+TypeScript
+Architecture
+
+Microservices based architecture:
+
+Services:
+
+API Gateway
+Auth Service
+AI Service
+Match Service
+
+Infrastructure:
+
+Docker
+MongoDB
+Redis
+RabbitMQ
+
+Authentication:
+
+JWT based authentication
+
+AI:
+
+LLM integration (OpenRouter/OpenAI compatible)
+3. Project Architecture
+
+High level flow:
+
+Frontend (Next.js)
+        |
+        |
+API Gateway :4000
+        |
+ --------------------------------
+ |              |               |
+Auth         AI Service      Match Service
+:5001          :5002            :5003
+ |
+MongoDB
+
+API Gateway responsibilities:
+
+Route requests to services
+Authentication middleware
+Socket.io server
+RabbitMQ event consumer
+4. Authentication Flow
+
+Implemented:
+
+Register API
+Login API
+JWT generation
+Protected routes
+
+Flow:
+
+User Login
+    |
+Auth Service
+    |
+Generate JWT
+    |
+Frontend stores token
+    |
+API requests send:
+
+Authorization: Bearer <token>
+
+    |
+API Gateway middleware validates token
+5. AI Chat System
+
+Implemented:
+
+Features:
+
+✅ Create conversation
+✅ Send messages
+✅ Save messages
+✅ Load previous conversations
+✅ Load previous messages
+✅ AI response generation
+
+Flow:
+
+User Message
+      |
+Frontend
+      |
+API Gateway
+      |
+AI Service
+      |
+LLM
+      |
+Save response
+      |
+MongoDB
+6. Redis Implementation
+
+Redis is already implemented.
+
+Purpose:
+
+Cache conversations
+Cache messages
+Reduce MongoDB reads
+
+Flow:
+
+Request conversation/messages
+
+        |
+        v
+
+Check Redis
+
+        |
+ ----------------
+ |              |
+Found        Not Found
+ |              |
+Return      MongoDB
+              |
+              v
+        Store in Redis
+              |
+              v
+          Return Data
+
+MongoDB remains the source of truth.
+Redis is used as cache layer.
+
+7. RabbitMQ Implementation
+
+RabbitMQ is used for asynchronous event-driven communication.
+
+Currently two events exist:
+
+Event 1: chat-title
+
+Purpose:
+Generate conversation title asynchronously.
+
+Flow:
+
+First user message
+        |
+Conversation created
+        |
+Publish chat-title event
+        |
+RabbitMQ Exchange
+(chat)
+        |
+Consumer
+        |
+Generate title using LLM
+        |
+Update conversation
+Event 2: conversation-update
+
+Purpose:
+Send realtime title update to frontend.
+
+Flow:
+
+Title generated
+        |
+Conversation updated
+        |
+sendToQueue()
+        |
+RabbitMQ Queue
+        |
+API Gateway Consumer
+        |
+Socket.io emit
+        |
+Frontend Update
+8. Socket.io Implementation
+
+Socket.io is implemented inside API Gateway.
+
+Purpose:
+
+Real-time frontend updates
+
+Current use case:
+
+Conversation title update.
+
+Flow:
+
+RabbitMQ Consumer
+        |
+API Gateway
+        |
+Socket.io emit
+        |
+Frontend listener
+        |
+Update sidebar title
+
+No page refresh required.
+
+9. Current Completed Features
+
+✅ Microservices setup
+✅ API Gateway routing
+✅ JWT authentication
+✅ AI Chat
+✅ Conversation management
+✅ Message persistence
+✅ Redis caching
+✅ RabbitMQ async title generation
+✅ Socket.io realtime updates
+
+10. Not Started Yet
+
+❌ RAG implementation
+
+❌ Match service features
+
+Match service currently only exists as service structure.
+
+Future scope:
+
+Live matches
+Match analysis
+Sports data integration
+11. Current Development Status
+
+Current state:
+
+"The AI chat module is almost complete."
+
+Continue development from here.
+
+Do not redesign architecture.
+
+Next possible tasks:
+
+Improve chat UX
+Realtime message streaming
+Typing indicator
+Redis optimization
+RAG implementation
+Sports features
+12. Important Instruction For AI Assistant
+
+When continuing this project:
+
+Understand existing architecture first.
+Prefer production-level solutions.
+Do not suggest replacing the architecture.
+Continue from current implementation.
+Ask for existing code before major changes.
+
+# current architecture 
+
+├── apps
+│   └── frontend
+│       ├── AGENTS.md
+│       ├── app
+│       ├── CLAUDE.md
+│       ├── eslint.config.mjs
+│       ├── next.config.ts
+│       ├── next-env.d.ts
+│       ├── package.json
+│       ├── postcss.config.mjs
+│       ├── public
+│       ├── README.md
+│       └── tsconfig.json
+├── context.md
+├── docker-compose.yml
+├── package.json
+├── package-lock.json
+├── packages
+│   └── typescript-config
+│       ├── base.json
+│       └── package.json
+├── services
+│   ├── ai-service
+│   │   ├── Dockerfile
+│   │   ├── package.json
+│   │   ├── package-lock.json
+│   │   ├── src
+│   │   └── tsconfig.json
+│   ├── api-gateway
+│   │   ├── Dockerfile
+│   │   ├── package.json
+│   │   ├── package-lock.json
+│   │   ├── src
+│   │   └── tsconfig.json
+│   ├── auth-service
+│   │   ├── data
+│   │   ├── Dockerfile
+│   │   ├── package.json
+│   │   ├── package-lock.json
+│   │   ├── src
+│   │   └── tsconfig.json
+│   ├── match-service
+│   │   ├── Dockerfile
+│   │   ├── package.json
+│   │   ├── package-lock.json
+│   │   ├── src
+│   │   └── tsconfig.json
+│   ├── package.json
+│   └── package-lock.json
+└── turbo.json
+</file>
+
+<file path="turbo.json">
+{
+    "$schema": "https://turbo.build/schema.json",
+    "tasks": {
+      "build": {
+        "dependsOn": ["^build"],
+        "outputs": ["dist/**", ".next/**"]
+      },
+      "dev": {
+        "cache": false,
+        "persistent": true
+      },
+      "lint": {},
+      "test": {}
+    }
+  }
+</file>
+
+<file path="apps/frontend/app/components/Sidebar/Sidebar.tsx">
+"use client";
+
+import {
+  usePathname,
+  useRouter,
+} from "next/navigation";
+
+import { useChat } from "@/context/chat-context";
+
+const menuItems = [
+  {
+    id: "match",
+    label: "Match Analysis",
+  },
+  {
+    id: "commentary",
+    label: "Commentary Summarizer",
+  },
+  {
+    id: "document",
+    label: "Document RAG",
+  },
+  {
+    id: "codebase",
+    label: "Codebase RAG",
+  },
+];
+
+export default function Sidebar() {
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const {
+    activeTool,
+    setActiveTool,
+
+    conversations,
+    conversationId,
+
+    conversationsLoading,
+
+    loadMessages,
+    createConversation,
+  } = useChat();
+
+  const isMatchesPage =
+    pathname.startsWith("/matches");
+
+  const handleToolClick = (
+    toolId: string
+  ): void => {
+    /*
+     * Tool state context mein update hogi.
+     */
+    setActiveTool(toolId);
+
+    /*
+     * Matches page se tool click hone par
+     * home/chat page open hoga.
+     */
+    if (pathname !== "/") {
+      router.push("/");
+    }
+  };
+
+  const handleConversationClick = async (
+    id: string
+  ): Promise<void> => {
+    await loadMessages(id);
+  };
+
+  return (
+    <aside className="flex h-screen w-72 shrink-0 flex-col border-r border-zinc-800 bg-zinc-950 p-5 text-white">
+      <button
+        type="button"
+        onClick={() => router.push("/")}
+        className="mb-8 text-left text-2xl font-bold"
+      >
+        Sportsphere AI
+      </button>
+
+      <button
+        type="button"
+        onClick={() => {
+          void createConversation();
+        }}
+        className="mb-6 w-full rounded-xl bg-blue-600 py-3 font-medium transition hover:bg-blue-700"
+      >
+        + New Chat
+      </button>
+
+      <div className="min-h-0 flex-1 overflow-y-auto">
+        <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-zinc-500">
+          Conversations
+        </h3>
+
+        <div className="space-y-2">
+          {conversationsLoading ? (
+            <p className="px-3 py-2 text-sm text-zinc-500">
+              Loading conversations...
+            </p>
+          ) : conversations.length === 0 ? (
+            <p className="px-3 py-2 text-sm text-zinc-500">
+              No conversations yet
+            </p>
+          ) : (
+            conversations.map(
+              (conversation) => {
+                const isActive =
+                  conversationId ===
+                    conversation._id &&
+                  !isMatchesPage;
+
+                return (
+                  <button
+                    type="button"
+                    key={conversation._id}
+                    onClick={() => {
+                      void handleConversationClick(
+                        conversation._id
+                      );
+                    }}
+                    title={
+                      conversation.title
+                    }
+                    className={`w-full truncate rounded-lg px-3 py-2 text-left text-sm transition ${
+                      isActive
+                        ? "bg-zinc-700"
+                        : "hover:bg-zinc-800"
+                    }`}
+                  >
+                    {conversation.title ||
+                      "New Conversation"}
+                  </button>
+                );
+              }
+            )
+          )}
+        </div>
+
+        <h3 className="mb-3 mt-8 text-xs font-semibold uppercase tracking-wider text-zinc-500">
+          Tools
+        </h3>
+
+        <div className="space-y-2">
+          {menuItems.map((item) => {
+            const isActive =
+              !isMatchesPage &&
+              activeTool === item.id;
+
+            return (
+              <button
+                type="button"
+                key={item.id}
+                onClick={() =>
+                  handleToolClick(item.id)
+                }
+                className={`w-full rounded-xl px-4 py-3 text-left text-sm transition ${
+                  isActive
+                    ? "bg-blue-600"
+                    : "bg-zinc-900 hover:bg-zinc-800"
+                }`}
+              >
+                {item.label}
+              </button>
+            );
+          })}
+
+          <button
+            type="button"
+            onClick={() =>
+              router.push("/matches")
+            }
+            className={`w-full rounded-xl px-4 py-3 text-left text-sm transition ${
+              isMatchesPage
+                ? "bg-blue-600"
+                : "bg-zinc-900 hover:bg-zinc-800"
+            }`}
+          >
+            Matches
+          </button>
+        </div>
+      </div>
+    </aside>
+  );
+}
+</file>
+
+<file path="apps/frontend/app/layout.tsx">
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import "./globals.css";
+import AppShell from "./components/layout/app-shell";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+export const metadata: Metadata = {
+  title: "Sportsphere AI",
+  description: "AI-powered sports assistant",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+    >
+      <body className="min-h-full flex flex-col"><AppShell>{children}</AppShell></body>
+    </html>
+  );
+}
+</file>
+
+<file path="apps/frontend/package.json">
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "next": "16.2.6",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "socket.io-client": "^4.8.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.6",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
+</file>
+
+<file path="services/ai-service/src/config/qdrant.ts">
+import { QdrantClient } from "@qdrant/js-client-rest";
+
+const qdrantUrl = process.env.QDRANT_URL;
+
+if (!qdrantUrl) {
+  throw new Error(
+    "QDRANT_URL is missing from environment variables"
+  );
+}
+
+export const qdrantClient = new QdrantClient({
+  url: qdrantUrl,
+});
+
+export const QDRANT_COLLECTION =
+  process.env.QDRANT_COLLECTION ||
+  "sportsphere_documents";
+
+export const EMBEDDING_DIMENSION = Number(
+  process.env.EMBEDDING_DIMENSION || 768
+);
+</file>
+
+<file path="services/ai-service/src/controllers/chat.controller.ts">
+import { Request, Response } from "express";
+import Message from "../models/message.model";
+import Conversation from "../models/conversation.model";
+import cacheService from "../services/cache.service";
+import client from "../services/openrouter.service";
+import { channel } from "../config/rabbit";
+
+export const chatWithAI = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const { conversationId, message } = req.body;
+    const userId = req.headers["x-user-id"] as string;
+
+    // Save user message
+    await Message.create({
+      conversationId,
+      role: "user",
+      content: message,
+    });
+
+    // Fetch conversation history
+    const messages = await Message.find({
+      conversationId,
+    }).sort({
+      createdAt: 1,
+    });
+
+    // Convert messages for LLM
+    const formattedMessages = messages.map((msg) => ({
+      role: msg.role,
+      content: msg.content,
+    }));
+
+    // AI Request
+    const completion =
+      await client.chat.completions.create({
+        model: "openrouter/free",
+        messages: formattedMessages as any,
+      });
+
+    const aiResponse =
+      completion.choices[0]?.message?.content;
+
+    if (!aiResponse) {
+      return res.status(500).json({
+        message: "AI returned empty response",
+      });
+    }
+
+    // Save AI response
+    await Message.create({
+      conversationId,
+      role: "assistant",
+      content: aiResponse,
+    });
+
+    const conversation = await Conversation.findById(conversationId);
+
+    if (conversation?.title === "New Chat") {
+      channel.publish(
+        "chat",
+        "chat.created",
+        Buffer.from(
+          JSON.stringify({
+            conversationId,
+            message,
+          })
+        )
+      );
+
+      console.log("Published to RabbitMQ");
+    }
+
+    // Update conversation timestamp
+    await Conversation.findByIdAndUpdate(
+      conversationId,
+      {
+        updatedAt: new Date(),
+      }
+    );
+
+    // Invalidate Redis cache
+    await cacheService.del(
+      `messages:${conversationId}`
+    );
+
+    await cacheService.del(
+      `conversations:${userId}`
+    );
+
+    return res.json({
+      response: aiResponse,
+    });
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      message: "Chat failed",
+    });
+  }
+};
+</file>
+
+<file path="services/ai-service/src/controllers/rag.controller.ts">
+import { Request, Response } from "express";
+import CodeChunk from "../models/codeChunk.model";
+import client from "../services/openrouter.service";
+import { generateEmbedding } from "../services/rag/embedding.service";
+import { cosineSimilarity } from "../utils/vector";
+
+export const askCodebase = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const { question } = req.body;
+
+    const questionEmbedding =
+      await generateEmbedding(question);
+
+    const allChunks = await CodeChunk.find({});
+
+    const rankedChunks = allChunks
+      .map((chunk) => {
+        const score = cosineSimilarity(
+          questionEmbedding as number[],
+          chunk.embedding
+        );
+
+        return {
+          chunk,
+          score,
+        };
+      })
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 5);
+
+    const context = rankedChunks
+      .map(
+        ({ chunk, score }) =>
+          `FILE: ${chunk.filePath}
+SIMILARITY_SCORE: ${score}
+
+${chunk.content}`
+      )
+      .join("\n\n---\n\n");
+
+    const prompt = `
+You are a senior codebase assistant.
+
+Answer the question using ONLY the provided project context.
+If the context is not enough, say that clearly.
+
+PROJECT CONTEXT:
+${context}
+
+QUESTION:
+${question}
+`;
+
+    const completion =
+      await client.chat.completions.create({
+        model: "openrouter/free",
+        messages: [
+          {
+            role: "user",
+            content: prompt,
+          },
+        ],
+      });
+
+    const response =
+      completion.choices[0].message.content;
+
+    res.json({
+      response,
+      chunksFound: rankedChunks.length,
+      sources: rankedChunks.map(({ chunk, score }) => ({
+        filePath: chunk.filePath,
+        chunkIndex: chunk.chunkIndex,
+        score,
+      })),
+    });
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      message: "RAG request failed",
+    });
+  }
+};
+</file>
+
+<file path="services/ai-service/src/scripts/ingest-codebase.ts">
+import fs from "fs";
+import path from "path";
+import connectDB from "../config/db";
+import CodeChunk from "../models/codeChunk.model";
+import dotenv from "dotenv";
+import { generateEmbedding } from "../services/rag/embedding.service";
+
+dotenv.config();
+
+const ROOT_DIR = path.resolve(__dirname, "../../../../");
+
+const ALLOWED_EXTENSIONS = [".ts", ".js", ".json", ".md"];
+
+const IGNORED_FOLDERS = [
+  "node_modules",
+  "dist",
+  ".git",
+  "data",
+];
+
+const CHUNK_SIZE = 1200;
+
+function shouldIgnore(filePath: string) {
+  return IGNORED_FOLDERS.some((folder) =>
+    filePath.includes(`${path.sep}${folder}${path.sep}`)
+  );
+}
+
+function isAllowedFile(filePath: string) {
+  return ALLOWED_EXTENSIONS.includes(path.extname(filePath));
+}
+
+function getAllFiles(dir: string): string[] {
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+  const files: string[] = [];
+
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name);
+
+    if (shouldIgnore(fullPath)) continue;
+
+    if (entry.isDirectory()) {
+      files.push(...getAllFiles(fullPath));
+    } else if (isAllowedFile(fullPath)) {
+      files.push(fullPath);
+    }
+  }
+
+  return files;
+}
+
+function chunkText(text: string) {
+  const chunks: string[] = [];
+
+  for (let i = 0; i < text.length; i += CHUNK_SIZE) {
+    chunks.push(text.slice(i, i + CHUNK_SIZE));
+  }
+
+  return chunks;
+}
+
+async function main() {
+  await connectDB();
+
+  await CodeChunk.deleteMany({});
+  console.log("Old code chunks deleted");
+
+  const files = getAllFiles(ROOT_DIR);
+
+  console.log(`Total files found: ${files.length}`);
+
+  let totalChunks = 0;
+
+  for (const file of files) {
+    const content = fs.readFileSync(file, "utf-8");
+    const chunks = chunkText(content);
+
+    for (let i = 0; i < chunks.length; i++) {
+      const embedding: number[] = await generateEmbedding(chunks[i]);
+
+await CodeChunk.create({
+  filePath: file.replace(ROOT_DIR, ""),
+  content: chunks[i],
+  chunkIndex: i,
+  embedding,
+});
+
+      totalChunks++;
+    }
+
+    console.log("==============================");
+    console.log("Saved file:", file.replace(ROOT_DIR, ""));
+    console.log("Chunks:", chunks.length);
+  }
+
+  console.log("==============================");
+  console.log(`Total chunks saved: ${totalChunks}`);
+
+  process.exit(0);
+}
+
+main();
+</file>
+
+<file path="services/ai-service/src/scripts/test-embedding.ts">
+import { generateEmbedding } from "../services/rag/embedding.service";
+
+async function test() {
+  const embedding =
+    await generateEmbedding(
+      "JWT authentication"
+    );
+
+  console.log(
+    "Embedding length:",
+    embedding.length
+  );
+
+  console.log(
+    embedding.slice(0, 10)
+  );
+}
+
+test();
+</file>
+
+<file path="services/ai-service/src/services/openrouter.service.ts">
+import OpenAI from "openai";
+import dotenv from "dotenv";
+dotenv.config();
+
+const client = new OpenAI({
+  apiKey: process.env.OPENROUTER_API_KEY,
+  baseURL: "https://openrouter.ai/api/v1",
+});
+
+export default client;
+</file>
+
+<file path="services/api-gateway/src/middlewares/auth.middleware.ts">
+import { Request, Response, NextFunction } from "express";
+import jwt from "jsonwebtoken";
+
+export interface AuthRequest extends Request {
+  user?: {
+    id: string;
+    email: string;
+  };
+}
+
+export const authenticate = (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader?.startsWith("Bearer ")) {
+      return res.status(401).json({
+        message: "Unauthorized",
+      });
+    }
+
+    const token = authHeader.split(" ")[1];
+
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET!
+    ) as any;
+
+    req.user = {
+      id: decoded.id,
+      email: decoded.email,
+    };
+    req.headers["x-user-id"] = decoded.id;
+    next();
+  } catch {
+    return res.status(401).json({
+      message: "Invalid token",
+    });
+  }
+};
+</file>
+
+<file path="services/api-gateway/src/index.ts">
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import routes from "./routes";
+import http from "http";
+import { initializeSocket } from "./config/socket";
+import { connectRabbit } from "./config/rabbit";
+import { startConversationConsumer } from "./consumers/conversation.consumer";
+
+dotenv.config();
+
+const app = express();
+const server = http.createServer(app);
+
+initializeSocket(server);
+
+app.use(cors());
+app.use(helmet());
+app.use(morgan('dev'));
+
+// Proxy routes must be registered before express.json() — body-parser
+// consumes the request stream and breaks POST forwarding to upstream services.
+app.use("/api", routes);
+
+app.use(express.json());
+
+const PORT = process.env.PORT || 4000;
+
+app.get('/health', (_req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: 'API Gateway is running'
+  });
+});
+
+const bootstrap = async () => {
+
+  await connectRabbit();
+
+  await startConversationConsumer();
+
+  server.listen(PORT, () => {
+    console.log(
+      `API Gateway running on port ${PORT}`
+    );
+  });
+
+};
+
+bootstrap();
+</file>
+
+<file path="services/api-gateway/package.json">
+{
+  "name": "api-gateway",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "amqplib": "^2.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "http-proxy-middleware": "^4.0.0",
+    "morgan": "^1.10.0",
+    "socket.io": "^4.8.3",
+    "socket.io-client": "^4.8.3"
+  },
+  "devDependencies": {
+    "@types/amqplib": "^0.10.8",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/morgan": "^1.9.10",
+    "@types/node": "^24.0.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.8.3"
+  }
+}
+</file>
+
+<file path="services/match-service/src/controllers/live-match.controller.ts">
+import { Request, Response } from "express";
+import { getLiveMatches, syncCurrentMatches } from "../services/cricapi.service";
+
+export const fetchLiveMatches = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const matches = await getLiveMatches();
+
+    res.status(200).json({
+      success: true,
+      data: matches,
+    });
+  } catch (error) {
+    console.error("Error fetching live matches:", error);
+
+    res.status(500).json({
+      success: false,
+      message:
+        error instanceof Error
+          ? error.message
+          : "Failed to fetch live matches",
+    });
+  }
+};
+
+export const syncLiveMatches = async (
+  _req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const matches = await syncCurrentMatches();
+
+    res.status(200).json({
+      success: true,
+      message: "Current matches synced successfully",
+      count: matches.length,
+      data: matches,
+    });
+  } catch (error) {
+    console.error("Error syncing live matches:", error);
+
+    res.status(500).json({
+      success: false,
+      message:
+        error instanceof Error
+          ? error.message
+          : "Failed to sync live matches",
+    });
+  }
+};
+</file>
+
+<file path="services/match-service/src/controllers/match.controller.ts">
+import { randomUUID } from "crypto";
+import { Request, Response } from "express";
+import mongoose from "mongoose";
+import Match from "../models/match.model";
+
+const allowedFormats = ["T20", "ODI", "TEST", "OTHER"];
+
+export const createMatch = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const {
+      externalId,
+      name,
+      teamA,
+      teamB,
+      format,
+      venue,
+      startTime,
+      status = "upcoming",
+    } = req.body;
+
+    if (!teamA || !teamB || !format || !startTime) {
+      res.status(400).json({
+        success: false,
+        message: "teamA, teamB, format and startTime are required",
+      });
+      return;
+    }
+
+    if (!allowedFormats.includes(format)) {
+      res.status(400).json({
+        success: false,
+        message: "format must be T20, ODI, TEST or OTHER",
+      });
+      return;
+    }
+
+    const parsedStartTime = new Date(startTime);
+
+    if (Number.isNaN(parsedStartTime.getTime())) {
+      res.status(400).json({
+        success: false,
+        message: "startTime must be a valid date",
+      });
+      return;
+    }
+
+    const match = await Match.create({
+      externalId: externalId || `manual-${randomUUID()}`,
+      name: name || `${teamA} vs ${teamB}`,
+      teamA,
+      teamB,
+      format,
+      venue: venue || "",
+      startTime: parsedStartTime,
+      status,
+      lastSyncedAt: new Date(),
+    });
+
+    res.status(201).json({
+      success: true,
+      data: match,
+    });
+  } catch (error) {
+    console.error("Match creation failed:", error);
+
+    if (
+      error instanceof mongoose.Error.ValidationError
+    ) {
+      res.status(400).json({
+        success: false,
+        message: error.message,
+      });
+      return;
+    }
+
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "code" in error &&
+      error.code === 11000
+    ) {
+      res.status(409).json({
+        success: false,
+        message: "Match with this externalId already exists",
+      });
+      return;
+    }
+
+    res.status(500).json({
+      success: false,
+      message: "Match creation failed",
+    });
+  }
+};
+
+export const getMatches = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { status, format } = req.query;
+
+    const filter: Record<string, unknown> = {};
+
+    if (typeof status === "string") {
+      filter.status = status;
+    }
+
+    if (typeof format === "string") {
+      filter.format = format.toUpperCase();
+    }
+
+    const matches = await Match.find(filter)
+      .sort({ startTime: 1 })
+      .lean();
+
+    res.status(200).json({
+      success: true,
+      count: matches.length,
+      data: matches,
+    });
+  } catch (error) {
+    console.error("Failed to fetch matches:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch matches",
+    });
+  }
+};
+
+export const getUpcomingMatches = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const requestedLimit = Number(req.query.limit || 20);
+    const limit = Math.min(
+      Math.max(requestedLimit, 1),
+      100
+    );
+
+    const matches = await Match.find({
+      status: "upcoming",
+      startTime: {
+        $gte: new Date(),
+      },
+    })
+      .sort({ startTime: 1 })
+      .limit(limit)
+      .lean();
+
+    res.status(200).json({
+      success: true,
+      count: matches.length,
+      data: matches,
+    });
+  } catch (error) {
+    console.error("Failed to fetch upcoming matches:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch upcoming matches",
+    });
+  }
+};
+
+export const getMatchById = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+
+    const match = mongoose.isValidObjectId(id)
+      ? await Match.findById(id).lean()
+      : await Match.findOne({
+          externalId: id,
+        }).lean();
+
+    if (!match) {
+      res.status(404).json({
+        success: false,
+        message: "Match not found",
+      });
+      return;
+    }
+
+    res.status(200).json({
+      success: true,
+      data: match,
+    });
+  } catch (error) {
+    console.error("Failed to fetch match:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch match",
+    });
+  }
+};
+</file>
+
+<file path="services/match-service/src/models/match.model.ts">
+import mongoose, { InferSchemaType, Schema } from "mongoose";
+
+const scoreSchema = new Schema(
+  {
+    runs: {
+      type: Number,
+      default: 0,
+    },
+    wickets: {
+      type: Number,
+      default: 0,
+    },
+    overs: {
+      type: Number,
+      default: 0,
+    },
+    inning: {
+      type: String,
+      default: "",
+    },
+  },
+  {
+    _id: false,
+  }
+);
+
+const matchSchema = new Schema(
+  {
+    externalId: {
+      type: String,
+      required: true,
+      unique: true,
+      index: true,
+      trim: true,
+    },
+
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    teamA: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    teamB: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    format: {
+      type: String,
+      enum: ["T20", "ODI", "TEST", "OTHER"],
+      default: "OTHER",
+    },
+
+    venue: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    startTime: {
+      type: Date,
+      required: true,
+      index: true,
+    },
+
+    status: {
+      type: String,
+      enum: ["upcoming", "live", "completed", "cancelled"],
+      default: "upcoming",
+      index: true,
+    },
+
+    providerStatus: {
+      type: String,
+      default: "",
+    },
+
+    score: {
+      teamA: {
+        type: scoreSchema,
+        default: () => ({}),
+      },
+
+      teamB: {
+        type: scoreSchema,
+        default: () => ({}),
+      },
+    },
+
+    lastSyncedAt: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+  {
+    timestamps: true,
+    versionKey: false,
+  }
+);
+
+matchSchema.index({
+  status: 1,
+  startTime: 1,
+});
+
+export type MatchData = InferSchemaType<typeof matchSchema>;
+
+const Match =
+  mongoose.models.Match || mongoose.model("Match", matchSchema);
+
+export default Match;
+</file>
+
+<file path="services/match-service/src/routes/live-match.routes.ts">
+import { Router } from "express";
+import { fetchLiveMatches, syncLiveMatches } from "../controllers/live-match.controller";
+
+const router = Router();
+
+router.get("/", fetchLiveMatches);
+router.post("/sync", syncLiveMatches);
+
+export default router;
+</file>
+
+<file path="services/match-service/src/routes/match.routes.ts">
+import { Router } from "express";
+import {
+  createMatch,
+  getMatches,
+  getMatchById,
+  getUpcomingMatches,
+} from "../controllers/match.controller";
+
+const router = Router();
+
+router.post("/", createMatch);
+
+router.get("/", getMatches);
+
+// IMPORTANT:
+// /upcoming ko /:id se pehle rakhna hai,
+// otherwise Express "upcoming" ko match ID maan lega.
+router.get("/upcoming", getUpcomingMatches);
+
+router.get("/:id", getMatchById);
+
+export default router;
+</file>
+
+<file path="services/match-service/src/services/cricapi.service.ts">
+import axios, { AxiosError } from "axios";
+import Match from "../models/match.model";
+
+interface CricApiMatch {
+  id: string;
+  name?: string;
+  matchType?: string;
+  status?: string;
+  venue?: string;
+  dateTimeGMT?: string;
+  teams?: string[];
+  score?: Array<{
+    inning?: string;
+    runs?: number;
+    wickets?: number;
+    overs?: number;
+  }>;
+}
+
+
+const BASE_URL =
+  process.env.CRIC_API_BASE_URL || "https://api.cricapi.com/v1";
+
+const CRIC_API_KEY = process.env.CRIC_API_KEY;
+
+interface CricApiErrorResponse {
+  status?: string;
+  reason?: string;
+  message?: string;
+}
+
+const cricApiClient = axios.create({
+  baseURL: BASE_URL,
+  timeout: 10_000,
+});
+
+const validateConfig = (): void => {
+  if (!CRIC_API_KEY) {
+    throw new Error("CRIC_API_KEY is missing in environment variables");
+  }
+};
+
+const handleCricApiError = (error: unknown): never => {
+  if (error instanceof AxiosError) {
+    const responseData = error.response?.data as
+      | CricApiErrorResponse
+      | undefined;
+
+    const message =
+      responseData?.reason ||
+      responseData?.message ||
+      error.message ||
+      "Failed to fetch data from CricAPI";
+
+    throw new Error(message);
+  }
+
+  if (error instanceof Error) {
+    throw error;
+  }
+
+  throw new Error("Unknown CricAPI error");
+};
+
+export const getLiveMatches = async () => {
+  try {
+    validateConfig();
+
+    const response = await cricApiClient.get("/currentMatches", {
+      params: {
+        apikey: CRIC_API_KEY,
+        offset: 0,
+      },
+    });
+
+    if (response.data?.status === "failure") {
+      throw new Error(
+        response.data?.reason || "CricAPI request failed"
+      );
+    }
+
+    return response.data;
+  } catch (error) {
+    return handleCricApiError(error);
+  }
+};
+
+const normalizeFormat = (
+  matchType?: string
+): "T20" | "ODI" | "TEST" | "OTHER" => {
+  const value = matchType?.toLowerCase();
+
+  if (value?.includes("t20")) return "T20";
+  if (value?.includes("odi")) return "ODI";
+  if (value?.includes("test")) return "TEST";
+
+  return "OTHER";
+};
+
+const normalizeStatus = (
+  providerStatus?: string,
+  startTime?: Date
+): "upcoming" | "live" | "completed" | "cancelled" => {
+  const status = providerStatus?.toLowerCase() || "";
+
+  if (
+    status.includes("cancel") ||
+    status.includes("abandon")
+  ) {
+    return "cancelled";
+  }
+
+  if (
+    status.includes("won") ||
+    status.includes("draw") ||
+    status.includes("completed")
+  ) {
+    return "completed";
+  }
+
+  if (
+    status.includes("live") ||
+    status.includes("innings") ||
+    status.includes("batting")
+  ) {
+    return "live";
+  }
+
+  if (startTime && startTime.getTime() > Date.now()) {
+    return "upcoming";
+  }
+
+  return "live";
+};
+
+const getTeamScore = (
+  score: CricApiMatch["score"],
+  teamName: string
+) => {
+  const inning = score?.find((item) =>
+    item.inning
+      ?.toLowerCase()
+      .includes(teamName.toLowerCase())
+  );
+
+  return {
+    runs: inning?.runs ?? 0,
+    wickets: inning?.wickets ?? 0,
+    overs: inning?.overs ?? 0,
+    inning: inning?.inning ?? "",
+  };
+};
+
+export const syncCurrentMatches = async () => {
+  const response = await getLiveMatches();
+
+  const providerMatches: CricApiMatch[] =
+    Array.isArray(response?.data) ? response.data : [];
+
+  const syncedMatches = [];
+
+  for (const providerMatch of providerMatches) {
+    if (!providerMatch.id) {
+      continue;
+    }
+
+    const teams = providerMatch.teams || [];
+
+    const teamA = teams[0] || "Unknown Team";
+    const teamB = teams[1] || "Unknown Team";
+
+    const parsedStartTime = providerMatch.dateTimeGMT
+      ? new Date(providerMatch.dateTimeGMT)
+      : new Date();
+
+    const startTime = Number.isNaN(parsedStartTime.getTime())
+      ? new Date()
+      : parsedStartTime;
+
+    const match = await Match.findOneAndUpdate(
+      {
+        externalId: providerMatch.id,
+      },
+      {
+        $set: {
+          name:
+            providerMatch.name ||
+            `${teamA} vs ${teamB}`,
+          teamA,
+          teamB,
+          format: normalizeFormat(
+            providerMatch.matchType
+          ),
+          venue: providerMatch.venue || "",
+          startTime,
+          status: normalizeStatus(
+            providerMatch.status,
+            startTime
+          ),
+          providerStatus:
+            providerMatch.status || "",
+          score: {
+            teamA: getTeamScore(
+              providerMatch.score,
+              teamA
+            ),
+            teamB: getTeamScore(
+              providerMatch.score,
+              teamB
+            ),
+          },
+          lastSyncedAt: new Date(),
+        },
+      },
+      {
+        new: true,
+        upsert: true,
+        runValidators: true,
+      }
+    ).lean();
+
+    syncedMatches.push(match);
+  }
+
+  return syncedMatches;
+};
+</file>
+
+<file path="services/match-service/src/index.ts">
+import "dotenv/config";
+import express, {
+  NextFunction,
+  Request,
+  Response,
+} from "express";
+
+import connectDB from "./config/db";
+import matchRoutes from "./routes/match.routes";
+import liveMatchRoutes from "./routes/live-match.routes";
+
+const app = express();
+
+const PORT = Number(process.env.PORT) || 5003;
+
+app.use(express.json());
+
+app.get("/health", (_req: Request, res: Response) => {
+  res.status(200).json({
+    success: true,
+    service: "match-service",
+    status: "healthy",
+  });
+});
+
+app.use("/matches", matchRoutes);
+app.use("/live-matches", liveMatchRoutes);
+
+app.use(
+  (
+    _req: Request,
+    res: Response
+  ): void => {
+    res.status(404).json({
+      success: false,
+      message: "Route not found",
+    });
+  }
+);
+
+app.use(
+  (
+    error: unknown,
+    _req: Request,
+    res: Response,
+    _next: NextFunction
+  ): void => {
+    console.error("Unhandled match-service error:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+);
+
+const startServer = async (): Promise<void> => {
+  try {
+    await connectDB();
+
+    app.listen(PORT, () => {
+      console.log(`Match Service running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Match Service startup failed:", error);
+    process.exit(1);
+  }
+};
+
+void startServer();
+</file>
+
+<file path="services/ai-service/src/controllers/conversation.controller.ts">
+import { Request, Response } from "express";
+import Conversation from "../models/conversation.model";
+import Message from "../models/message.model";
+import cacheService from "../services/cache.service";
+
+export const createConversation = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const userId = req.headers["x-user-id"] as string;
+    const { title } = req.body;
+
+    if (!userId) {
+  return res.status(401).json({
+    message: "Unauthorized",
+  });
+}
+
+    const conversation =
+      await Conversation.create({
+        userId,
+        title,
+      });
+    await cacheService.del(`conversations:${userId}`);
+    res.status(201).json(conversation);
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      message:
+        "Conversation creation failed",
+    });
+  }
+};
+
+export const getMessages = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const { id } = req.params;
+    const cacheKey = `messages:${id}`;
+
+    const cached = await cacheService.get(cacheKey);
+    if (cached) {
+      console.log("✅ Messages Redis HIT");
+
+      return res.json(cached);
+    }
+    const messages = await Message.find({
+      conversationId: id,
+    }).sort({
+      createdAt: 1,
+    });
+
+    await cacheService.set(cacheKey, messages);
+    
+    res.json(messages);
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      message:
+        "Failed to fetch messages",
+    });
+  }
+};
+
+export const getAllConversations = async (req: Request, res: Response) => {
+  try {
+    const userId = req.headers['x-user-id']!;
+    const cacheKey = `conversations:${userId}`;
+    const cached = await cacheService.get(cacheKey);
+
+if (cached) {
+  console.log("✅ Redis HIT");
+
+  return res.json({
+    success: true,
+    conversations: cached,
+  });
+}
+    const conversations = await Conversation.find({
+  userId,
+})
+  .select("_id title updatedAt createdAt")
+  .sort({ updatedAt: -1 });
+    await cacheService.set(cacheKey, conversations);
+    return res.status(200).json({
+      success: true,
+      conversations,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch conversations",
+      error,
+    });
+  }
+};
+</file>
+
+<file path="services/ai-service/src/controllers/document.controller.ts">
+import {
+  NextFunction,
+  Request,
+  Response,
+} from "express";
+import fs from "fs/promises";
+
+import { DocumentModel } from "../models/document.model";
+import {
+  publishDocumentProcessingEvent,
+} from "../producers/document.producer";
+
+interface AuthenticatedRequest
+  extends Request {
+  user?: {
+    id?: string;
+    userId?: string;
+  };
+}
+
+export async function uploadDocumentController(
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    if (!req.file) {
+      res.status(400).json({
+        success: false,
+        message:
+          "Please upload a PDF document",
+      });
+
+      return;
+    }
+
+    const userId = req.userId;
+
+    if (!userId) {
+      await fs.unlink(req.file.path)
+        .catch(() => undefined);
+
+      res.status(401).json({
+        success: false,
+        message: "Unauthorized",
+      });
+
+      return;
+    }
+
+    const document =
+      await DocumentModel.create({
+        userId,
+        originalName:
+          req.file.originalname,
+        storedName:
+          req.file.filename,
+        filePath:
+          req.file.path,
+        mimeType:
+          req.file.mimetype,
+        fileSize:
+          req.file.size,
+        status: "uploaded",
+        chunkCount: 0,
+      });
+
+    try {
+      await publishDocumentProcessingEvent({
+        documentId:
+          document._id.toString(),
+        userId:
+          document.userId,
+        filePath:
+          document.filePath,
+        originalName:
+          document.originalName,
+      });
+    } catch (rabbitError) {
+      await DocumentModel.findByIdAndUpdate(
+        document._id,
+        {
+          status: "failed",
+          errorMessage:
+            "Unable to queue document for processing",
+        }
+      );
+
+      throw rabbitError;
+    }
+
+    res.status(201).json({
+      success: true,
+      message:
+        "Document uploaded successfully",
+      document: {
+        id: document._id,
+        originalName:
+          document.originalName,
+        fileSize:
+          document.fileSize,
+        status:
+          document.status,
+        createdAt:
+          document.createdAt,
+      },
+    });
+  } catch (error) {
+    if (req.file?.path) {
+      await fs.unlink(req.file.path)
+        .catch(() => undefined);
+    }
+
+    next(error);
+  }
+}
+</file>
+
+<file path="services/ai-service/src/models/document.model.ts">
+import {
+  Document,
+  Schema,
+  model,
+} from "mongoose";
+
+export type DocumentStatus =
+  | "uploaded"
+  | "processing"
+  | "completed"
+  | "failed";
+
+export interface IDocument extends Document {
+  userId: string;
+  originalName: string;
+  storedName: string;
+  filePath: string;
+  mimeType: string;
+  fileSize: number;
+  status: DocumentStatus;
+  chunkCount: number;
+  errorMessage?: string;
+  pageCount: number;
+  characterCount: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const documentSchema = new Schema<IDocument>(
+  {
+    userId: {
+      type: String,
+      required: true,
+      index: true,
+    },
+
+    originalName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    storedName: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+
+    filePath: {
+      type: String,
+      required: true,
+    },
+
+    mimeType: {
+      type: String,
+      required: true,
+    },
+
+    fileSize: {
+      type: Number,
+      required: true,
+    },
+
+    status: {
+      type: String,
+      enum: [
+        "uploaded",
+        "processing",
+        "completed",
+        "failed",
+      ],
+      default: "uploaded",
+      index: true,
+    },
+
+    chunkCount: {
+      type: Number,
+      default: 0,
+    },
+
+    errorMessage: {
+      type: String,
+    },
+
+    pageCount: {
+      type: Number,
+      default: 0,
+    },
+
+    characterCount: {
+      type: Number,
+      default: 0,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+documentSchema.index({
+  userId: 1,
+  createdAt: -1,
+});
+
+export const DocumentModel =
+  model<IDocument>(
+    "Document",
+    documentSchema
+  );
+</file>
+
+<file path="services/ai-service/src/routes/conversation.routes.ts">
+import express from "express";
+import { createConversation, getMessages, getAllConversations } from "../controllers/conversation.controller";
+
+const router = express.Router();
+
+router.post(
+  "/conversation",
+  createConversation
+);
+
+router.get(
+  "/conversation/:id/messages",
+  getMessages
+);
+
+router.get("/list", getAllConversations);
+
+export default router;
+</file>
+
+<file path="services/ai-service/src/routes/document.routes.ts">
+import { Router } from "express";
+
+import {
+  uploadDocumentController,
+} from "../controllers/document.controller";
+
+import {
+  uploadDocument,
+} from "../middleware/document-upload.middleware";
+
+import {
+  queryDocuments,
+} from "../controllers/document-query.controller";
+const router = Router();
+
+router.post(
+  "/upload",
+  uploadDocument,
+  uploadDocumentController
+);
+
+router.post(
+  "/query",
+  queryDocuments
+);
+
+export default router;
+</file>
+
+<file path="services/ai-service/package.json">
+{
+  "name": "ai-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "ingest": "ts-node-dev --transpile-only src/scripts/ingest-codebase.ts",
+    "test:embedding": "ts-node-dev --transpile-only src/scripts/test-embedding.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/amqplib": "^0.10.8",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/multer": "^2.1.0",
+    "@types/node": "^25.9.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^6.0.3"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "@langchain/openai": "^1.4.5",
+    "@qdrant/js-client-rest": "^1.18.0",
+    "@xenova/transformers": "^2.17.2",
+    "amqplib": "^2.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "langchain": "^1.4.0",
+    "mongodb": "^7.2.0",
+    "mongoose": "^9.6.2",
+    "multer": "^2.1.1",
+    "openai": "^6.38.0",
+    "pdf-parse": "^2.4.5",
+    "redis": "^6.1.0",
+    "socket.io": "^4.8.3"
+  }
+}
+</file>
+
+<file path="services/api-gateway/src/routes/index.ts">
+import { Router } from "express";
+import { createProxyMiddleware } from "http-proxy-middleware";
+import { authenticate } from "../middlewares/auth.middleware";
+
+const router = Router();
+
+
+router.use("/ai", authenticate);
+
+router.use(
+  "/ai",
+  createProxyMiddleware({
+    target: "http://localhost:5002",
+    changeOrigin: true,
+    pathRewrite: {
+      "^/ai": "",
+    },
+  })
+);
+
+/**
+ * Auth Service Proxy
+ * future service: http://auth-service:5001
+ */
+router.use(
+  "/auth",
+  createProxyMiddleware({
+    target: "http://localhost:5001",
+    changeOrigin: true,
+  })
+);
+
+router.use(
+  "/matches",
+  createProxyMiddleware({
+    target: "http://localhost:5003",
+    changeOrigin: true,
+    pathRewrite: {
+      "^/matches": "/matches",
+    },
+  })
+);
+  
+export default router;
+</file>
+
+<file path=".gitignore">
+*.zip
+node_modules
+dist
+.next
+uploads/
+*.log
+.DS_Store
+data
+**/data
+**/data/
+</file>
+
+<file path="docker-compose.yml">
+services:
+
+  mongodb:
+    image: mongo:7
+    container_name: sportsphere-mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password  
+    volumes:
+      - ./services/auth-service/data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  redis:
+    image: redis:7
+    container_name: sportsphere-redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: sportsphere-rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"  
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: sportsphere-qdrant
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+    - qdrant_data:/qdrant/storage
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: sportsphere-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: supersecretpassword
+      POSTGRES_DB: sportsphere_ai
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  
+
+volumes:
+  qdrant_data:
+  postgres_data:
+</file>
+
+<file path="package.json">
+{
+  "name": "sportsphere-ai",
+  "private": true,
+  "packageManager": "npm@11.16.0",
+  "workspaces": [
+    "apps/*",
+    "services/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "test": "turbo run test"
+  },
+  "devDependencies": {
+    "turbo": "^2.0.0",
+    "typescript": "^6.0.3"
+  }
+}
+</file>
+
+<file path="apps/frontend/app/page.tsx">
+"use client";
+
+import { useEffect, useState, useRef } from "react";
+import { useRouter } from "next/navigation";
+import { socket } from "./lib/socket";
+import { useChat } from "@/context/chat-context";
+import DocumentUpload from "./components/Document-rag/UploadDocument";
+import DocumentChat from "./components/Document-rag/DocumentChat";
+
+export default function Home() {
+  const router = useRouter();
+
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const {
+    activeTool,
+
+    conversationId,
+    setConversationId,
+
+    messages,
+    setMessages,
+
+    setConversations,
+    messagesLoading,
+    loadConversations
+  } = useChat();
+
+  const initialized = useRef(false);
+
+  useEffect(() => {
+    if (initialized.current) return;
+
+    initialized.current = true;
+
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      router.push("/login");
+      return;
+    }
+
+    socket.auth = { token };
+    socket.connect();
+
+    void loadConversations();
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [router, loadConversations]);
+
+  useEffect(() => {
+    const handleConversationUpdated = async () => {
+      await loadConversations();
+    };
+
+    socket.on(
+      "conversationUpdated",
+      handleConversationUpdated
+    );
+
+    return () => {
+      socket.off(
+        "conversationUpdated",
+        handleConversationUpdated
+      );
+    };
+  }, [loadConversations]);
+
+  const createConversation = async () => {
+
+    const res = await fetch(
+      "http://localhost:4000/api/ai/conversation",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          title: "New Chat",
+        }),
+      }
+    );
+
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(
+        data.message ||
+        "Conversation creation failed"
+      );
+    }
+
+    setConversationId(data._id);
+    setMessages([]);
+
+    await loadConversations();
+
+    return data._id;
+  };
+
+  const sendMessage = async () => {
+    if (!input.trim() || loading) return;
+
+    try {
+      setLoading(true);
+
+      let id = conversationId;
+
+      if (!id) {
+        id = await createConversation();
+      }
+
+      const currentInput = input.trim();
+
+      setMessages((previousMessages) => [
+        ...previousMessages,
+        {
+          role: "user",
+          content: currentInput,
+        },
+      ]);
+
+      setInput("");
+
+      const res = await fetch(
+        "http://localhost:4000/api/ai/chat",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem(
+              "token"
+            )}`,
+          },
+          body: JSON.stringify({
+            conversationId: id,
+            message: currentInput,
+          }),
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(
+          data.message || "Message failed"
+        );
+      }
+
+      setMessages((previousMessages) => [
+        ...previousMessages,
+        {
+          role: "assistant",
+          content: data.response,
+        },
+      ]);
+    } catch (error) {
+      console.error("Send message error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <main className="min-h-full bg-black text-white">
+      <section className="p-8">
+        {activeTool === "match" && (
+          <div className="mx-auto max-w-4xl">
+            <h2 className="mb-6 text-3xl font-bold">
+              Match Analysis
+            </h2>
+
+            <div className="mb-6 space-y-4">
+              {messagesLoading && (
+                <div className="text-zinc-400">
+                  Loading messages...
+                </div>
+              )}
+
+              {!messagesLoading &&
+                messages.length === 0 && (
+                  <div className="py-20 text-center text-zinc-400">
+                    Start a new conversation or select
+                    one from the Sidebar.
+                  </div>
+                )}
+
+              {messages.map((message, index) => (
+                <div
+                  key={message._id || index}
+                  className={`max-w-[80%] rounded-2xl p-4 ${message.role === "user"
+                    ? "ml-auto bg-blue-600"
+                    : "bg-zinc-800"
+                    }`}
+                >
+                  <p className="mb-1 text-xs text-zinc-300">
+                    {message.role}
+                  </p>
+
+                  <p className="whitespace-pre-wrap">
+                    {message.content}
+                  </p>
+                </div>
+              ))}
+
+              {loading && (
+                <div className="w-fit rounded-2xl bg-zinc-800 p-4">
+                  Thinking...
+                </div>
+              )}
+            </div>
+
+            <div className="flex gap-3">
+              <input
+                value={input}
+                onChange={(event) =>
+                  setInput(event.target.value)
+                }
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    void sendMessage();
+                  }
+                }}
+                placeholder="Ask something..."
+                className="flex-1 rounded-xl border border-zinc-700 bg-zinc-900 px-4 py-3 outline-none"
+              />
+
+              <button
+                type="button"
+                onClick={() => void sendMessage()}
+                disabled={loading}
+                className="rounded-xl bg-blue-600 px-6 disabled:opacity-50"
+              >
+                Send
+              </button>
+            </div>
+          </div>
+        )}
+
+        {activeTool === "document" && (
+          <div className="mx-auto w-full max-w-4xl space-y-10 p-6">
+            <DocumentUpload />
+
+            <hr className="border-gray-200" />
+
+            <DocumentChat />
+          </div>
+        )}
+      </section>
+    </main>
+  );
+}
+</file>
+
+<file path="services/ai-service/src/index.ts">
+import http from "http";
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import aiRoutes from "./routes/ai.routes";
+import connectDB from "./config/db";
+import conversationRoutes from "./routes/conversation.routes";
+import chatRoutes from "./routes/chat.routes";
+import ragRoutes from "./routes/rag.routes";
+import documentRoutes from "./routes/document.routes";
+import matchAnalysisRoutes from "./routes/match-analysis.routes";
+import commentaryRoutes from "./routes/commentary.routes";
+import { connectRedis } from "./config/redis";
+import { authenticate } from "./middleware/auth.middleware";
+import { connectRabbit } from "./config/rabbit";
+import { startChatConsumer } from "./consumers/chat.consumer";
+import {
+  startDocumentConsumer,
+} from "./consumers/document.consumer";
+import { initializeSocket } from "./config/socket";
+import { initializeVectorStore } from "./services/rag/embedding.service";
+
+dotenv.config();
+
+const app = express();
+const server = http.createServer(app);
+app.use(cors());
+app.use(express.json());
+app.use(authenticate);
+
+app.use("/", aiRoutes);
+app.use("/", conversationRoutes);
+app.use("/", chatRoutes);
+app.use("/", ragRoutes);
+app.use("/documents", documentRoutes);
+app.use("/", matchAnalysisRoutes);
+app.use("/", commentaryRoutes);
+
+initializeSocket(server);
+
+const PORT = process.env.PORT || 5002;
+
+const bootstrap = async () => {
+  try {
+    await connectDB();
+
+    await connectRedis();
+
+    await connectRabbit();
+
+    await startChatConsumer();
+
+    await initializeVectorStore();
+
+    startDocumentConsumer();
+    server.listen(PORT, () => {
+      console.log(
+        `AI Service running on ${PORT}`
+      );
+    });
+  } catch (error) {
+    console.error(error);
+    process.exit(1);
+  }
+};
+
+bootstrap();
+</file>
+
+</files>
