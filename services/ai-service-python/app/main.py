@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from dotenv import load_dotenv
+load_dotenv()
 from app.api.chat import router as chat_router
 
 # Initialize the FastAPI app (Equivalent to const app = express())

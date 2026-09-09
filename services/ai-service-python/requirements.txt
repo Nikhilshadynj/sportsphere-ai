@@ -8,3 +8,4 @@ alembic==1.13.1
 openai==3.3.1
 aio-pika==10.0.1
 redis==8.1.0
+python-dotenv==1.0.1
