@@ -17,11 +17,26 @@ pattern (not present in the Node version — see DECISIONS.md).
 - Add: manual ack/nack, prefetch control, TTL-based retry queue, DLQ, idempotency check
 
 ## Step progress
-- **Step 1 (rabbit topology) — done.** `rabbit.py` rewritten: env-driven
-  connection, reusable channel, retry/DLQ topology declared under an
-  isolated `chat-py` namespace (see DECISIONS.md — namespace isolation).
-  Verified: queues visible in RabbitMQ Management UI. Committed to git.
-- Step 2 (happy-path consumer) — not started, next up.
+- **Step 1 (rabbit topology) — done, verified.** `rabbit.py` rewritten:
+  env-driven connection, reusable channel, retry/DLQ topology declared
+  under an isolated `chat-py` namespace. Queues confirmed in RabbitMQ
+  Management UI. Committed to git.
+- **Pre-Step-2 debugging — done, verified.** `/api/chat` confirmed working
+  end-to-end: dotenv loading fixed, Postgres port issue fixed, `.gitignore`
+  fixed. Curl returns a real AI response, history fetch confirmed working.
+  Committed to git.
+- **Step 2 (happy-path consumer) — done, verified.** `app/consumers/chat_title.py`
+  built + wired into `main.py` via FastAPI `lifespan`. Curl → title
+  generated → `conversation.updated` published. Committed to git.
+- **Step 3 (manual ack/nack + retry/DLQ) — done, verified.** Replaced
+  `message.process()` with explicit `ack()` / `reject(requeue=False)` /
+  manual DLQ publish, using RabbitMQ's own `x-death` header to count
+  retries (no custom counter needed). **Tested with an induced failure:**
+  4 attempts (FAILED ×4, ~10s apart) → message correctly landed in
+  `chat-title-py-dlq`. Confirmed working end-to-end. Test exception line
+  removed afterward, DLQ purged of the test message. Committed to git.
+
+**This task (chat-title consumer with proper retry/DLQ) is now complete.**
 
 ## Why this task is next
 `ai-service-python`'s `/api/chat` already publishes `chat.created` — that
@@ -71,11 +86,22 @@ comparable-to-existing-code first real implementation step in Python.
   Python service correctly trusts it *only when traffic comes through the
   gateway*, which it currently doesn't in local testing).
 
+## Current task (new)
+Frontend integration check — point the frontend at `ai-service-python`
+(currently only tested via curl, direct to `localhost:8000`, bypassing
+`api-gateway` entirely — see ARCHITECTURE.md gateway note) and verify the
+whole flow works from the UI: send a message, see the AI reply, and see
+the conversation title update in real time via the existing Socket.IO
+flow (which depends on `api-gateway`'s consumer picking up
+`conversation.updated` — same shared queue Python now publishes to).
+
 ## Immediate next action
-Re-run the curl test to confirm `/api/chat` now returns 200 after the
-dotenv fix. Once confirmed, proceed to PHASE 1–4 (understand → why →
-system design → plan — already done, documented above) → PHASE 5 Step 2:
-write the happy-path consumer.
+Not yet started. Likely needs: either (a) a temporary frontend API base
+URL change to point directly at `localhost:8000` for this specific chat
+flow, bypassing gateway (fastest to test, but skips JWT auth), or (b)
+add an `/ai` (or similar) route in `api-gateway` that proxies to
+`ai-service-python` instead of/alongside Node's `ai-service` — more
+correct but more work. **Not decided yet — ask Nikhil before picking.**
 
 ## Cutover note (revised)
 Earlier assumption was that Node's queues would need to be deleted/stopped

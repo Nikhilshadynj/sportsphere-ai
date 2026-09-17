@@ -17,15 +17,27 @@ meaningful milestone, not just at session end.
 ✅ SQLAlchemy async models (Conversation, Message) with UUID PKs
 ✅ One Alembic migration (conversations + messages tables)
 ✅ Redis cache invalidation on new message
-✅ Publishes `chat.created` to RabbitMQ
+✅ Publishes `chat.created` to RabbitMQ (isolated `chat-py` exchange)
+✅ **Chat-title consumer, with proper retry/DLQ** — `app/consumers/chat_title.py`.
+   Manual ack/nack, RabbitMQ `x-death` header used for retry counting (no
+   custom counter), TTL-based retry queue, permanent DLQ for exhausted
+   retries. Tested with an induced failure end-to-end: 4 attempts → DLQ.
+   This is a genuine new implementation — Node's version never had this.
+✅ `python-dotenv` added, `.env` actually loads now (was silently not
+   loading before, causing an OpenRouter auth failure — fixed)
+✅ Env-driven connection strings for RabbitMQ (`RABBIT_URL`) — Postgres
+   connection string still hardcoded, not yet cleaned up
 
-❌ **No consumer** — the `chat.created` publish currently has nothing
-   listening on the Python side. Title generation + `conversation.updated`
-   publish (the async half of the flow) is not ported yet.
 ❌ No RAG / document handling in Python
-❌ No JWT verification inside the Python service itself (trusts header — see ARCHITECTURE.md)
+❌ No JWT verification inside the Python service itself (trusts header —
+   see ARCHITECTURE.md; this is fine *only* when traffic comes through
+   api-gateway, which it currently doesn't — see below)
 ❌ Not wired into `docker-compose.yml`, no Dockerfile
-❌ Hardcoded connection strings in `database.py` / `rabbit.py` rather than env-driven config (rest of repo uses `.env` files per service)
+❌ **Not reachable through api-gateway.** All testing so far has been
+   direct curl to `localhost:8000`, bypassing the gateway (and therefore
+   bypassing JWT auth) entirely. Gateway's `/ai` route still only proxies
+   to Node's `ai-service` on `:5002`. This is the next thing being worked
+   on — frontend/gateway integration.
 
 ## Other services — unchanged, not part of current migration scope
 - auth-service: JWT + RBAC, appears complete for current needs
