@@ -215,7 +215,7 @@ export function ChatProvider({
         setConversationsLoading(true);
 
         const response = await fetch(
-          `${API_BASE_URL}/ai/list`,
+          `${API_BASE_URL}/ai-py/api/list`,
           {
             method: "GET",
             headers: {

@@ -5,110 +5,51 @@ Overwrite this file's content each time the task changes; don't let it grow
 into a log (that's what git commits / SESSION history is for).
 
 ## Current task
-Build the Python consumer for chat-title generation, mirroring Node's
-`chat.consumer.ts` — this time with a properly implemented retry/DLQ
-pattern (not present in the Node version — see DECISIONS.md).
-- Listen on `chat-title-py` queue (bound to `chat-py` exchange, routing key
-  `chat.created`) — **isolated namespace, not Node's `chat`/`chat-title`**,
-  see "Namespace isolation" decision below
-- On message: call LLM to generate a short title, update the `Conversation`
-  row in Postgres, invalidate relevant Redis keys, publish `conversation.updated`
-- Use `aio_pika`, matching the async style already used in `app/core/rabbit.py`
-- Add: manual ack/nack, prefetch control, TTL-based retry queue, DLQ, idempotency check
+Frontend integration — point the frontend's chat API call at the new
+`/ai-py` gateway route (added, see below) instead of Node's `/ai`, so the
+whole flow (frontend → gateway → Python → RabbitMQ consumer → Socket.IO)
+can be verified end-to-end through the real UI, not just curl.
 
-## Step progress
-- **Step 1 (rabbit topology) — done, verified.** `rabbit.py` rewritten:
-  env-driven connection, reusable channel, retry/DLQ topology declared
-  under an isolated `chat-py` namespace. Queues confirmed in RabbitMQ
-  Management UI. Committed to git.
-- **Pre-Step-2 debugging — done, verified.** `/api/chat` confirmed working
-  end-to-end: dotenv loading fixed, Postgres port issue fixed, `.gitignore`
-  fixed. Curl returns a real AI response, history fetch confirmed working.
-  Committed to git.
-- **Step 2 (happy-path consumer) — done, verified.** `app/consumers/chat_title.py`
-  built + wired into `main.py` via FastAPI `lifespan`. Curl → title
-  generated → `conversation.updated` published. Committed to git.
-- **Step 3 (manual ack/nack + retry/DLQ) — done, verified.** Replaced
-  `message.process()` with explicit `ack()` / `reject(requeue=False)` /
-  manual DLQ publish, using RabbitMQ's own `x-death` header to count
-  retries (no custom counter needed). **Tested with an induced failure:**
-  4 attempts (FAILED ×4, ~10s apart) → message correctly landed in
-  `chat-title-py-dlq`. Confirmed working end-to-end. Test exception line
-  removed afterward, DLQ purged of the test message. Committed to git.
+## Status
+- **Gateway route `/ai-py` — added, NOT yet curl-verified.**
+  `api-gateway/src/routes/index.ts` now has a second route, `/ai-py`,
+  proxying to `ai-service-python` (`localhost:8000`), with the same
+  `authenticate` middleware as `/ai`. Node's `/ai` route is untouched
+  (isolation pattern, same as the RabbitMQ namespace decision).
+  **Next action: curl-test `/ai-py` through the gateway with a real JWT**
+  (login first, then hit `/api/ai-py/api/chat` — note the double `/api`:
+  gateway's own `/api` prefix + the `/ai-py` route + Python's own
+  `/api/chat` route — with `Authorization: Bearer`) before touching the
+  frontend — confirms `x-user-id` is reaching Python correctly via the
+  gateway, not just via a manually-set header like all prior local testing.
+- **Frontend change — not started.** Once the curl test above passes,
+  change the frontend's chat API call from `/ai` to `/ai-py`. This is
+  being delegated externally (Gemini) — see DECISIONS.md if a note gets
+  added there about that split. Whoever does it: only change the
+  endpoint/base URL for the chat call, reuse the existing JWT-header
+  pattern already used elsewhere in the frontend, don't touch gateway or
+  backend code.
+- **Verification owner: Nikhil, manually, in the browser** — not whoever
+  writes the frontend change. "Looks done" in a diff is not "verified."
+  Verified means: send a message in the actual UI, see the AI reply, see
+  the conversation title update in real time (Socket.IO, via the shared
+  `conversation.updated` queue).
 
-**This task (chat-title consumer with proper retry/DLQ) is now complete.**
+## Recently completed (condensed — see CURRENT_STATE.md for full detail)
+- Python chat-title consumer built with proper manual ack/nack + TTL
+  retry queue + DLQ, using RabbitMQ's own `x-death` header for retry
+  counting. Tested with an induced failure: 4 attempts → landed in DLQ
+  correctly. Fully committed to git.
+- Isolated RabbitMQ namespace (`chat-py` exchange/queues) so Node's
+  original `chat`/`chat-title` setup stays untouched and revivable.
+- Fixed along the way: `.gitignore` missing Python entries, Postgres
+  container port not published, `python-dotenv` missing (silently broke
+  `.env` loading, caused an OpenRouter auth failure).
 
-## Why this task is next
-`ai-service-python`'s `/api/chat` already publishes `chat.created` — that
-publish currently has no listener, so it's dead weight. Building the
-consumer completes the loop Node already has, and is a natural, small,
-comparable-to-existing-code first real implementation step in Python.
-
-## Resolved decisions (previously open questions)
-- **Node `ai-service` is being fully replaced, not run in parallel.**
-  Decided 2026-09-09. No dual-consumer / queue-collision concern — but see
-  the cutover note below.
-- **Retry/DLQ pattern will be built properly this time**, as a genuine new
-  implementation (README described it, Node code never actually had it).
-
-## Progress log for this task
-- **Pre-Step-2 debugging session (before writing the consumer):** getting
-  `/api/chat` to actually respond locally, since the consumer depends on
-  this endpoint's publish already working end-to-end. Found and fixed
-  along the way:
-  - Root `.gitignore` had no Python entries — added `venv/`, `__pycache__/`, etc.
-  - Postgres container was up but had no host port published (compose
-    `ports:` wasn't applied because of a stale container from earlier
-    manual `docker start`) — fixed by `docker rm` + fresh `docker compose up -d`.
-  - **Confirmed:** `ai-service-python` has no `python-dotenv` in
-    `requirements.txt` and never calls `load_dotenv()` anywhere — so
-    `.env` is never actually loaded. `OPENROUTER_API_KEY` was silently
-    falling back to the placeholder string in `chat.py`, causing
-    OpenRouter to reject the request with an auth error (surfaced to
-    Nikhil as "Missing Authentication header" — confirmed by full-repo
-    search this string does not appear anywhere in Node or Python code,
-    so it's OpenRouter's own error passing through unhandled).
-  - Fix applied: added `python-dotenv`, added `load_dotenv()` to
-    `main.py`, confirmed/created real `.env` with `OPENROUTER_API_KEY`.
-  - **Status: fix applied, not yet re-verified with a successful curl
-    response.** Next session should confirm `/api/chat` returns 200
-    before starting Step 2.
-- Also clarified for Nikhil (not a code change, just understanding):
-  local testing hits `ai-service-python` directly on `localhost:8000`
-  (uvicorn's default port — not set anywhere in this repo's code) and
-  bypasses `api-gateway` entirely. Confirmed by reading
-  `api-gateway/src/routes/index.ts`: the `/ai` proxy route only targets
-  `http://localhost:5002` (Node `ai-service`) — gateway has no route to
-  the Python service yet. Also confirmed api-gateway's `authenticate`
-  middleware is what sets `x-user-id` from the verified JWT before
-  proxying (resolves the earlier [ASSUMPTION] in ARCHITECTURE.md about
-  the trust boundary — it's real, gateway does validate before forwarding,
-  Python service correctly trusts it *only when traffic comes through the
-  gateway*, which it currently doesn't in local testing).
-
-## Current task (new)
-Frontend integration check — point the frontend at `ai-service-python`
-(currently only tested via curl, direct to `localhost:8000`, bypassing
-`api-gateway` entirely — see ARCHITECTURE.md gateway note) and verify the
-whole flow works from the UI: send a message, see the AI reply, and see
-the conversation title update in real time via the existing Socket.IO
-flow (which depends on `api-gateway`'s consumer picking up
-`conversation.updated` — same shared queue Python now publishes to).
-
-## Immediate next action
-Not yet started. Likely needs: either (a) a temporary frontend API base
-URL change to point directly at `localhost:8000` for this specific chat
-flow, bypassing gateway (fastest to test, but skips JWT auth), or (b)
-add an `/ai` (or similar) route in `api-gateway` that proxies to
-`ai-service-python` instead of/alongside Node's `ai-service` — more
-correct but more work. **Not decided yet — ask Nikhil before picking.**
-
-## Cutover note (revised)
-Earlier assumption was that Node's queues would need to be deleted/stopped
-to avoid collision. **Revised, per Nikhil's direction:** Node is Nikhil's
-main stack and may be revived later, so Node's exchange/queues are left
-completely untouched. Python uses its own isolated `chat-py` namespace
-(see DECISIONS.md). "Cutover" now just means: frontend/gateway traffic
-points at the Python `/api/chat` endpoint instead of Node's, so Node's
-publish side is simply never triggered — no deletion, no forced shutdown,
-Node stays revivable by just restarting the service and re-pointing traffic.
+## Key decisions still in force (see DECISIONS.md for full reasoning)
+- Node `ai-service` is being fully replaced, not run in parallel — but
+  nothing of Node's is deleted; everything Python-side uses an isolated
+  namespace/route so Node stays revivable.
+- `conversation.updated` queue is the one exception to isolation — it's a
+  real cross-service contract with `api-gateway`, Python publishes to the
+  exact same existing queue name, not a namespaced one.

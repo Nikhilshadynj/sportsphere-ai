@@ -1,0 +1,7 @@
+{
+  "name": "ai-service-python",
+  "private": true,
+  "scripts": {
+    "dev": "venv/bin/uvicorn app.main:app --reload"
+  }
+}

@@ -71,7 +71,7 @@ export default function Home() {
   const createConversation = async () => {
 
     const res = await fetch(
-      "http://localhost:4000/api/ai/conversation",
+      "http://localhost:4000/api/ai-py/api/conversation",
       {
         method: "POST",
         headers: {
@@ -125,7 +125,7 @@ export default function Home() {
       setInput("");
 
       const res = await fetch(
-        "http://localhost:4000/api/ai/chat",
+        "http://localhost:4000/api/ai-py/api/chat",
         {
           method: "POST",
           headers: {

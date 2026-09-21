@@ -30,14 +30,28 @@ meaningful milestone, not just at session end.
 
 ❌ No RAG / document handling in Python
 ❌ No JWT verification inside the Python service itself (trusts header —
-   see ARCHITECTURE.md; this is fine *only* when traffic comes through
-   api-gateway, which it currently doesn't — see below)
+   see ARCHITECTURE.md; valid because traffic now goes through api-gateway
+   via `/ai-py`, confirmed working — see below)
 ❌ Not wired into `docker-compose.yml`, no Dockerfile
-❌ **Not reachable through api-gateway.** All testing so far has been
-   direct curl to `localhost:8000`, bypassing the gateway (and therefore
-   bypassing JWT auth) entirely. Gateway's `/ai` route still only proxies
-   to Node's `ai-service` on `:5002`. This is the next thing being worked
-   on — frontend/gateway integration.
+❌ `GET /conversation/:id/messages` (load message history for a
+   conversation) — Node has it, Python doesn't yet. Needed to reopen an
+   old conversation from the sidebar.
+
+✅ **Reachable through api-gateway now.** `/ai-py` route added
+   (`api-gateway/src/routes/index.ts`), proxies to `localhost:8000` with
+   the same `authenticate` middleware as Node's `/ai`. Node's `/ai` route
+   is untouched — both exist side by side.
+✅ `POST /api/conversation` — creates a Postgres row, returns `_id`
+   (matching Mongo's field naming so frontend parsing wasn't touched).
+   Frontend (`page.tsx`) fully switched to `/ai-py` for both conversation
+   creation and chat.
+🔄 `GET /api/list` — in progress (delegated externally), not yet confirmed
+   working. Should mirror Node's `{success, conversations: [{_id, title,
+   updatedAt, createdAt}]}` shape.
+✅ **Full async flow verified end-to-end through the real UI:** chat →
+   title generated → published to the shared `conversation.updated` queue
+   → api-gateway's existing consumer → Socket.IO → frontend sidebar
+   updates in real time. Confirmed by Nikhil in the browser, not just curl.
 
 ## Other services — unchanged, not part of current migration scope
 - auth-service: JWT + RBAC, appears complete for current needs
