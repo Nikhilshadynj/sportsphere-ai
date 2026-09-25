@@ -67,7 +67,37 @@ async def _declare_topology(channel: aio_pika.RobustChannel):
         },
     )
     await main_queue.bind(main_exchange, routing_key=ROUTING_KEY)
+    
+DOC_EXCHANGE_NAME = "document-py"
+QUEUE_DOC_MAIN = "document.processing.py"
+QUEUE_DOC_RETRY = "document.processing.py-retry"
+QUEUE_DOC_DLQ = "document.processing.py-dlq"
+DOC_ROUTING_KEY = "document.processing.py"
 
+async def declare_document_topology(channel: aio_pika.RobustChannel):
+    main_exchange = await channel.declare_exchange(DOC_EXCHANGE_NAME, aio_pika.ExchangeType.DIRECT, durable=True)
+    
+    retry_exchange = await channel.declare_exchange(f"{DOC_EXCHANGE_NAME}.retry", aio_pika.ExchangeType.DIRECT, durable=True)
+    retry_queue = await channel.declare_queue(
+        QUEUE_DOC_RETRY, durable=True, arguments={
+            "x-message-ttl": RETRY_TTL_MS,
+            "x-dead-letter-exchange": DOC_EXCHANGE_NAME,
+            "x-dead-letter-routing-key": DOC_ROUTING_KEY
+        }
+    )
+    await retry_queue.bind(retry_exchange, routing_key=DOC_ROUTING_KEY)
+    
+    dlq_exchange = await channel.declare_exchange(f"{DOC_EXCHANGE_NAME}.dlq", aio_pika.ExchangeType.DIRECT, durable=True)
+    dlq_queue = await channel.declare_queue(QUEUE_DOC_DLQ, durable=True)
+    await dlq_queue.bind(dlq_exchange, routing_key=DOC_ROUTING_KEY)
+    
+    main_queue = await channel.declare_queue(
+        QUEUE_DOC_MAIN, durable=True, arguments={
+            "x-dead-letter-exchange": f"{DOC_EXCHANGE_NAME}.retry",
+            "x-dead-letter-routing-key": DOC_ROUTING_KEY
+        }
+    )
+    await main_queue.bind(main_exchange, routing_key=DOC_ROUTING_KEY)
 
 async def close_rabbit():
     if _connection and not _connection.is_closed:

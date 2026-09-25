@@ -1,4 +1,9 @@
 # app/api/conversation.py
+import json
+from uuid import UUID
+from app.models.message import Message
+from app.core.redis import redis_client
+
 from fastapi import APIRouter, Depends, Header
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
@@ -67,3 +72,51 @@ async def list_conversations(
         "success": True,
         "conversations": formatted_conversations
     }
+
+@router.get("/conversation/{id}/messages")
+async def get_messages(
+    id: UUID,
+    x_user_id: str = Header(...),
+    db: AsyncSession = Depends(get_db)
+):
+    cache_key = f"messages:{id}"
+    
+    # 1. Redis me check karo (Cache-aside)
+    try:
+        cached_data = await redis_client.get(cache_key)
+        if cached_data:
+            return json.loads(cached_data)  # Plain array return karega
+    except Exception as e:
+        print(f"Redis get error: {e}")
+        # Agar redis fail ho, to gracefully DB pe fallback karo
+
+    # 2. Cache miss, to Postgres se nikalo aur createdAt ascending sort karo
+    result = await db.execute(
+        select(Message)
+        .where(Message.conversation_id == id)
+        .order_by(Message.created_at.asc())
+    )
+    messages = result.scalars().all()
+
+    # 3. Node ke exact response shape me convert karo
+    formatted_messages = []
+    for msg in messages:
+        formatted_messages.append({
+            "_id": str(msg.id),
+            "conversationId": str(msg.conversation_id),
+            "role": msg.role,
+            "content": msg.content,
+            "createdAt": msg.created_at.isoformat() if hasattr(msg, 'created_at') and msg.created_at else None,
+            "updatedAt": msg.updated_at.isoformat() if hasattr(msg, 'updated_at') and msg.updated_at else None
+        })
+
+    # 4. Redis me cache set karo (eg. 1 hour TTL)
+    try:
+        # Pydantic/FastAPI list of dicts ko apne aap json banati hai response ke liye, 
+        # par redis me explicitly stringify karna padta hai
+        await redis_client.setex(cache_key, 3600, json.dumps(formatted_messages))
+    except Exception as e:
+        print(f"Redis set error: {e}")
+
+    # Plain array return kar rahe hain, koi 'success' wrapper nahi
+    return formatted_messages

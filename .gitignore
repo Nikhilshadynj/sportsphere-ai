@@ -27,3 +27,5 @@ services/ai-service-python/*.db
 
 # Repomix exports (temporary, for external-model handoffs — never part of the codebase)
 *-context.xml
+*-context*.xml
+*.diff

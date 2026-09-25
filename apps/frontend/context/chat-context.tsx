@@ -265,7 +265,7 @@ export function ChatProvider({
         setConversationId(id);
 
         const response = await fetch(
-          `${API_BASE_URL}/ai/conversation/${id}/messages`,
+          `${API_BASE_URL}/ai-py/api/conversation/${id}/messages`,
           {
             method: "GET",
             headers: {

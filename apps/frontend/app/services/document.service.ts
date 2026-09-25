@@ -33,7 +33,7 @@ export async function uploadDocument(
   formData.append("document", file);
 
   const response = await fetch(
-    `${API_BASE_URL}/ai/documents/upload`,
+    `${API_BASE_URL}/ai-py/api/documents/upload`,
     {
       method: "POST",
       headers: {
@@ -69,7 +69,7 @@ export async function queryDocument(
   }
 
   const response = await fetch(
-    `${API_BASE_URL}/ai/documents/query`,
+    `${API_BASE_URL}/ai-py/api/documents/query`,
     {
       method: "POST",
 
