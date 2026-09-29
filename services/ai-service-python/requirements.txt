@@ -11,3 +11,5 @@ aiofiles==25.1.0
 httpx==0.28.1
 pypdf==6.19.0
 qdrant-client==1.19.1
+PyJWT==2.15.1
+prometheus-fastapi-instrumentator==6.1.0
