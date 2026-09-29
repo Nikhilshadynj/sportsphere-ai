@@ -10,6 +10,7 @@ meaningful milestone, not just at session end.
 ✅ Chat-title generation consumer
 ✅ Redis caching (cache-aside)
 ✅ Match-analysis / commentary controllers
+✅ Race condition fixes in chat endpoint (2026-09-26): atomic `findOneAndUpdate` for title check, cache invalidation reordered
 
 ## ai-service-python (migration target) — progressing
 ✅ FastAPI skeleton + `/health`
@@ -19,6 +20,8 @@ meaningful milestone, not just at session end.
    - `POST /api/documents/upload` implemented (saves to disk, Postgres, RabbitMQ).
    - Background Consumer (`document.processing.py`) implemented and verified.
    - `POST /api/documents/query` implemented. Successfully embeds questions, performs multi-tenant similarity search in Qdrant (using latest `query_points` API), and generates LLM answers via OpenRouter.
+✅ **Race condition fixes in chat endpoint (2026-09-26):** atomic `UPDATE ... WHERE title='New Chat'` for title check, cache invalidation reordered before RabbitMQ publish.
+✅ **Module 1 (Database Performance):** Single-column index benchmark verified (~100x speedup: ~0.3ms with index vs ~32–36ms Seq Scan on 150,000 conversations dataset across 5,000 users). Composite index test pending (TODO).
 
 ❌ No JWT verification inside the Python service itself (trusts api-gateway).
 ❌ Postgres connection string is still hardcoded.

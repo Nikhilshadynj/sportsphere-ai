@@ -4,7 +4,7 @@ import os
 from datetime import datetime, timezone
 from fastapi import APIRouter, Depends, Header, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, update
 from openai import AsyncOpenAI
 import aio_pika
 
@@ -69,14 +69,30 @@ async def chat_with_ai(
         db.add(assistant_msg)
         await db.commit()
 
-        # 6. Check Conversation Title & Publish to RabbitMQ
-        conv_result = await db.execute(select(Conversation).where(Conversation.id == payload.conversationId))
-        conversation = conv_result.scalar_one_or_none()
+        # 6. Invalidate Redis cache immediately after DB write
+        # (Fixes Race #2: previously this ran after the RabbitMQ publish,
+        # leaving a window where GET /messages served stale cached data)
+        await invalidate_cache(f"messages:{payload.conversationId}", f"conversations:{x_user_id}")
 
-        if conversation and conversation.title == "New Chat":
+        # 7. Atomic title check + RabbitMQ publish
+        # (Fixes Race #1 & #3: UPDATE ... WHERE title = 'New Chat' is
+        # atomic — only the first concurrent request wins the row,
+        # preventing duplicate title-generation events)
+        title_result = await db.execute(
+            update(Conversation)
+            .where(
+                Conversation.id == payload.conversationId,
+                Conversation.title == "New Chat",
+            )
+            .values(title="Generating...")
+            .returning(Conversation.id)
+        )
+        was_new_chat = title_result.scalar_one_or_none() is not None
+        await db.commit()
+
+        if was_new_chat:
             _, channel, exchange = await get_rabbit_channel()
             
-            # Message format for RabbitMQ
             message_body = json.dumps({
                 "conversationId": str(payload.conversationId), 
                 "message": payload.message
@@ -91,13 +107,13 @@ async def chat_with_ai(
             )
             print("Published to RabbitMQ")
 
-        # 7. Update timestamp
-        if conversation:
-            conversation.updated_at = datetime.now(timezone.utc)
-            await db.commit()
-        
-        # 8. Invalidate Redis cache
-        await invalidate_cache(f"messages:{payload.conversationId}", f"conversations:{x_user_id}")
+        # 8. Update conversation timestamp
+        await db.execute(
+            update(Conversation)
+            .where(Conversation.id == payload.conversationId)
+            .values(updated_at=datetime.now(timezone.utc))
+        )
+        await db.commit()
 
         return {"response": ai_response}
 

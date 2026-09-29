@@ -56,9 +56,32 @@ export const chatWithAI = async (
       content: aiResponse,
     });
 
-    const conversation = await Conversation.findById(conversationId);
+    // Invalidate Redis cache immediately after DB write
+    // (Fixes Race #2: previously this ran after the RabbitMQ
+    // publish, leaving a window where GET /messages served
+    // stale cached data)
+    await cacheService.del(
+      `messages:${conversationId}`
+    );
 
-    if (conversation?.title === "New Chat") {
+    await cacheService.del(
+      `conversations:${userId}`
+    );
+
+    // Atomic title check — findOneAndUpdate is atomic in
+    // MongoDB: only the first concurrent request matching
+    // title === "New Chat" wins, preventing duplicate
+    // title-generation events (Fixes Race #1 & #3)
+    const conversation =
+      await Conversation.findOneAndUpdate(
+        {
+          _id: conversationId,
+          title: "New Chat",
+        },
+        { $set: { title: "Generating..." } }
+      );
+
+    if (conversation) {
       channel.publish(
         "chat",
         "chat.created",
@@ -79,15 +102,6 @@ export const chatWithAI = async (
       {
         updatedAt: new Date(),
       }
-    );
-
-    // Invalidate Redis cache
-    await cacheService.del(
-      `messages:${conversationId}`
-    );
-
-    await cacheService.del(
-      `conversations:${userId}`
     );
 
     return res.json({
